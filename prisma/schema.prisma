@@ -1,23 +1,23 @@
 generator client {
-  provider = "prisma-client-js"
-  previewFeatures = ["omitApi", "relationJoins"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  role      Role     @default(USER)
-  active    Boolean   @default(true)
-  comments  Comment[]
-  posts     Post[]
-  profile   Profile?
-  reviews   Review[]
+  id       Int       @id @default(autoincrement())
+  email    String    @unique
+  role     Role      @default(USER)
+  active   Boolean   @default(true)
+  comments Comment[]
+  posts    Post[]
+  profile  Profile?
+  reviews  Review[]
 }
 
 model Profile {
@@ -30,16 +30,16 @@ model Profile {
 }
 
 model Post {
-  id          Int        @id @default(autoincrement())
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  title       String
-  content     String?
-  published   Boolean    @default(true)
-  author      User?      @relation(fields: [authorId], references: [id])
-  authorId    Int?
-  categories  Category[]
-  comments    Comment[]
+  id         Int        @id @default(autoincrement())
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  title      String
+  content    String?
+  published  Boolean    @default(true)
+  author     User?      @relation(fields: [authorId], references: [id])
+  authorId   Int?
+  categories Category[]
+  comments   Comment[]
 }
 
 model Category {
@@ -49,27 +49,27 @@ model Category {
 }
 
 model Comment {
-  id          Int       @id @default(autoincrement())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  content     String
-  post        Post      @relation(fields: [postId], references: [id])
-  postId      Int
-  published   Boolean   @default(true)
-  author      User      @relation(fields: [authorId], references: [id])
-  authorId    Int
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  content   String
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    Int
+  published Boolean  @default(true)
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
 }
 
 model Review {
-  id          Int       @id @default(autoincrement())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  content     String
-  rating      Int
-  productId   String    @db.Uuid
-  published   Boolean   @default(true)
-  author      User      @relation(fields: [authorId], references: [id])
-  authorId    Int
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  content   String
+  rating    Int
+  productId String   @db.Uuid
+  published Boolean  @default(true)
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
 }
 
 enum Role {
