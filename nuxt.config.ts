@@ -287,7 +287,12 @@ export default defineNuxtConfig({
   vite: {
     build: {
       rollupOptions: {
-        external: ['react', 'react/jsx-runtime', 'react-dom/client'],
+        external: [
+          'react',
+          'react/jsx-runtime',
+          'react-dom/client',
+          'react-dom',
+        ],
       },
     },
     resolve: {
