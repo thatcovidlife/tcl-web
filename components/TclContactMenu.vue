@@ -17,11 +17,11 @@ const { t } = useI18n()
     <DropdownMenuContent align="end">
       <DropdownMenuLabel>{{ t('layout.contactInfo') }}</DropdownMenuLabel>
       <DropdownMenuSeparator />
-      <DropdownMenuItem>
+      <!-- <DropdownMenuItem>
         <NuxtLink :to="localePath('/contact-us')">{{
           t('layout.contactUs')
         }}</NuxtLink>
-      </DropdownMenuItem>
+      </DropdownMenuItem> -->
       <DropdownMenuItem>
         <NuxtLink :to="localePath('/contribute')">{{
           t('layout.submitContent')
