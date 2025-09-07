@@ -292,6 +292,7 @@ export default defineNuxtConfig({
           'react/jsx-runtime',
           'react-dom/client',
           'react-dom',
+          'styled-components',
         ],
       },
     },
