@@ -1,4 +1,4 @@
-import consola from 'consola'
+import { consola } from 'consola'
 import { defineSitemapEventHandler } from '#imports'
 import sitemapQuery from '@/sanity/queries/sitemap.sanity'
 import { SITEMAP_QUERYResult } from '@/sanity/types'

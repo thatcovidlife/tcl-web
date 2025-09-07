@@ -1,5 +1,5 @@
 import { Translator } from 'deepl-node'
-import consola from 'consola'
+import { consola } from 'consola'
 
 export default eventHandler(async (event) => {
   const { locale = null, text = null } = await readBody(event)

@@ -1,4 +1,4 @@
-import consola from 'consola'
+import { consola } from 'consola'
 import { Feed } from 'feed'
 import { parseStringPromise } from 'xml2js'
 import _ from 'lodash'
