@@ -23,14 +23,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@ai-sdk/ui-utils": "^1.2.11",
     "@formkit/auto-animate": "^0.9.0",
-    "@langchain/community": "^0.3.44",
-    "@langchain/core": "^0.3.57",
-    "@langchain/langgraph": "^0.2.73",
-    "@langchain/langgraph-checkpoint-postgres": "^0.0.5",
-    "@langchain/openai": "^0.5.11",
-    "@langchain/qdrant": "^0.1.2",
     "@nuxt/icon": "1.15.0",
     "@nuxt/image": "1.11.0",
     "@nuxt/scripts": "^0.11.13",
@@ -58,7 +51,6 @@
     "@vee-validate/zod": "^4.15.1",
     "@vueuse/core": "^13.9.0",
     "@vueuse/nuxt": "13.9.0",
-    "ai": "^4.3.16",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "crypto-hash": "^3.1.0",
