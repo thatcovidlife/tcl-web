@@ -5,18 +5,17 @@
 - Authentication
 - Home page
 - List pages
+- Contribute form with Resend integration
+- Search
+- Articles pages
 
 ## What's Left to Build
 
-- Filters
-- Articles pages
-- Contribution forms
+- Additional Filters
 - Support page
 - Mobile marketing page
-- Search
-- Forum
-- User profile
-- Bookmarks
+- User account page
+- Protecting directory from unauthenticated access
 
 ## Progress Status
 

@@ -2,12 +2,16 @@
 
 ## What We're Working On Now
 
-Right now, we are working on rebuilding the UI using the ShadCN library. In particular, we are focused on rebuilding the filtering functionality in the various list pages.
+We have successfully refactored the `server/api/contribute.post.ts` endpoint to replace EmailJS with Resend for sending emails. The development server is running and the changes have been deployed.
 
 ## Recent Changes
 
-We started working on the new filter panel for list pages, which will contain topic-relevant filters allowing users to easily find the information they are looking for.
+- Replaced EmailJS with Resend in the `contribute.post.ts` API endpoint
+- Updated the email sending logic to use Resend's SDK
+- The form data is now sent as a preformatted HTML email to 'delivered@resend.dev'
 
 ## Next Steps
 
-We need to figure out how to make dynamic queries against the Sanity CMS when filters are applied.
+- Monitor the contribute form to ensure emails are being sent correctly via Resend
+- Consider customizing the email template and recipient addresses for production use
+- Potentially remove EmailJS environment variables if they are no longer needed by other parts of the application

@@ -24,7 +24,6 @@
   },
   "dependencies": {
     "@ai-sdk/ui-utils": "^1.2.11",
-    "@emailjs/nodejs": "^5.0.2",
     "@formkit/auto-animate": "^0.8.2",
     "@langchain/community": "^0.3.44",
     "@langchain/core": "^0.3.57",
@@ -81,6 +80,7 @@
     "pinia": "^3.0.2",
     "radix-vue": "^1.9.17",
     "reka-ui": "^2.2.1",
+    "resend": "^6.0.2",
     "shadcn-nuxt": "^0.11.4",
     "tailwind-merge": "^3.2.0",
     "tailwindcss-animate": "^1.0.7",

@@ -1837,13 +1837,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emailjs/nodejs@npm:^5.0.2":
-  version: 5.0.2
-  resolution: "@emailjs/nodejs@npm:5.0.2"
-  checksum: 10c0/597fc7d4766fd9512e00af3f89171fa6a41f9ab1905201fd2826b5aab131c193c8101ba45829332cf754c64134d58276d55b9d93b64466f0fc66d7a2d3731275
-  languageName: node
-  linkType: hard
-
 "@emnapi/core@npm:^1.4.0":
   version: 1.4.3
   resolution: "@emnapi/core@npm:1.4.3"
@@ -18722,6 +18715,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"resend@npm:^6.0.2":
+  version: 6.0.2
+  resolution: "resend@npm:6.0.2"
+  peerDependencies:
+    "@react-email/render": ^1.1.0
+  peerDependenciesMeta:
+    "@react-email/render":
+      optional: true
+  checksum: 10c0/ec7313f7f34211f1d3f2c27a2ced4efa636e0f6a47d2ff8a16ab29e414c55f177920fb1ff900b99b632998933993648ef4fedc8f16448ab2aed645809820bdc7
+  languageName: node
+  linkType: hard
+
 "resolve-from@npm:^4.0.0":
   version: 4.0.0
   resolution: "resolve-from@npm:4.0.0"
@@ -20336,7 +20341,6 @@ __metadata:
     "@ai-sdk/ui-utils": "npm:^1.2.11"
     "@commitlint/cli": "npm:^19.8.1"
     "@commitlint/config-conventional": "npm:^19.8.1"
-    "@emailjs/nodejs": "npm:^5.0.2"
     "@formkit/auto-animate": "npm:^0.8.2"
     "@iconify-json/bi": "npm:^1.2.3"
     "@iconify-json/icon-park-outline": "npm:^1.2.2"
@@ -20416,6 +20420,7 @@ __metadata:
     prisma: "npm:^6.3.1"
     radix-vue: "npm:^1.9.17"
     reka-ui: "npm:^2.2.1"
+    resend: "npm:^6.0.2"
     shadcn-nuxt: "npm:^0.11.4"
     tailwind-merge: "npm:^3.2.0"
     tailwindcss-animate: "npm:^1.0.7"

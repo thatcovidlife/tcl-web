@@ -4,6 +4,7 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
+import { toast } from 'vue-sonner'
 
 const { t } = useI18n()
 
@@ -27,7 +28,7 @@ const formSchema = toTypedSchema(
   }),
 )
 
-const { handleSubmit } = useForm({
+const { handleSubmit, resetForm } = useForm({
   validationSchema: formSchema,
   initialValues: {
     from_name: '',
@@ -37,7 +38,34 @@ const { handleSubmit } = useForm({
   },
 })
 
-const onSubmit = handleSubmit((values) => console.log('form values', values))
+const onSubmit = handleSubmit((values) => {
+  if (!token.value) return
+
+  const payload = {
+    ...values,
+  }
+
+  // Send to server
+  $fetch('/api/contribute', {
+    method: 'POST',
+    body: payload,
+  })
+    .then(() => {
+      toast.success(t('contribute.toast.success.title'), {
+        description: t('contribute.toast.success.message'),
+      })
+    })
+    .catch((error) => {
+      toast.error(t('contribute.toast.error.title'), {
+        description: t('contribute.toast.error.message'),
+      })
+    })
+    .finally(() => {
+      // Reset form
+      resetForm()
+      token.value = ''
+    })
+})
 
 const token = ref()
 </script>
