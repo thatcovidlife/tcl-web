@@ -285,6 +285,11 @@ export default defineNuxtConfig({
   },
 
   vite: {
+    build: {
+      rollupOptions: {
+        external: ['react'],
+      },
+    },
     resolve: {
       alias: {
         '.prisma/client/index-browser':
