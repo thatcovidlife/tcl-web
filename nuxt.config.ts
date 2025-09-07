@@ -293,6 +293,7 @@ export default defineNuxtConfig({
           'react-dom/client',
           'react-dom',
           'styled-components',
+          'react-is',
         ],
       },
     },
