@@ -10,7 +10,7 @@ jobs:
       - checkout
       - run: 'corepack enable'
       - run: 'yarn --immutable'
-      - run: 'yarn prisma:generate'
+      # - run: 'yarn prisma:generate'
       - run: 'yarn test:ci'
 
 workflows:
