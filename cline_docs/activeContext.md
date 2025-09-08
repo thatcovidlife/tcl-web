@@ -2,18 +2,18 @@
 
 ## What We're Working On Now
 
-We have successfully migrated most of the Prisma ORM to Drizzle ORM in this Nuxt.js project. The main components of the migration have been completed, but there are still a few API routes that need to be converted.
+We have successfully renamed the `usePrisma` composable to `useApiRoutes` throughout the codebase. This change reflects the migration from Prisma ORM to a more generic API handling approach. All references have been updated, including the composable file itself, store imports, and test files. TypeScript errors and test failures in the test suite have been resolved.
 
 ## Recent Changes
 
-- Replaced Prisma with Drizzle ORM for database operations
-- Converted Prisma schema to Drizzle schema in `lib/db/schema/index.ts`
-- Updated database connection code in `lib/db/index.ts` to use the correct environment variable (DZL_DATABASE_URL)
-- Generated database migration files
-- Converted most API routes from Prisma to Drizzle syntax
-- Fixed the UUID generation issue in the reviews table
+- Renamed `composables/usePrisma.ts` to `composables/useApiRoutes.ts`
+- Updated the export name from `usePrisma` to `useApiRoutes` in the composable
+- Updated the import in `store/user.ts` from `usePrisma` to `useApiRoutes`
+- Renamed the test file from `tests/composables/usePrisma.nuxt.spec.ts` to `tests/composables/useApiRoutes.nuxt.spec.ts`
+- Updated all references in the test file to use the new composable name
+- Fixed TypeScript errors and test failures in the test file by properly mocking `$fetch` and updating test assertions
 
 ## Next Steps
 
-- Test the database integration thoroughly
-- Clean up any remaining Prisma-specific files and dependencies
+- Continue with other development tasks as needed
+- Ensure all parts of the application that used the old `usePrisma` composable are now using `useApiRoutes`

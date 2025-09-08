@@ -20,3 +20,7 @@ The project has been migrated from Prisma ORM to Drizzle ORM to improve performa
 - Updating database connection code
 - Converting API routes to use Drizzle queries
 - Generating new migration files
+
+## Composable Refactoring
+
+The `usePrisma` composable has been renamed to `useApiRoutes` to better reflect its general purpose of handling API calls, independent of any specific ORM like Prisma. This change was made as part of the migration away from Prisma ORM.

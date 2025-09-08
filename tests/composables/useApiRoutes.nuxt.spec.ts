@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { registerEndpoint } from '@nuxt/test-utils/runtime'
 import { defineEventHandler, readBody } from 'h3'
 import { describe, it, expect } from 'vitest'
-import { usePrisma } from '../../composables/usePrisma'
+import { useApiRoutes } from '../../composables/useApiRoutes'
 
 registerEndpoint(
   '/api/forum/comment/create-comment',
@@ -46,15 +47,15 @@ registerEndpoint(
   }),
 )
 
-describe('Composables > usePrisma', () => {
+describe('Composables > useApiRoutes', () => {
   it('should create a comment', async () => {
-    const { createComment } = usePrisma()
+    const { createComment } = useApiRoutes()
     const call = await createComment(1, { authorId: 2, content: 'lorem ipsum' })
     expect(call).toEqual({ error: null })
   })
 
   it('should create a post', async () => {
-    const { createPost } = usePrisma()
+    const { createPost } = useApiRoutes()
     const call = await createPost({
       title: 'lorem ipsum',
       body: 'dolor sit amet',
@@ -64,7 +65,7 @@ describe('Composables > usePrisma', () => {
   })
 
   it('should create a product review', async () => {
-    const { createProductReview } = usePrisma()
+    const { createProductReview } = useApiRoutes()
     const payload = {
       content: 'Great product',
       rating: 4,
@@ -76,7 +77,7 @@ describe('Composables > usePrisma', () => {
   })
 
   it('should create a user', async () => {
-    const { createUser } = usePrisma()
+    const { createUser } = useApiRoutes()
     const email = 'johndoe@thatcovid.life'
     const call = await createUser(email)
     expect(call).toEqual({

@@ -1,6 +1,6 @@
 import consola from 'consola'
 
-export const usePrisma = () => {
+export const useApiRoutes = () => {
   const createComment = async (postId: number, payload: any) => {
     try {
       return await $fetch('/api/forum/comment/create-comment', {

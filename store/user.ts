@@ -1,5 +1,5 @@
 import consola from 'consola'
-import { usePrisma } from '@/composables/usePrisma'
+import { useApiRoutes } from '@/composables/useApiRoutes'
 
 export type UserInfo = {
   id?: number
@@ -45,7 +45,7 @@ export const useUserStore = defineStore('user', {
         return
       }
 
-      const { getOrCreateUser } = usePrisma()
+      const { getOrCreateUser } = useApiRoutes()
 
       try {
         const info = await getOrCreateUser(user.value.email as string)
