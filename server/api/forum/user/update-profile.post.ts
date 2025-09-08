@@ -1,5 +1,7 @@
 import { consola } from 'consola'
-import prisma from '@/lib/prisma'
+import { db } from '@/lib/db'
+import { users, profiles } from '@/lib/db/schema'
+import { eq } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
   const { user } = await getUserSession(event)
@@ -22,15 +24,14 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const profile = await prisma.profile.findFirstOrThrow({
-      where: {
-        user: {
-          email: user?.email,
-        },
-      },
-    })
+    const [profile] = await db
+      .select({ id: profiles.id })
+      .from(profiles)
+      .leftJoin(users, eq(profiles.userId, users.id))
+      .where(eq(users.email, user.email))
+      .limit(1)
 
-    if (!profile || profile.id !== profileId) {
+    if (!profile || profile.id !== parseInt(profileId)) {
       throw createError({
         status: 403,
         message: 'Unauthorized',
@@ -38,13 +39,14 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const update = await prisma.profile.update({
-      where: { id: profileId },
-      data,
-    })
+    const [update] = await db
+      .update(profiles)
+      .set(data)
+      .where(eq(profiles.id, parseInt(profileId)))
+      .returning()
 
     // invalidate get user cache on profile update
-    // await prisma.$accelerate.invalidate({
+    // await db.$invalidate({
     //   tags: ["get_user"],
     // })
 

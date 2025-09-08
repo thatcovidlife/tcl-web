@@ -8,7 +8,7 @@
 - TypeScript
 - Vitest
 - Sanity CMS
-- Prisma
+- Drizzle ORM
 - PostgreSQL
 - IFFFT
 - Auth0
@@ -24,3 +24,13 @@ This is a set of Node.js-based microservices.
 ## Technical Constraints
 
 Unit testing, PR gates, code formatting and linting are required.
+
+## Database Migration
+
+The project has been migrated from Prisma ORM to Drizzle ORM. Key changes include:
+
+- Replaced Prisma with Drizzle ORM for database operations
+- Updated schema definitions in `lib/db/schema/index.ts`
+- Modified database connection in `lib/db/index.ts` to use `DZL_DATABASE_URL` environment variable
+- Added Drizzle configuration in `drizzle.config.ts`
+- Generated new migration files in `lib/db/migrations`

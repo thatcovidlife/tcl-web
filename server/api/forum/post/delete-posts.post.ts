@@ -1,11 +1,13 @@
 import { consola } from 'consola'
-import prisma from '@/lib/prisma'
+import { db } from '@/lib/db'
+import { posts, users } from '@/lib/db/schema'
+import { eq, inArray, and } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
   const { user } = await getUserSession(event)
-  const { authorId, posts } = await readBody(event)
+  const { authorId, posts: postIds } = await readBody(event)
 
-  if (!posts || !authorId) {
+  if (!postIds || !authorId) {
     throw createError({
       status: 400,
       message: 'Bad request',
@@ -22,24 +24,19 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const matches = await prisma.post.findMany({
-      where: {
-        id: {
-          in: posts,
-        },
-        author: {
-          email: user.email,
-        },
-      },
-      select: {
-        id: true,
-        author: {
-          select: {
-            id: true,
-          },
-        },
-      },
-    })
+    const matches = await db
+      .select({
+        id: posts.id,
+        authorId: posts.authorId,
+      })
+      .from(posts)
+      .leftJoin(users, eq(posts.authorId, users.id))
+      .where(
+        and(
+          inArray(posts.id, postIds.map(Number)),
+          eq(users.email, user.email),
+        ),
+      )
 
     if (!matches || !matches.length) {
       throw createError({
@@ -58,16 +55,15 @@ export default defineEventHandler(async (event) => {
     //   })
     // }
 
-    await prisma.post.updateMany({
-      where: {
-        id: {
-          in: matches.map(({ id }) => id),
-        },
-      },
-      data: {
-        published: false, // unpublish the posts
-      },
-    })
+    await db
+      .update(posts)
+      .set({ published: false })
+      .where(
+        inArray(
+          posts.id,
+          matches.map(({ id }) => id),
+        ),
+      )
 
     return true
   } catch (e) {

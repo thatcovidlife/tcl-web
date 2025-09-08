@@ -1,5 +1,7 @@
 import { consola } from 'consola'
-import prisma from '@/lib/prisma'
+import { db } from '@/lib/db'
+import { users, comments, profiles } from '@/lib/db/schema'
+import { eq, and } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
   const { email } = await readBody(event)
@@ -13,50 +15,37 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const user = await prisma.user
-      .findUniqueOrThrow({
-        where: {
-          email,
-        },
-        include: {
-          comments: {
-            where: {
-              published: true,
-            },
-            include: {
-              author: {
-                omit: {
-                  role: true,
-                },
-                include: {
-                  profile: {
-                    omit: {
-                      id: true,
-                      bio: true,
-                      website: true,
-                      userId: true,
-                    },
-                  },
-                },
-              },
-            },
-            omit: {
-              authorId: true,
-              updatedAt: true,
-              published: true,
-            },
-          },
-        },
-        cacheStrategy: {
-          ttl: 60,
-          tags: ['get_user_comments'],
+    const [user] = await db
+      .select({
+        id: users.id,
+      })
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1)
+
+    if (!user) {
+      throw new Error('User not found')
+    }
+
+    const commentsData = await db
+      .select({
+        id: comments.id,
+        content: comments.content,
+        createdAt: comments.createdAt,
+        author: {
+          id: users.id,
+          email: users.email,
+          profileName: profiles.name,
         },
       })
-      .withAccelerateInfo()
+      .from(comments)
+      .leftJoin(users, eq(comments.authorId, users.id))
+      .leftJoin(profiles, eq(users.id, profiles.userId))
+      .where(and(eq(comments.authorId, user.id), eq(comments.published, true)))
 
-    consola.info('GET USER COMMENTS - ', user.info)
+    consola.info('GET USER COMMENTS - ', commentsData)
 
-    return user.data?.comments || []
+    return commentsData || []
   } catch (e) {
     consola.error(e)
     return []

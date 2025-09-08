@@ -1,20 +1,20 @@
 import { consola } from 'consola'
-import prisma from '@/lib/prisma'
+import { db } from '@/lib/db'
+import { categories } from '@/lib/db/schema'
+// import { eq } from 'drizzle-orm'
 
 export default defineEventHandler(async () => {
   try {
-    const categories = await prisma.category
-      .findMany({
-        cacheStrategy: {
-          ttl: 3600,
-          tags: ['get_categories'],
-        },
+    const categoriesData = await db
+      .select({
+        id: categories.id,
+        name: categories.name,
       })
-      .withAccelerateInfo()
+      .from(categories)
 
-    consola.info('GET CATEGORIES - ', categories.info)
+    consola.info('GET CATEGORIES - ', categoriesData)
 
-    return categories.data || []
+    return categoriesData || []
   } catch (e) {
     consola.error(e)
     return null

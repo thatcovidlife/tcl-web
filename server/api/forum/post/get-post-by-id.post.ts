@@ -1,5 +1,13 @@
 import { consola } from 'consola'
-import prisma from '@/lib/prisma'
+import { db } from '@/lib/db'
+import {
+  posts,
+  users,
+  profiles,
+  categories,
+  postsCategories,
+} from '@/lib/db/schema'
+import { eq } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
   const { id } = await readBody(event)
@@ -13,42 +21,32 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const post = await prisma.post
-      .findUniqueOrThrow({
-        where: {
-          id: parseInt(id),
+    const [post] = await db
+      .select({
+        id: posts.id,
+        title: posts.title,
+        content: posts.content,
+        createdAt: posts.createdAt,
+        updatedAt: posts.updatedAt,
+        published: posts.published,
+        author: {
+          id: users.id,
+          email: users.email,
+          profileName: profiles.name,
         },
-        omit: {
-          authorId: true,
-          updatedAt: true,
-        },
-        include: {
-          author: {
-            omit: {
-              role: true,
-            },
-            include: {
-              profile: {
-                omit: {
-                  id: true,
-                  bio: true,
-                  userId: true,
-                  website: true,
-                },
-              },
-            },
-          },
-          categories: true,
-        },
-        cacheStrategy: {
-          ttl: 180,
-          swr: 30,
-          tags: ['get_post_by_id'],
+        categories: {
+          id: categories.id,
+          name: categories.name,
         },
       })
-      .withAccelerateInfo()
+      .from(posts)
+      .leftJoin(users, eq(posts.authorId, users.id))
+      .leftJoin(profiles, eq(users.id, profiles.userId))
+      .leftJoin(postsCategories, eq(posts.id, postsCategories.postId))
+      .leftJoin(categories, eq(postsCategories.categoryId, categories.id))
+      .where(eq(posts.id, parseInt(id)))
 
-    if (!post || !post.data?.published) {
+    if (!post || !post.published) {
       throw createError({
         status: 400,
         message: 'Bad request',
@@ -56,9 +54,9 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    consola.info('GET POST BY ID - ', post.info)
+    consola.info('GET POST BY ID - ', post)
 
-    return post.data || null
+    return post || null
   } catch (e) {
     consola.error(e)
     throw e

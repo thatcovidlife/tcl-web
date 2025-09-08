@@ -1,5 +1,7 @@
 import { consola } from 'consola'
-import prisma from '@/lib/prisma'
+import { db } from '@/lib/db'
+import { posts, postsCategories, categories } from '@/lib/db/schema'
+// import { eq } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
   const { user } = await getUserSession(event)
@@ -24,16 +26,23 @@ export default defineEventHandler(async (event) => {
   try {
     const { title, content, category, authorId } = payload
 
-    await prisma.post.create({
-      data: {
+    // Create the post
+    const [newPost] = await db
+      .insert(posts)
+      .values({
         title,
         content,
         authorId,
-        categories: {
-          connect: [{ id: category }],
-        },
-      },
-    })
+      })
+      .returning()
+
+    // Link the post to the category
+    if (category && newPost) {
+      await db.insert(postsCategories).values({
+        postId: newPost.id,
+        categoryId: category,
+      })
+    }
 
     return { error: null }
   } catch (e) {

@@ -1,50 +1,45 @@
 import { consola } from 'consola'
-import prisma from '@/lib/prisma'
+import { db } from '@/lib/db'
+import {
+  posts,
+  users,
+  profiles,
+  categories,
+  postsCategories,
+} from '@/lib/db/schema'
+import { eq, desc } from 'drizzle-orm'
 
 export default defineEventHandler(async () => {
   try {
-    const posts = await prisma.post
-      .findMany({
-        where: {
-          published: true, // only get published posts
+    const postsData = await db
+      .select({
+        id: posts.id,
+        title: posts.title,
+        content: posts.content,
+        createdAt: posts.createdAt,
+        updatedAt: posts.updatedAt,
+        author: {
+          id: users.id,
+          email: users.email,
+          profileName: profiles.name,
         },
-        omit: {
-          authorId: true,
-          published: true,
-        },
-        take: 3,
-        orderBy: {
-          createdAt: 'desc',
-        },
-        include: {
-          author: {
-            omit: {
-              role: true,
-            },
-            include: {
-              profile: {
-                omit: {
-                  bio: true,
-                  website: true,
-                  id: true,
-                  userId: true,
-                },
-              },
-            },
-          },
-          categories: true,
-        },
-        cacheStrategy: {
-          ttl: 60,
-          swr: 5,
-          tags: ['get_latest_posts'],
+        categories: {
+          id: categories.id,
+          name: categories.name,
         },
       })
-      .withAccelerateInfo()
+      .from(posts)
+      .leftJoin(users, eq(posts.authorId, users.id))
+      .leftJoin(profiles, eq(users.id, profiles.userId))
+      .leftJoin(postsCategories, eq(posts.id, postsCategories.postId))
+      .leftJoin(categories, eq(postsCategories.categoryId, categories.id))
+      .where(eq(posts.published, true))
+      .limit(3)
+      .orderBy(desc(posts.createdAt))
 
-    consola.info('GET LATEST POSTS - ', posts.info)
+    consola.info('GET LATEST POSTS - ', postsData)
 
-    return posts.data || []
+    return postsData || []
   } catch (e) {
     consola.error(e)
     return null

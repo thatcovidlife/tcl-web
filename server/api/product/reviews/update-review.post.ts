@@ -1,5 +1,7 @@
 import { consola } from 'consola'
-import prisma from '@/lib/prisma'
+import { db } from '@/lib/db'
+import { users, reviews } from '@/lib/db/schema'
+import { eq } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
   const { user } = await getUserSession(event)
@@ -30,17 +32,11 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const userInfo = await prisma.user.findUniqueOrThrow({
-      select: {
-        id: true,
-      },
-      where: {
-        email: user.email,
-      },
-      cacheStrategy: {
-        ttl: 60,
-      },
-    })
+    const [userInfo] = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.email, user.email))
+      .limit(1)
 
     // make sure the logged in user can post a review for the user id
     if (!userInfo || userInfo.id !== payload.authorId) {
@@ -51,13 +47,13 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    return await prisma.review.update({
-      where: {
-        id: reviewId,
-        authorId: userInfo.id,
-      },
-      data: payload,
-    })
+    const [updatedReview] = await db
+      .update(reviews)
+      .set(payload)
+      .where(eq(reviews.id, parseInt(reviewId)))
+      .returning()
+
+    return updatedReview
   } catch (e) {
     consola.error(e)
     throw e

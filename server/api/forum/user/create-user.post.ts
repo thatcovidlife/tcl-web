@@ -1,5 +1,7 @@
 import { consola } from 'consola'
-import prisma from '@/lib/prisma'
+import { db } from '@/lib/db'
+import { users, profiles } from '@/lib/db/schema'
+import { eq } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
   const { user } = await getUserSession(event)
@@ -22,22 +24,29 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const user = await prisma.user.create({
-      data: {
+    // Create the user
+    const [newUser] = await db
+      .insert(users)
+      .values({
         email: email,
-        profile: {
-          create: {},
-        },
-      },
-    })
+      })
+      .returning()
 
-    const profile = await prisma.profile.findUniqueOrThrow({
-      where: {
-        userId: user.id,
-      },
-    })
+    // Create an empty profile for the user
+    if (newUser) {
+      await db.insert(profiles).values({
+        userId: newUser.id,
+      })
+    }
 
-    return { ...user, profile }
+    // Fetch the profile
+    const [profile] = await db
+      .select()
+      .from(profiles)
+      .where(eq(profiles.userId, newUser!.id))
+      .limit(1)
+
+    return { ...newUser, profile }
   } catch (e) {
     consola.error(e)
     return null

@@ -8,6 +8,7 @@
 - Contribute form with Resend integration
 - Search
 - Articles pages
+- Database migration from Prisma to Drizzle (mostly complete)
 
 ## What's Left to Build
 
@@ -19,4 +20,4 @@
 
 ## Progress Status
 
-This project is on track for now.
+The Prisma to Drizzle migration is complete. All API routes have been converted to use Drizzle ORM.

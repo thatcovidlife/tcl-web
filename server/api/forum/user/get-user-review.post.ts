@@ -1,5 +1,7 @@
 import { consola } from 'consola'
-import prisma from '@/lib/prisma'
+import { db } from '@/lib/db'
+import { users, reviews } from '@/lib/db/schema'
+import { eq, and } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
   const { user } = await getUserSession(event)
@@ -30,29 +32,30 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const user = await prisma.user
-      .findUniqueOrThrow({
-        where: {
-          email,
-        },
-        include: {
-          reviews: {
-            where: {
-              productId,
-              published: true,
-            },
-          },
-        },
-        cacheStrategy: {
-          ttl: 30,
-          tags: ['get_user_review'],
-        },
-      })
-      .withAccelerateInfo()
+    const [userInfo] = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1)
 
-    consola.info('GET USER REVIEW - ', user.info)
+    if (!userInfo) {
+      throw new Error('User not found')
+    }
 
-    return user.data.reviews.length ? user.data.reviews[0] : null
+    const [review] = await db
+      .select()
+      .from(reviews)
+      .where(
+        and(
+          eq(reviews.authorId, userInfo.id),
+          eq(reviews.productId, productId),
+          eq(reviews.published, true),
+        ),
+      )
+
+    consola.info('GET USER REVIEW - ', review)
+
+    return review || null
   } catch (e) {
     consola.error(e)
     return null

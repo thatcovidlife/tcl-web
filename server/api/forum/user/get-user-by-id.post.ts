@@ -1,5 +1,7 @@
 import { consola } from 'consola'
-import prisma from '@/lib/prisma'
+import { db } from '@/lib/db'
+import { users, profiles } from '@/lib/db/schema'
+import { eq } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
   const { id } = await readBody(event)
@@ -22,24 +24,27 @@ export default defineEventHandler(async (event) => {
   // }
 
   try {
-    const user = await prisma.user
-      .findFirstOrThrow({
-        where: {
-          id,
-        },
-        include: {
-          profile: true,
-        },
-        cacheStrategy: {
-          ttl: 60,
-          tags: ['get_user_by_id'],
+    const [user] = await db
+      .select({
+        id: users.id,
+        email: users.email,
+        role: users.role,
+        active: users.active,
+        profile: {
+          id: profiles.id,
+          name: profiles.name,
+          bio: profiles.bio,
+          website: profiles.website,
         },
       })
-      .withAccelerateInfo()
+      .from(users)
+      .leftJoin(profiles, eq(users.id, profiles.userId))
+      .where(eq(users.id, parseInt(id)))
+      .limit(1)
 
-    consola.info('GET USER BY ID - ', user.info)
+    consola.info('GET USER BY ID - ', user)
 
-    return user.data || null
+    return user || null
   } catch (e) {
     consola.error(e)
     return null

@@ -1,5 +1,7 @@
 import { consola } from 'consola'
-import prisma from '@/lib/prisma'
+import { db } from '@/lib/db'
+import { users } from '@/lib/db/schema'
+import { eq } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
   const { user } = await getUserSession(event)
@@ -23,24 +25,14 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const user = await prisma.user
-      .findUniqueOrThrow({
-        where: {
-          email,
-        },
-        select: {
-          role: true,
-        },
-        cacheStrategy: {
-          ttl: 30,
-          tags: ['get_user_role'],
-        },
-      })
-      .withAccelerateInfo()
+    const [{ role }] = await db
+      .select({ role: users.role })
+      .from(users)
+      .where(eq(users.email, email))
 
-    consola.info('GET USER ROLE - ', user.info)
+    consola.info('GET USER ROLE - ', role)
 
-    return user.data?.role || null
+    return role || null
   } catch (e) {
     consola.error(e)
     return null

@@ -1,5 +1,7 @@
 import { consola } from 'consola'
-import prisma from '@/lib/prisma'
+import { db } from '@/lib/db'
+import { comments, users } from '@/lib/db/schema'
+import { eq } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
   const { user } = await getUserSession(event)
@@ -22,22 +24,15 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const comment = await prisma.comment.findUniqueOrThrow({
-      where: {
-        id: commentId,
-        author: {
-          email: user.email,
-        },
-      },
-      select: {
-        id: true,
-        author: {
-          select: {
-            id: true,
-          },
-        },
-      },
-    })
+    const [comment] = await db
+      .select({
+        id: comments.id,
+        authorId: comments.authorId,
+      })
+      .from(comments)
+      .leftJoin(users, eq(comments.authorId, users.id))
+      .where(eq(comments.id, parseInt(commentId)))
+      .limit(1)
 
     if (!comment) {
       throw createError({
@@ -47,7 +42,10 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    if (comment.id !== commentId || comment.author.id !== authorId) {
+    if (
+      comment.id !== parseInt(commentId) ||
+      comment.authorId !== parseInt(authorId)
+    ) {
       throw createError({
         status: 403,
         message: 'Unauthorized',
@@ -55,14 +53,10 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    await prisma.comment.update({
-      where: {
-        id: comment.id,
-      },
-      data: {
-        published: false, // unpublish the comment
-      },
-    })
+    await db
+      .update(comments)
+      .set({ published: false })
+      .where(eq(comments.id, comment.id))
 
     return true
   } catch (e) {

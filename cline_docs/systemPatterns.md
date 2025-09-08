@@ -10,4 +10,13 @@ It was crucial to separate the content created by the editors of the website, an
 
 ## Architecture Patterns
 
-This is a micro service architecture, where each component is in charge of its own business domain: Sanity CMS for the editor content and Prisma/PostgreSQL for the user generated content.
+This is a micro service architecture, where each component is in charge of its own business domain: Sanity CMS for the editor content and Drizzle/PostgreSQL for the user generated content.
+
+## Database Migration
+
+The project has been migrated from Prisma ORM to Drizzle ORM to improve performance and developer experience. The migration includes:
+
+- Converting Prisma schema to Drizzle schema
+- Updating database connection code
+- Converting API routes to use Drizzle queries
+- Generating new migration files

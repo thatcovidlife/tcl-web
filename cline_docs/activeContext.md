@@ -2,16 +2,18 @@
 
 ## What We're Working On Now
 
-We have successfully refactored the `server/api/contribute.post.ts` endpoint to replace EmailJS with Resend for sending emails. The development server is running and the changes have been deployed.
+We have successfully migrated most of the Prisma ORM to Drizzle ORM in this Nuxt.js project. The main components of the migration have been completed, but there are still a few API routes that need to be converted.
 
 ## Recent Changes
 
-- Replaced EmailJS with Resend in the `contribute.post.ts` API endpoint
-- Updated the email sending logic to use Resend's SDK
-- The form data is now sent as a preformatted HTML email to 'delivered@resend.dev'
+- Replaced Prisma with Drizzle ORM for database operations
+- Converted Prisma schema to Drizzle schema in `lib/db/schema/index.ts`
+- Updated database connection code in `lib/db/index.ts` to use the correct environment variable (DZL_DATABASE_URL)
+- Generated database migration files
+- Converted most API routes from Prisma to Drizzle syntax
+- Fixed the UUID generation issue in the reviews table
 
 ## Next Steps
 
-- Monitor the contribute form to ensure emails are being sent correctly via Resend
-- Consider customizing the email template and recipient addresses for production use
-- Potentially remove EmailJS environment variables if they are no longer needed by other parts of the application
+- Test the database integration thoroughly
+- Clean up any remaining Prisma-specific files and dependencies

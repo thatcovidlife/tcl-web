@@ -1,5 +1,7 @@
 import { consola } from 'consola'
-import prisma from '@/lib/prisma'
+import { db } from '@/lib/db'
+import { comments } from '@/lib/db/schema'
+// import { eq } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
   const { user } = await getUserSession(event)
@@ -24,16 +26,11 @@ export default defineEventHandler(async (event) => {
   try {
     const { content, authorId } = payload
 
-    await prisma.comment.create({
-      data: {
-        content,
-        author: {
-          connect: { id: authorId },
-        },
-        post: {
-          connect: { id: postId },
-        },
-      },
+    // Create the comment
+    await db.insert(comments).values({
+      content,
+      authorId: parseInt(authorId),
+      postId: parseInt(postId),
     })
 
     return { error: null }

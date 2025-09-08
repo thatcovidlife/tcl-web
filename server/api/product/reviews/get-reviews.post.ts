@@ -1,5 +1,7 @@
 import { consola } from 'consola'
-import prisma from '@/lib/prisma'
+import { db } from '@/lib/db'
+import { reviews, users, profiles } from '@/lib/db/schema'
+import { eq, desc, sql, and } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
   const { productId, skip } = await readBody(event)
@@ -13,87 +15,47 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const reviews = await prisma.review
-      .findMany({
-        where: {
-          productId,
-          published: true, // only get published posts
-        },
-        omit: {
-          authorId: true,
-          published: true,
-        },
-        take: 5,
-        skip,
-        orderBy: {
-          createdAt: 'desc',
-        },
-        include: {
-          author: {
-            omit: {
-              role: true,
-            },
-            include: {
-              profile: {
-                omit: {
-                  bio: true,
-                  website: true,
-                  id: true,
-                  userId: true,
-                },
-              },
-            },
-          },
-        },
-        cacheStrategy: {
-          ttl: 60,
-          swr: 5,
-          tags: ['get_reviews'],
+    // Get reviews
+    const reviewsData = await db
+      .select({
+        id: reviews.id,
+        content: reviews.content,
+        rating: reviews.rating,
+        createdAt: reviews.createdAt,
+        author: {
+          id: users.id,
+          email: users.email,
+          profileName: profiles.name,
         },
       })
-      .withAccelerateInfo()
+      .from(reviews)
+      .leftJoin(users, eq(reviews.authorId, users.id))
+      .leftJoin(profiles, eq(users.id, profiles.userId))
+      .where(and(eq(reviews.productId, productId), eq(reviews.published, true)))
+      .orderBy(desc(reviews.createdAt))
+      .limit(5)
+      .offset(skip || 0)
 
-    consola.info('GET REVIEWS - ', reviews.info)
+    // Get review count
+    const [{ count: reviewCount }] = await db
+      .select({ count: sql<number>`count(*)::int`.as('count') })
+      .from(reviews)
+      .where(and(eq(reviews.productId, productId), eq(reviews.published, true)))
 
-    const reviewCount = await prisma.review
-      .count({
-        where: {
-          productId,
-          published: true,
-        },
-        cacheStrategy: {
-          ttl: 60,
-          swr: 5,
-          tags: ['get_reviews_count'],
-        },
-      })
-      .withAccelerateInfo()
+    // Get average rating
+    const [{ avg: ratingAverage }] = await db
+      .select({ avg: sql<number>`avg(rating)::numeric(10,2)`.as('avg') })
+      .from(reviews)
+      .where(and(eq(reviews.productId, productId), eq(reviews.published, true)))
 
-    consola.info('GET REVIEWS COUNT - ', reviewCount.info)
-
-    const ratingAverage = await prisma.review
-      .aggregate({
-        where: {
-          productId,
-          published: true,
-        },
-        _avg: {
-          rating: true,
-        },
-        cacheStrategy: {
-          ttl: 60,
-          swr: 5,
-          tags: ['get_rating_average'],
-        },
-      })
-      .withAccelerateInfo()
-
-    consola.info('GET RATING AVERAGE - ', ratingAverage.info)
+    consola.info('GET REVIEWS - ', reviewsData)
+    consola.info('GET REVIEWS COUNT - ', reviewCount)
+    consola.info('GET RATING AVERAGE - ', ratingAverage)
 
     return {
-      entries: reviews.data || [],
-      total: reviewCount.data || 0,
-      average: ratingAverage.data._avg?.rating?.toFixed(2) || null,
+      entries: reviewsData || [],
+      total: reviewCount || 0,
+      average: ratingAverage?.toString() || null,
     }
   } catch (e) {
     consola.error(e)
