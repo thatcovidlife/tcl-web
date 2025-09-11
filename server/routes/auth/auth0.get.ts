@@ -2,7 +2,8 @@ export default defineOAuthAuth0EventHandler({
   config: {
     emailRequired: true,
   },
-  async onSuccess(event, { user }) {
+  async onSuccess(event, { user, ...rest }) {
+    console.log('Auth0 OAuth success:', { user, ...rest })
     const locale = getCookie(event, 'i18n_redirected')
 
     await setUserSession(event, {
