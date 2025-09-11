@@ -50,6 +50,7 @@
     "deepl-node": "^1.19.0",
     "drizzle-kit": "^0.31.4",
     "drizzle-orm": "^0.44.5",
+    "drizzle-zod": "^0.8.3",
     "embla-carousel-vue": "^8.6.0",
     "feed": "^5.1.0",
     "groqd": "^1.7.1",

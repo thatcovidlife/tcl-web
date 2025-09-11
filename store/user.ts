@@ -49,8 +49,9 @@ export const useUserStore = defineStore('user', {
 
       try {
         const info = await getOrCreateUser(user.value.email as string)
-        this.info = info as UserInfo
+        this.info = info as unknown as UserInfo
       } catch (e) {
+        consola.error(e)
         this.info = null
       }
     },

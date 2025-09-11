@@ -11265,6 +11265,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"drizzle-zod@npm:^0.8.3":
+  version: 0.8.3
+  resolution: "drizzle-zod@npm:0.8.3"
+  peerDependencies:
+    drizzle-orm: ">=0.36.0"
+    zod: ^3.25.0 || ^4.0.0
+  checksum: 10c0/653e5c59d73e32dba5fafb24691101c88ff9071a1dd85e0f96374764afb25d0b381dd9410e8dd39ece7ab81477e58e991f998d48cf44b41cc7380cfd361fc15d
+  languageName: node
+  linkType: hard
+
 "dunder-proto@npm:^1.0.1":
   version: 1.0.1
   resolution: "dunder-proto@npm:1.0.1"
@@ -19509,6 +19519,7 @@ __metadata:
     deepl-node: "npm:^1.19.0"
     drizzle-kit: "npm:^0.31.4"
     drizzle-orm: "npm:^0.44.5"
+    drizzle-zod: "npm:^0.8.3"
     embla-carousel-vue: "npm:^8.6.0"
     feed: "npm:^5.1.0"
     groqd: "npm:^1.7.1"

@@ -1,1 +1,0 @@
-ALTER TABLE "review" ALTER COLUMN "product_id" SET DEFAULT gen_random_uuid();

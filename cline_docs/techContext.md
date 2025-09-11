@@ -25,6 +25,13 @@ This is a set of Node.js-based microservices.
 
 Unit testing, PR gates, code formatting and linting are required.
 
+## Database Schema
+
+The database schema has been simplified to only include two tables:
+
+- `users`: Stores user information including email, role, and active status
+- `profiles`: Stores user profile information including name, bio, and website
+
 ## Database Migration
 
 The project has been migrated from Prisma ORM to Drizzle ORM. Key changes include:
@@ -34,6 +41,7 @@ The project has been migrated from Prisma ORM to Drizzle ORM. Key changes includ
 - Modified database connection in `lib/db/index.ts` to use `DZL_DATABASE_URL` environment variable
 - Added Drizzle configuration in `drizzle.config.ts`
 - Generated new migration files in `lib/db/migrations`
+- Simplified the schema to only include users and profiles tables
 
 ## Composable Refactoring
 

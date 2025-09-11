@@ -2,7 +2,7 @@
 
 ## How the System is Built
 
-The system is a static UI application built on top of a Sanity CMS. Additionally, there is a PostgreSQL database setup for users profile information, forum posts, product reviews, and eventually bookmarks. There are also multiple services generating RSS feeds that are consumed by third party applications such as dlvr.it and IFFFT to post this content automatically on various social media platforms.
+The system is a static UI application built on top of a Sanity CMS. Additionally, there is a PostgreSQL database setup for users profile information. There are also multiple services generating RSS feeds that are consumed by third party applications such as dlvr.it and IFFFT to post this content automatically on various social media platforms.
 
 ## Key Technical Decisions
 
@@ -12,6 +12,13 @@ It was crucial to separate the content created by the editors of the website, an
 
 This is a micro service architecture, where each component is in charge of its own business domain: Sanity CMS for the editor content and Drizzle/PostgreSQL for the user generated content.
 
+## Database Schema
+
+The database schema has been simplified to only include two tables:
+
+- `users`: Stores user information including email, role, and active status
+- `profiles`: Stores user profile information including name, bio, and website
+
 ## Database Migration
 
 The project has been migrated from Prisma ORM to Drizzle ORM to improve performance and developer experience. The migration includes:
@@ -20,6 +27,7 @@ The project has been migrated from Prisma ORM to Drizzle ORM to improve performa
 - Updating database connection code
 - Converting API routes to use Drizzle queries
 - Generating new migration files
+- Simplifying the schema to only include users and profiles tables
 
 ## Composable Refactoring
 

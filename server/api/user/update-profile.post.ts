@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
       .where(eq(users.email, user.email))
       .limit(1)
 
-    if (!profile || profile.id !== parseInt(profileId)) {
+    if (!profile || profile.id !== profileId) {
       throw createError({
         status: 403,
         message: 'Unauthorized',
@@ -42,7 +42,7 @@ export default defineEventHandler(async (event) => {
     const [update] = await db
       .update(profiles)
       .set(data)
-      .where(eq(profiles.id, parseInt(profileId)))
+      .where(eq(profiles.id, profileId))
       .returning()
 
     // invalidate get user cache on profile update

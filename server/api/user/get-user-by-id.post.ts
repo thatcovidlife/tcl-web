@@ -39,7 +39,7 @@ export default defineEventHandler(async (event) => {
       })
       .from(users)
       .leftJoin(profiles, eq(users.id, profiles.userId))
-      .where(eq(users.id, parseInt(id)))
+      .where(eq(users.id, id))
       .limit(1)
 
     consola.info('GET USER BY ID - ', user)
