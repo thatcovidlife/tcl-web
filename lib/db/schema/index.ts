@@ -30,5 +30,6 @@ export const profiles = pgTable('profile', {
   website: varchar('website', { length: 255 }),
   userId: uuid('user_id')
     .notNull()
+    .unique()
     .references(() => users.id, { onDelete: 'cascade' }),
 })
