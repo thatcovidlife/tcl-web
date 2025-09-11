@@ -109,6 +109,13 @@ export const useNavConfig = () => {
     () =>
       [
         {
+          id: 'mobile-home',
+          link: '/',
+          premium: false,
+          title: t('layout.home'),
+          enabled: true,
+        },
+        {
           id: 'mobile-news',
           link: '/news?offset=0&limit=5',
           premium: false,
