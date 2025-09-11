@@ -14,6 +14,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "db:push": "drizzle-kit push",
+    "db:seed": "tsx --env-file=.env ./lib/db/utils/migrate.ts",
     "sanity:gen": "sanity typegen generate",
     "test": "vitest --watch",
     "test:ci": "vitest run",
@@ -109,6 +110,7 @@
     "playwright-core": "^1.55.0",
     "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
+    "tsx": "^4.20.5",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4",
     "vitest-environment-nuxt": "^1.0.1"
