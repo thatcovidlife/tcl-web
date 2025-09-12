@@ -42,14 +42,15 @@ const profileFormSchema = toTypedSchema(
   z.object({
     name: z
       .string({ required_error: t('account.errors.name.required') })
-      .min(2, t('account.errors.name.min')),
+      .min(2, t('account.errors.name.min'))
+      .max(255, t('account.errors.name.max')),
     website: z
       .string({ required_error: t('account.errors.website.required') })
       .url(t('account.errors.website.invalid')),
     bio: z
       .string({ required_error: t('account.errors.bio.required') })
       .min(10, t('account.errors.bio.min'))
-      .max(160, t('account.errors.bio.max')),
+      .max(500, t('account.errors.bio.max')),
     language: z.string({
       required_error: t('account.errors.language.required'),
     }),
@@ -159,9 +160,9 @@ watch(
       >
         <Card>
           <CardHeader>
-            <CardTitle>Account Settings</CardTitle>
+            <CardTitle>{{ t('account.title') }}</CardTitle>
             <CardDescription>
-              Manage your account information and preferences
+              {{ t('account.description') }}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -313,6 +314,7 @@ watch(
                             <SelectContent>
                               <SelectItem value="light">Light</SelectItem>
                               <SelectItem value="dark">Dark</SelectItem>
+                              <SelectItem value="system">System</SelectItem>
                             </SelectContent>
                           </Select>
                         </FormControl>

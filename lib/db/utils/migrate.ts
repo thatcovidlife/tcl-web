@@ -39,6 +39,8 @@ for (let i = 0; i < userData.length; i++) {
     bio: profile?.bio || '',
     name: profile?.name || '',
     website: profile?.website || '',
+    language: 'en',
+    theme: 'system',
   }
 
   await db.insert(users).values(userRow).onConflictDoNothing().returning()

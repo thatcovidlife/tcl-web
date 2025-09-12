@@ -8,6 +8,8 @@ import { pgTable, varchar, boolean, pgEnum, uuid } from 'drizzle-orm/pg-core'
 
 // Enums
 export const roleEnum = pgEnum('role', ['USER', 'ADMIN'])
+export const languageEnum = pgEnum('language', ['en', 'es', 'fr', 'pt'])
+export const themeEnum = pgEnum('theme', ['light', 'dark', 'system'])
 
 // Tables
 export const users = pgTable('user', {
@@ -32,4 +34,6 @@ export const profiles = pgTable('profile', {
     .notNull()
     .unique()
     .references(() => users.id, { onDelete: 'cascade' }),
+  language: languageEnum('language').default('en'),
+  theme: themeEnum('theme').default('system'),
 })

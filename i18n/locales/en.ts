@@ -1,4 +1,8 @@
 export default {
+  account: {
+    description: 'Manage your account information and preferences',
+    title: 'Account Settings',
+  },
   article: {
     call: 'Call',
     contactInfo: 'Contact Info',
