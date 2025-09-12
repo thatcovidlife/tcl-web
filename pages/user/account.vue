@@ -18,6 +18,12 @@ import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import {
   Form,
   FormControl,
   FormDescription,
@@ -121,12 +127,21 @@ watch(
       >
         <Card>
           <CardHeader class="text-center">
-            <Avatar class="w-24 h-24 mx-auto mb-4">
-              <AvatarImage :src="avatarUrl || ''" alt="Profile" />
-              <AvatarFallback class="text-2xl">
-                {{ userStore.info?.profile?.name?.charAt(0) || 'U' }}
-              </AvatarFallback>
-            </Avatar>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger as-child>
+                  <Avatar class="w-24 h-24 mx-auto mb-4 cursor-pointer">
+                    <AvatarImage :src="avatarUrl || ''" alt="Profile" />
+                    <AvatarFallback class="text-2xl">
+                      {{ userStore.info?.profile?.name?.charAt(0) || 'U' }}
+                    </AvatarFallback>
+                  </Avatar>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Change your avatar on gravatar.com</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             <CardTitle v-if="userStore.info?.profile?.name" class="text-xl">{{
               userStore.info?.profile?.name || 'User'
             }}</CardTitle>
