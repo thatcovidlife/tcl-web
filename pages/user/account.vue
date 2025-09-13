@@ -69,16 +69,15 @@ const form = useForm({
 })
 
 const onSubmit = form.handleSubmit(async (values) => {
-  // In a real app, this would call an API to update the user's information
-  console.log('Saving profile data:', values)
   try {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    toast.success(t('account.toast.profile.success'))
+    await $fetch('/api/user/update-profile', {
+      method: 'POST',
+      body: { profileId: userStore.info?.profile?.id, data: values },
+    })
     // Update user store with new values
-    if (userStore.info?.profile) {
-      userStore.info.profile = { ...userStore.info.profile, ...values }
-    }
+    await userStore.updateUserInfo(values)
+
+    toast.success(t('account.toast.profile.success'))
   } catch (error) {
     toast.error(t('account.toast.profile.error'))
   }
