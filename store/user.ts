@@ -9,6 +9,8 @@ export type UserInfo = {
     bio: string | null
     website: string | null
     userId: number
+    language: string | null
+    theme: string | null
   } | null
   email?: string
   role?: string

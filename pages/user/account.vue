@@ -58,12 +58,13 @@ const profileFormSchema = toTypedSchema(
 
 const form = useForm({
   validationSchema: profileFormSchema,
+  keepValuesOnUnmount: true,
   initialValues: {
     name: userStore.info?.profile?.name || '',
     website: userStore.info?.profile?.website || '',
     bio: userStore.info?.profile?.bio || '',
-    language: 'en',
-    theme: 'light',
+    language: userStore.info?.profile?.language || 'en',
+    theme: userStore.info?.profile?.theme || 'light',
   },
 })
 
@@ -94,6 +95,8 @@ watch(
         name: userStore.info?.profile?.name || '',
         website: userStore.info?.profile?.website || '',
         bio: userStore.info?.profile?.bio || '',
+        language: userStore.info?.profile?.language || 'en',
+        theme: userStore.info?.profile?.theme || 'light',
       },
       false,
     )

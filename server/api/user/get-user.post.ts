@@ -37,6 +37,8 @@ export default defineEventHandler(async (event) => {
           bio: profiles.bio,
           website: profiles.website,
           userId: profiles.userId,
+          language: profiles.language,
+          theme: profiles.theme,
         },
       })
       .from(users)
