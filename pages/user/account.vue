@@ -14,7 +14,6 @@ import {
 } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
@@ -24,7 +23,6 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import {
-  Form,
   FormControl,
   FormDescription,
   FormField,
@@ -47,20 +45,14 @@ const userStore = useUserStore()
 const profileFormSchema = toTypedSchema(
   z.object({
     name: z
-      .string({ required_error: t('account.errors.name.required') })
+      .string()
       .min(2, t('account.errors.name.min'))
-      .max(255, t('account.errors.name.max')),
-    website: z
-      .string({ required_error: t('account.errors.website.required') })
-      .url(t('account.errors.website.invalid')),
-    bio: z
-      .string({ required_error: t('account.errors.bio.required') })
-      .min(10, t('account.errors.bio.min'))
-      .max(500, t('account.errors.bio.max')),
-    language: z.string({
-      required_error: t('account.errors.language.required'),
-    }),
-    theme: z.string({ required_error: t('account.errors.theme.required') }),
+      .max(255, t('account.errors.name.max'))
+      .optional(),
+    website: z.string().max(255, t('account.errors.website.max')).optional(),
+    bio: z.string().max(500, t('account.errors.bio.max')).optional(),
+    language: z.string(),
+    theme: z.string(),
   }),
 )
 
@@ -149,20 +141,6 @@ watch(
               userStore.info?.email
             }}</CardDescription>
           </CardHeader>
-          <!-- <CardContent>
-            <div class="space-y-2">
-              <div class="flex justify-between">
-                <span class="text-sm text-muted-foreground">Member since</span>
-                <span class="text-sm">January 2023</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-sm text-muted-foreground"
-                  >Account status</span
-                >
-                <span class="text-sm text-green-600 font-medium">Active</span>
-              </div>
-            </div>
-          </CardContent> -->
         </Card>
       </motion.div>
 
@@ -183,9 +161,12 @@ watch(
           <CardContent>
             <Tabs defaultValue="profile" class="w-full">
               <TabsList class="grid w-full grid-cols-2">
-                <TabsTrigger value="profile">Profile</TabsTrigger>
-                <!-- <TabsTrigger value="security">Security</TabsTrigger> -->
-                <TabsTrigger value="preferences">Preferences</TabsTrigger>
+                <TabsTrigger value="profile">{{
+                  t('account.tabs.profile')
+                }}</TabsTrigger>
+                <TabsTrigger value="preferences">{{
+                  t('account.tabs.preferences')
+                }}</TabsTrigger>
               </TabsList>
 
               <form @submit="onSubmit">
@@ -245,46 +226,6 @@ watch(
                   </div>
                 </TabsContent>
 
-                <!-- <TabsContent value="security" class="space-y-6">
-                <div class="space-y-4">
-                  <div
-                    class="flex items-center justify-between p-4 border rounded-lg"
-                  >
-                    <div>
-                      <h4 class="font-medium">Password</h4>
-                      <p class="text-sm text-muted-foreground">
-                        Last changed 3 months ago
-                      </p>
-                    </div>
-                    <Button variant="outline" @click="handlePasswordChange">
-                      Change Password
-                    </Button>
-                  </div>
-                  <div
-                    class="flex items-center justify-between p-4 border rounded-lg"
-                  >
-                    <div>
-                      <h4 class="font-medium">Two-Factor Authentication</h4>
-                      <p class="text-sm text-muted-foreground">
-                        Add an extra layer of security
-                      </p>
-                    </div>
-                    <Button variant="outline" disabled> Enable 2FA </Button>
-                  </div>
-                  <div
-                    class="flex items-center justify-between p-4 border rounded-lg"
-                  >
-                    <div>
-                      <h4 class="font-medium">Connected Devices</h4>
-                      <p class="text-sm text-muted-foreground">
-                        Manage active sessions
-                      </p>
-                    </div>
-                    <Button variant="outline"> View Devices </Button>
-                  </div>
-                </div>
-              </TabsContent> -->
-
                 <TabsContent value="preferences" class="space-y-6">
                   <div class="space-y-6">
                     <FormField v-slot="{ componentField }" name="language">
@@ -303,9 +244,9 @@ watch(
                             </SelectTrigger>
                             <SelectContent>
                               <SelectItem value="en">English</SelectItem>
-                              <SelectItem value="fr">French</SelectItem>
-                              <SelectItem value="pt">Portuguese</SelectItem>
-                              <SelectItem value="es">Spanish</SelectItem>
+                              <SelectItem value="es">Español</SelectItem>
+                              <SelectItem value="fr">Français</SelectItem>
+                              <SelectItem value="pt">Português</SelectItem>
                             </SelectContent>
                           </Select>
                         </FormControl>
@@ -327,9 +268,15 @@ watch(
                               />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="light">Light</SelectItem>
-                              <SelectItem value="dark">Dark</SelectItem>
-                              <SelectItem value="system">System</SelectItem>
+                              <SelectItem value="light">{{
+                                t('account.themes.light')
+                              }}</SelectItem>
+                              <SelectItem value="dark">{{
+                                t('account.themes.dark')
+                              }}</SelectItem>
+                              <SelectItem value="system">{{
+                                t('account.themes.system')
+                              }}</SelectItem>
                             </SelectContent>
                           </Select>
                         </FormControl>

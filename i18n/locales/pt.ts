@@ -1,4 +1,58 @@
 export default {
+  account: {
+    description: 'Gerencie as informações e preferências da sua conta',
+    errors: {
+      bio: {
+        max: 'Sua biografia não pode ultrapassar 500 caracteres.',
+        min: 'Sua biografia deve ter pelo menos 10 caracteres.',
+      },
+      name: {
+        max: 'Seu nome não pode ultrapassar 255 caracteres.',
+        min: 'Seu nome deve ter pelo menos 2 caracteres.',
+      },
+      website: {
+        invalid: 'Por favor, insira uma URL válida.',
+        max: 'A URL do seu site não pode ultrapassar 255 caracteres.',
+      },
+    },
+    help: {
+      bio: 'Uma breve biografia sobre você.',
+      language: 'Selecione seu idioma preferido.',
+      theme: 'Selecione seu tema de cor preferido.',
+      website: 'A URL do seu site pessoal ou comercial.',
+    },
+    labels: {
+      bio: 'Biografia',
+      language: 'Idioma',
+      name: 'Nome',
+      save: 'Salvar alterações',
+      theme: 'Tema de cor',
+      website: 'Site',
+    },
+    placeholders: {
+      bio: 'Conte-nos sobre você',
+      language: 'Selecione um idioma',
+      name: 'Digite seu nome',
+      theme: 'Selecione um tema',
+      website: 'Digite a URL do seu site',
+    },
+    tabs: {
+      preferences: 'Preferências',
+      profile: 'Perfil',
+    },
+    themes: {
+      dark: 'Escuro',
+      light: 'Claro',
+      system: 'Sistema',
+    },
+    title: 'Configurações da conta',
+    toast: {
+      profile: {
+        error: 'Não foi possível atualizar seu perfil no momento.',
+        success: 'Seu perfil foi atualizado.',
+      },
+    },
+  },
   article: {
     call: 'Chamar',
     contactInfo: 'Informações de Contato',

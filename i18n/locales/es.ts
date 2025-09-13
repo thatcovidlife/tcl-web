@@ -1,4 +1,58 @@
 export default {
+  account: {
+    description: 'Administra la información y preferencias de tu cuenta',
+    errors: {
+      bio: {
+        max: 'Tu biografía no puede exceder los 500 caracteres.',
+        min: 'Tu biografía debe tener al menos 10 caracteres.',
+      },
+      name: {
+        max: 'Tu nombre no puede exceder los 255 caracteres.',
+        min: 'Tu nombre debe tener al menos 2 caracteres.',
+      },
+      website: {
+        invalid: 'Por favor, ingresa una URL válida.',
+        max: 'La URL de tu sitio web no puede exceder los 255 caracteres.',
+      },
+    },
+    help: {
+      bio: 'Una breve biografía sobre ti.',
+      language: 'Selecciona tu idioma preferido.',
+      theme: 'Selecciona tu tema de color preferido.',
+      website: 'La URL de tu sitio web personal o empresarial.',
+    },
+    labels: {
+      bio: 'Biografía',
+      language: 'Idioma',
+      name: 'Nombre',
+      save: 'Guardar cambios',
+      theme: 'Tema de color',
+      website: 'Sitio web',
+    },
+    placeholders: {
+      bio: 'Cuéntanos sobre ti',
+      language: 'Selecciona un idioma',
+      name: 'Ingresa tu nombre',
+      theme: 'Selecciona un tema',
+      website: 'Ingresa la URL de tu sitio web',
+    },
+    tabs: {
+      preferences: 'Preferencias',
+      profile: 'Perfil',
+    },
+    themes: {
+      dark: 'Oscuro',
+      light: 'Claro',
+      system: 'Sistema',
+    },
+    title: 'Configuración de la cuenta',
+    toast: {
+      profile: {
+        error: 'No podemos actualizar tu perfil en este momento.',
+        success: 'Tu perfil ha sido actualizado.',
+      },
+    },
+  },
   article: {
     call: 'Call',
     contactInfo: 'Datos de Contacto',

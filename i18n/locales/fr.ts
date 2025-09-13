@@ -1,4 +1,58 @@
 export default {
+  account: {
+    description: 'Gérez les informations et préférences de votre compte',
+    errors: {
+      bio: {
+        max: 'Votre biographie ne peut pas dépasser 500 caractères.',
+        min: 'Votre biographie doit contenir au moins 10 caractères.',
+      },
+      name: {
+        max: 'Votre nom ne peut pas dépasser 255 caractères.',
+        min: 'Votre nom doit contenir au moins 2 caractères.',
+      },
+      website: {
+        invalid: 'Veuillez entrer une URL valide.',
+        max: 'L’URL de votre site web ne peut pas dépasser 255 caractères.',
+      },
+    },
+    help: {
+      bio: 'Une courte biographie à propos de vous.',
+      language: 'Sélectionnez votre langue préférée.',
+      theme: 'Sélectionnez votre thème de couleur préféré.',
+      website: 'L’URL de votre site personnel ou professionnel.',
+    },
+    labels: {
+      bio: 'Biographie',
+      language: 'Langue',
+      name: 'Nom',
+      save: 'Enregistrer les modifications',
+      theme: 'Thème de couleur',
+      website: 'Site web',
+    },
+    placeholders: {
+      bio: 'Parlez-nous de vous',
+      language: 'Sélectionnez une langue',
+      name: 'Entrez votre nom',
+      theme: 'Sélectionnez un thème',
+      website: "Entrez l'URL de votre site web",
+    },
+    tabs: {
+      preferences: 'Préférences',
+      profile: 'Profil',
+    },
+    themes: {
+      dark: 'Sombre',
+      light: 'Clair',
+      system: 'Système',
+    },
+    title: 'Paramètres du compte',
+    toast: {
+      profile: {
+        error: 'Nous ne pouvons pas mettre à jour votre profil pour le moment.',
+        success: 'Votre profil a été mis à jour.',
+      },
+    },
+  },
   article: {
     call: 'Appeler',
     contactInfo: 'Coordonnées',
