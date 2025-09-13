@@ -8,14 +8,14 @@
 - TypeScript
 - Vitest
 - Sanity CMS
-- Prisma
+- Drizzle ORM
 - PostgreSQL
 - IFFFT
 - Auth0
 - CircleCI
 - Vercel
 - Cloudflare
-- Umami
+- Statsig
 
 ## Development Setup
 
@@ -24,3 +24,25 @@ This is a set of Node.js-based microservices.
 ## Technical Constraints
 
 Unit testing, PR gates, code formatting and linting are required.
+
+## Database Schema
+
+The database schema has been simplified to only include two tables:
+
+- `users`: Stores user information including email, role, and active status
+- `profiles`: Stores user profile information including name, bio, and website
+
+## Database Migration
+
+The project has been migrated from Prisma ORM to Drizzle ORM. Key changes include:
+
+- Replaced Prisma with Drizzle ORM for database operations
+- Updated schema definitions in `lib/db/schema/index.ts`
+- Modified database connection in `lib/db/index.ts` to use `DZL_DATABASE_URL` environment variable
+- Added Drizzle configuration in `drizzle.config.ts`
+- Generated new migration files in `lib/db/migrations`
+- Simplified the schema to only include users and profiles tables
+
+## Composable Refactoring
+
+The `usePrisma` composable has been renamed to `useApiRoutes` to better reflect its general purpose of handling API calls, independent of any specific ORM like Prisma. This change was made as part of the migration away from Prisma ORM. All references to the composable have been updated throughout the codebase, including in the store and test files.

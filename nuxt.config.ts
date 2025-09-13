@@ -157,7 +157,6 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@nuxtjs/turnstile',
     '@pinia/nuxt',
-    '@prisma/nuxt',
     '@vueuse/nuxt',
     'motion-v/nuxt',
     'nuxt-auth-utils',

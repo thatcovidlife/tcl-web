@@ -1,4 +1,58 @@
 export default {
+  account: {
+    description: 'Manage your account information and preferences',
+    errors: {
+      bio: {
+        max: 'Your bio cannot exceed 500 characters.',
+        min: 'Your bio must be at least 10 characters.',
+      },
+      name: {
+        max: 'Your name cannot exceed 255 characters.',
+        min: 'Your name must be at least 2 characters.',
+      },
+      website: {
+        invalid: 'Please enter a valid URL.',
+        max: 'Your website URL cannot exceed 255 characters.',
+      },
+    },
+    help: {
+      bio: 'A short bio about yourself.',
+      language: 'Select your preferred language.',
+      theme: 'Select your preferred color theme.',
+      website: 'Your personal or business website URL.',
+    },
+    labels: {
+      bio: 'Bio',
+      language: 'Language',
+      name: 'Name',
+      save: 'Save Changes',
+      theme: 'Color Theme',
+      website: 'Website',
+    },
+    placeholders: {
+      bio: 'Tell us about yourself',
+      language: 'Select a language',
+      name: 'Enter your name',
+      theme: 'Select a theme',
+      website: 'Enter your website URL',
+    },
+    tabs: {
+      preferences: 'Preferences',
+      profile: 'Profile',
+    },
+    themes: {
+      dark: 'Dark',
+      light: 'Light',
+      system: 'System',
+    },
+    title: 'Account Settings',
+    toast: {
+      profile: {
+        error: 'We are unable to update your profile at this time.',
+        success: 'Your profile has been updated.',
+      },
+    },
+  },
   article: {
     call: 'Call',
     contactInfo: 'Contact Info',

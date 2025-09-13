@@ -2,16 +2,16 @@
 
 ## What We're Working On Now
 
-We have successfully refactored the `server/api/contribute.post.ts` endpoint to replace EmailJS with Resend for sending emails. The development server is running and the changes have been deployed.
+We have simplified the database schema by removing all tables except for `users` and `profiles`. Now we need to update or remove all API routes that were using the deleted tables.
 
 ## Recent Changes
 
-- Replaced EmailJS with Resend in the `contribute.post.ts` API endpoint
-- Updated the email sending logic to use Resend's SDK
-- The form data is now sent as a preformatted HTML email to 'delivered@resend.dev'
+- Simplified the database schema by removing all tables except for `users` and `profiles`
+- Generated a new migration file to drop the deleted tables
+- Updated the bio column in the profiles table to have a maximum length of 500 characters
 
 ## Next Steps
 
-- Monitor the contribute form to ensure emails are being sent correctly via Resend
-- Consider customizing the email template and recipient addresses for production use
-- Potentially remove EmailJS environment variables if they are no longer needed by other parts of the application
+- Update or remove all API routes that were using the deleted tables (posts, comments, reviews, categories)
+- Test the database integration thoroughly
+- Clean up any remaining references to the deleted tables in the codebase

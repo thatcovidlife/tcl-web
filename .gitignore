@@ -31,3 +31,5 @@ old.yarn.lock
 
 # Sentry Config File
 .env.sentry-build-plugin
+
+lib/db/utils/*.json

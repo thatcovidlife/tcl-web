@@ -20,7 +20,7 @@ const { t } = useI18n()
       <TclTopNavigation :logged-in="loggedIn" />
     </nav>
     <TclMobileNavigation :logged-in="loggedIn" with-taco />
-    <div class="flex items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
+    <div class="grid grid-flow-col items-center gap-2 md:ml-auto md:gap-4">
       <NuxtLink :to="localePath('/search')" class="md:hidden">
         <Button size="icon" variant="outline" class="rounded-full">
           <SearchIcon />

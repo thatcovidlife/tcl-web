@@ -1,5 +1,5 @@
 import consola from 'consola'
-import { usePrisma } from '@/composables/usePrisma'
+import { useApiRoutes } from '@/composables/useApiRoutes'
 
 export type UserInfo = {
   id?: number
@@ -9,6 +9,8 @@ export type UserInfo = {
     bio: string | null
     website: string | null
     userId: number
+    language: string | null
+    theme: string | null
   } | null
   email?: string
   role?: string
@@ -45,12 +47,13 @@ export const useUserStore = defineStore('user', {
         return
       }
 
-      const { getOrCreateUser } = usePrisma()
+      const { getOrCreateUser } = useApiRoutes()
 
       try {
         const info = await getOrCreateUser(user.value.email as string)
-        this.info = info as UserInfo
+        this.info = info as unknown as UserInfo
       } catch (e) {
+        consola.error(e)
         this.info = null
       }
     },
