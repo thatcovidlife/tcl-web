@@ -100,15 +100,10 @@ export const useApiRoutes = () => {
   }
 
   const updateUserProfile = async (body: { data: any; profileId: number }) => {
-    try {
-      return await $fetch('/api/user/update-profile', {
-        method: 'POST',
-        body,
-      })
-    } catch (e) {
-      consola.error(e)
-      return null
-    }
+    return await $fetch('/api/user/update-profile', {
+      method: 'POST',
+      body,
+    })
   }
 
   return {

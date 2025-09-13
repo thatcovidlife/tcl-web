@@ -38,9 +38,11 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { toast } from 'vue-sonner'
+import { useApiRoutes } from '@/composables/useApiRoutes'
 
 const { t } = useI18n()
 const userStore = useUserStore()
+const { updateUserProfile } = useApiRoutes()
 
 const profileFormSchema = toTypedSchema(
   z.object({
@@ -70,9 +72,9 @@ const form = useForm({
 
 const onSubmit = form.handleSubmit(async (values) => {
   try {
-    await $fetch('/api/user/update-profile', {
-      method: 'POST',
-      body: { profileId: userStore.info?.profile?.id, data: values },
+    await updateUserProfile({
+      profileId: userStore.info?.profile?.id,
+      data: values,
     })
     // Update user store with new values
     await userStore.updateUserInfo(values)
