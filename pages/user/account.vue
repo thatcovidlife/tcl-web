@@ -134,7 +134,7 @@ watch(
                   </Avatar>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>Change your avatar on gravatar.com</p>
+                  <p>{{ t('account.avatar') }}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>

@@ -1,5 +1,6 @@
 export default {
   account: {
+    avatar: 'Change your avatar on gravatar.com',
     description: 'Manage your account information and preferences',
     errors: {
       bio: {

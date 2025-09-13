@@ -1,5 +1,6 @@
 export default {
   account: {
+    avatar: 'Você pode criar ou atualizar seu avatar em gravatar.com',
     description: 'Gerencie as informações e preferências da sua conta',
     errors: {
       bio: {
