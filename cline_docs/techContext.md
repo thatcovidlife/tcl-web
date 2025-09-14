@@ -10,35 +10,32 @@
 - **Tailwind CSS** for styling
 - **shadcn/ui** component library
 - **motion-v** for animations
-- **vee-validate** for form validation
-- **zod** for schema validation
-- **vue-sonner** for toast notifications
+- **Nuxt Image** for optimized image handling
+- **i18n** for internationalization
 
-### Backend
+### UI Components
 
-- **Nuxt API Routes** for serverless functions
-- **Resend** for email delivery
-- **NuxtTurnstile** for bot protection
+- Card, CardHeader, CardContent from `components/ui/card`
+- Motion components from `motion-v`
+- NuxtImg for optimized image display
 
-### Form Components
+### Animation System
 
-- Form, FormField, FormItem, FormControl, FormLabel, FormMessage from `components/ui/form`
-- Input, Textarea, Button, Select from `components/ui`
-- Motion animations using `motion-v`
+- **motion-v** library for smooth animations
+- Fade-in and slide-up effects for UI elements
+- Staggered animations for multiple components
+- Proper Vue binding syntax for motion attributes
 
-### State Management
+### Styling Approach
 
-- **useUserStore** for user information
-- **useForm** from vee-validate for form state
-- **ref** for reactive values
+- **Tailwind CSS** utility classes replacing previous SCSS
+- Responsive design with mobile-first approach
+- Custom breakpoints for different screen sizes
+- Consistent spacing and typography
 
-### Internationalization
+### Responsive Design
 
-- **i18n** with locale files in `i18n/locales/`
-- Translation keys organized by feature (support, contribute, etc.)
-
-### Email System
-
-- Resend API for sending emails
-- HTML email templates with form data
-- Environment variables for email configuration
+- Grid layouts with responsive breakpoints
+- Flexbox for dynamic layouts
+- Text alignment changes based on screen size
+- Proper spacing adjustments for different screen sizes
