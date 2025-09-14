@@ -5,8 +5,10 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 import Textarea from '@/components/ui/textarea/Textarea.vue'
 import { toast } from 'vue-sonner'
+import { useUserStore } from '@/store/user'
 
 const { t } = useI18n()
+const userStore = useUserStore()
 
 const formSchema = toTypedSchema(
   z.object({
@@ -31,8 +33,8 @@ const formSchema = toTypedSchema(
 const { handleSubmit, resetForm } = useForm({
   validationSchema: formSchema,
   initialValues: {
-    from_name: '',
-    email: '',
+    from_name: userStore.info?.profile?.name || '',
+    email: userStore.info?.email || '',
     category: '',
     description: '',
   },
@@ -130,6 +132,9 @@ const token = ref()
                   <SelectItem value="News"> {{ t('layout.news') }} </SelectItem>
                   <SelectItem value="PPE">
                     {{ t('layout.product') }}
+                  </SelectItem>
+                  <SelectItem value="Video">
+                    {{ t('layout.video') }}
                   </SelectItem>
                 </SelectGroup>
               </SelectContent>

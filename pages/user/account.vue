@@ -39,6 +39,7 @@ import {
 } from '@/components/ui/select'
 import { toast } from 'vue-sonner'
 import { useApiRoutes } from '@/composables/useApiRoutes'
+import type { UserInfo } from '@/store/user'
 
 const { t } = useI18n()
 const userStore = useUserStore()
@@ -73,11 +74,11 @@ const form = useForm({
 const onSubmit = form.handleSubmit(async (values) => {
   try {
     await updateUserProfile({
-      profileId: userStore.info?.profile?.id,
+      profileId: userStore.info?.profile?.id!,
       data: values,
     })
     // Update user store with new values
-    await userStore.updateUserInfo(values)
+    await userStore.updateUserInfo(values as UserInfo['profile'])
 
     toast.success(t('account.toast.profile.success'))
   } catch (error) {
