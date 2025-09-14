@@ -74,8 +74,9 @@ const token = ref()
 
 <template>
   <motion.div
-    :initial="{ opacity: 0 }"
-    :animate="{ opacity: 1 }"
+    :initial="{ opacity: 0, y: 20 }"
+    :animate="{ opacity: 1, y: 0 }"
+    :transition="{ duration: 0.5 }"
     class="container max-w-3xl py-4 md:py-8 mx-auto"
   >
     <h1

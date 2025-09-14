@@ -1,34 +1,33 @@
 # System Patterns
 
-## How the System is Built
+## Form Implementation Patterns
 
-The system is a static UI application built on top of a Sanity CMS. Additionally, there is a PostgreSQL database setup for users profile information. There are also multiple services generating RSS feeds that are consumed by third party applications such as dlvr.it and IFFFT to post this content automatically on various social media platforms.
+### Support Form
 
-## Key Technical Decisions
+- Uses `components/ui/form` for structured form components
+- Implements vee-validate with zod schemas for validation
+- Uses motion-v for animations with fade-in and slide-up effects
+- Includes NuxtTurnstile for security
+- Follows the same styling pattern as contribute form
+- Uses proper translation keys from i18n/locales/en.ts
 
-It was crucial to separate the content created by the editors of the website, and the user generated content. We opted for Auth0 as our authentication layer, as it provides flexibility and reliability.
+### API Route Pattern
 
-## Architecture Patterns
+- Uses Resend for email delivery
+- Implements proper error handling with sendError
+- Returns { ok: true } on success
+- Logs errors with request body for debugging
 
-This is a micro service architecture, where each component is in charge of its own business domain: Sanity CMS for the editor content and Drizzle/PostgreSQL for the user generated content.
+### Form Field Patterns
 
-## Database Schema
+- Each field uses FormItem, FormLabel, FormControl, and FormMessage
+- Select components use SelectTrigger, SelectValue, and SelectContent
+- Textareas have configurable row count
+- All fields bind to form using v-bind="componentField"
 
-The database schema has been simplified to only include two tables:
+### Animation Patterns
 
-- `users`: Stores user information including email, role, and active status
-- `profiles`: Stores user profile information including name, bio, and website
-
-## Database Migration
-
-The project has been migrated from Prisma ORM to Drizzle ORM to improve performance and developer experience. The migration includes:
-
-- Converting Prisma schema to Drizzle schema
-- Updating database connection code
-- Converting API routes to use Drizzle queries
-- Generating new migration files
-- Simplifying the schema to only include users and profiles tables
-
-## Composable Refactoring
-
-The `usePrisma` composable has been renamed to `useApiRoutes` to better reflect its general purpose of handling API calls, independent of any specific ORM like Prisma. This change was made as part of the migration away from Prisma ORM.
+- Initial state: opacity: 0, y: 20
+- Final state: opacity: 1, y: 0
+- Transition duration: 0.5 seconds
+- Applied to container div for consistent experience

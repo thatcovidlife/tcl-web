@@ -2,47 +2,43 @@
 
 ## Technologies Used
 
-- Nuxt.js / Vue.js for the UI
-- Tailwind CSS and ShadCN component library
-- Pinia
-- TypeScript
-- Vitest
-- Sanity CMS
-- Drizzle ORM
-- PostgreSQL
-- IFFFT
-- Auth0
-- CircleCI
-- Vercel
-- Cloudflare
-- Statsig
+### Frontend
 
-## Development Setup
+- **Vue 3** with Composition API
+- **Nuxt 3** for SSR and routing
+- **TypeScript** for type safety
+- **Tailwind CSS** for styling
+- **shadcn/ui** component library
+- **motion-v** for animations
+- **vee-validate** for form validation
+- **zod** for schema validation
+- **vue-sonner** for toast notifications
 
-This is a set of Node.js-based microservices.
+### Backend
 
-## Technical Constraints
+- **Nuxt API Routes** for serverless functions
+- **Resend** for email delivery
+- **NuxtTurnstile** for bot protection
 
-Unit testing, PR gates, code formatting and linting are required.
+### Form Components
 
-## Database Schema
+- Form, FormField, FormItem, FormControl, FormLabel, FormMessage from `components/ui/form`
+- Input, Textarea, Button, Select from `components/ui`
+- Motion animations using `motion-v`
 
-The database schema has been simplified to only include two tables:
+### State Management
 
-- `users`: Stores user information including email, role, and active status
-- `profiles`: Stores user profile information including name, bio, and website
+- **useUserStore** for user information
+- **useForm** from vee-validate for form state
+- **ref** for reactive values
 
-## Database Migration
+### Internationalization
 
-The project has been migrated from Prisma ORM to Drizzle ORM. Key changes include:
+- **i18n** with locale files in `i18n/locales/`
+- Translation keys organized by feature (support, contribute, etc.)
 
-- Replaced Prisma with Drizzle ORM for database operations
-- Updated schema definitions in `lib/db/schema/index.ts`
-- Modified database connection in `lib/db/index.ts` to use `DZL_DATABASE_URL` environment variable
-- Added Drizzle configuration in `drizzle.config.ts`
-- Generated new migration files in `lib/db/migrations`
-- Simplified the schema to only include users and profiles tables
+### Email System
 
-## Composable Refactoring
-
-The `usePrisma` composable has been renamed to `useApiRoutes` to better reflect its general purpose of handling API calls, independent of any specific ORM like Prisma. This change was made as part of the migration away from Prisma ORM. All references to the composable have been updated throughout the codebase, including in the store and test files.
+- Resend API for sending emails
+- HTML email templates with form data
+- Environment variables for email configuration

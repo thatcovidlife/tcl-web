@@ -552,11 +552,6 @@ export default {
       title: 'Search',
     },
   },
-  support: {
-    pageTitle: 'Support',
-    description:
-      'Fill this form to let us know about any defect, or product enhancement suggestion you may have.',
-  },
   login: {
     buttons: {
       resetPassword: 'Reset Password',
@@ -749,5 +744,67 @@ export default {
       total: '{amount} results',
     },
     viewAll: 'View All Results',
+  },
+
+  support: {
+    description:
+      'Fill this form to let us know about any defect, or product enhancement suggestion you may have.',
+    errors: {
+      email: {
+        invalid: 'Please enter a valid email address.',
+        required: 'Please enter an email address.',
+      },
+      name: {
+        min: 'The name must be at least 2 characters.',
+        required: 'Please enter a name.',
+      },
+      product: {
+        required: 'Please select a product.',
+      },
+      subject: {
+        min: 'The subject must be at least 5 characters.',
+        required: 'Please enter a subject.',
+      },
+      message: {
+        min: 'The message must be at least 20 characters.',
+        required: 'Please enter a message.',
+      },
+    },
+    help: {
+      email: "We'll only use this to get back to you about your request.",
+      product: 'Select the product you need help with.',
+      subject: 'A short summary of your request.',
+      message: 'Provide as much detail as possible about your request.',
+    },
+    labels: {
+      email: 'Email Address',
+      name: 'Name',
+      product: 'Product',
+      subject: 'Subject',
+      message: 'Message',
+      submit: 'Submit',
+    },
+    placeholders: {
+      email: 'Enter your email address',
+      name: 'Enter your name',
+      product: 'Select a product',
+      subject: 'Enter a subject',
+      message: 'Type your message here...',
+    },
+    products: {
+      mobile: 'Mobile App',
+      website: 'Website',
+    },
+    title: 'Support',
+    toast: {
+      error: {
+        title: 'Something went wrong.',
+        message: 'Please try again later.',
+      },
+      success: {
+        title: 'Submitted!',
+        message: 'We received your request, and will get back to you soon.',
+      },
+    },
   },
 }

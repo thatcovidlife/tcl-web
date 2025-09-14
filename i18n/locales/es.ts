@@ -564,11 +564,6 @@ export default {
       title: 'Buscar',
     },
   },
-  support: {
-    pageTitle: 'Soporte',
-    description:
-      'Rellene este formulario para informarnos sobre cualquier defecto o sugerencia de mejora del producto que pueda tener.',
-  },
   login: {
     buttons: {
       resetPassword: 'Restablecer la contraseña',
@@ -766,5 +761,70 @@ export default {
       total: '{amount} resultados',
     },
     viewAll: 'Ver todos los resultados',
+  },
+
+  support: {
+    description:
+      'Complete este formulario para informarnos sobre cualquier defecto o sugerencia de mejora del producto.',
+    errors: {
+      email: {
+        invalid:
+          'Por favor, introduzca una dirección de correo electrónico válida.',
+        required: 'Por favor, introduzca una dirección de correo electrónico.',
+      },
+      name: {
+        min: 'El nombre debe tener al menos 2 caracteres.',
+        required: 'Por favor, introduzca un nombre.',
+      },
+      product: {
+        required: 'Por favor, seleccione un producto.',
+      },
+      subject: {
+        min: 'El asunto debe tener al menos 5 caracteres.',
+        required: 'Por favor, introduzca un asunto.',
+      },
+      message: {
+        min: 'El mensaje debe tener al menos 20 caracteres.',
+        required: 'Por favor, introduzca un mensaje.',
+      },
+    },
+    help: {
+      email: 'Solo lo usaremos para responder a su solicitud.',
+      product: 'Seleccione el producto con el que necesita ayuda.',
+      subject: 'Un breve resumen de su solicitud.',
+      message:
+        'Proporcione la mayor cantidad de detalles posible sobre su solicitud.',
+    },
+    labels: {
+      email: 'Correo electrónico',
+      name: 'Nombre',
+      product: 'Producto',
+      subject: 'Asunto',
+      message: 'Mensaje',
+      submit: 'Enviar',
+    },
+    placeholders: {
+      email: 'Introduzca su correo electrónico',
+      name: 'Introduzca su nombre',
+      product: 'Seleccione un producto',
+      subject: 'Introduzca un asunto',
+      message: 'Escriba su mensaje aquí...',
+    },
+    products: {
+      mobile: 'Aplicación móvil',
+      website: 'Sitio web',
+    },
+    title: 'Soporte',
+    toast: {
+      error: {
+        title: 'Algo salió mal.',
+        message: 'Por favor, inténtelo de nuevo más tarde.',
+      },
+      success: {
+        title: '¡Enviado!',
+        message:
+          'Hemos recibido su solicitud y nos pondremos en contacto pronto.',
+      },
+    },
   },
 }

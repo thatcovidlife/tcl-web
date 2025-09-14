@@ -561,11 +561,6 @@ export default {
       title: 'Pesquisar',
     },
   },
-  support: {
-    pageTitle: 'Suporte',
-    description:
-      'Preencha este formulário para nos informar sobre qualquer defeito ou sugestão de melhoria de produto que você possa ter.',
-  },
   login: {
     buttons: {
       resetPassword: 'Redefinir Senha',
@@ -762,5 +757,67 @@ export default {
       total: '{amount} resultados',
     },
     viewAll: 'Ver Todos os Resultados',
+  },
+
+  support: {
+    description:
+      'Preencha este formulário para nos informar sobre qualquer defeito ou sugestão de melhoria do produto.',
+    errors: {
+      email: {
+        invalid: 'Por favor, insira um endereço de e-mail válido.',
+        required: 'Por favor, insira um endereço de e-mail.',
+      },
+      name: {
+        min: 'O nome deve ter pelo menos 2 caracteres.',
+        required: 'Por favor, insira um nome.',
+      },
+      product: {
+        required: 'Por favor, selecione um produto.',
+      },
+      subject: {
+        min: 'O assunto deve ter pelo menos 5 caracteres.',
+        required: 'Por favor, insira um assunto.',
+      },
+      message: {
+        min: 'A mensagem deve ter pelo menos 20 caracteres.',
+        required: 'Por favor, insira uma mensagem.',
+      },
+    },
+    help: {
+      email: 'Usaremos isso apenas para responder à sua solicitação.',
+      product: 'Selecione o produto com o qual você precisa de ajuda.',
+      subject: 'Um breve resumo da sua solicitação.',
+      message: 'Forneça o máximo de detalhes possível sobre a sua solicitação.',
+    },
+    labels: {
+      email: 'Endereço de e-mail',
+      name: 'Nome',
+      product: 'Produto',
+      subject: 'Assunto',
+      message: 'Mensagem',
+      submit: 'Enviar',
+    },
+    placeholders: {
+      email: 'Digite seu endereço de e-mail',
+      name: 'Digite seu nome',
+      product: 'Selecione um produto',
+      subject: 'Digite um assunto',
+      message: 'Digite sua mensagem aqui...',
+    },
+    products: {
+      mobile: 'Aplicativo móvel',
+      website: 'Site',
+    },
+    title: 'Suporte',
+    toast: {
+      error: {
+        title: 'Algo deu errado.',
+        message: 'Por favor, tente novamente mais tarde.',
+      },
+      success: {
+        title: 'Enviado!',
+        message: 'Recebemos sua solicitação e entraremos em contato em breve.',
+      },
+    },
   },
 }

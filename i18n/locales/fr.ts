@@ -567,11 +567,6 @@ export default {
       title: 'Recherche',
     },
   },
-  support: {
-    pageTitle: 'Support',
-    description:
-      "Remplissez ce formulaire pour nous informer de tout défaut ou de toute suggestion d'amélioration du produit que vous pourriez avoir.",
-  },
   login: {
     buttons: {
       resetPassword: 'Réinitialiser le mot de passe',
@@ -771,5 +766,69 @@ export default {
       total: '{amount} résultat(s)',
     },
     viewAll: 'Voir tous les résultats',
+  },
+
+  support: {
+    description:
+      'Remplissez ce formulaire pour nous signaler tout défaut ou suggérer une amélioration du produit.',
+    errors: {
+      email: {
+        invalid: 'Veuillez entrer une adresse e-mail valide.',
+        required: 'Veuillez entrer une adresse e-mail.',
+      },
+      name: {
+        min: 'Le nom doit contenir au moins 2 caractères.',
+        required: 'Veuillez entrer un nom.',
+      },
+      product: {
+        required: 'Veuillez sélectionner un produit.',
+      },
+      subject: {
+        min: 'L’objet doit contenir au moins 5 caractères.',
+        required: 'Veuillez entrer un objet.',
+      },
+      message: {
+        min: 'Le message doit contenir au moins 20 caractères.',
+        required: 'Veuillez entrer un message.',
+      },
+    },
+    help: {
+      email:
+        'Nous l’utiliserons uniquement pour vous répondre concernant votre demande.',
+      product: 'Sélectionnez le produit pour lequel vous avez besoin d’aide.',
+      subject: 'Un court résumé de votre demande.',
+      message: 'Fournissez autant de détails que possible sur votre demande.',
+    },
+    labels: {
+      email: 'Adresse e-mail',
+      name: 'Nom',
+      product: 'Produit',
+      subject: 'Objet',
+      message: 'Message',
+      submit: 'Envoyer',
+    },
+    placeholders: {
+      email: 'Entrez votre adresse e-mail',
+      name: 'Entrez votre nom',
+      product: 'Sélectionnez un produit',
+      subject: 'Entrez un objet',
+      message: 'Tapez votre message ici...',
+    },
+    products: {
+      mobile: 'Application mobile',
+      website: 'Site web',
+    },
+    title: 'Support',
+    toast: {
+      error: {
+        title: 'Un problème est survenu.',
+        message: 'Veuillez réessayer plus tard.',
+      },
+      success: {
+        title: 'Envoyé !',
+        message:
+          'Nous avons bien reçu votre demande et nous vous répondrons bientôt.',
+      },
+    },
   },
 }
