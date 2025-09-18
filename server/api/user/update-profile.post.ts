@@ -2,6 +2,7 @@ import { consola } from 'consola'
 import { db } from '@/lib/db'
 import { users, profiles } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
+import { captureException } from '@sentry/nuxt'
 
 export default defineEventHandler(async (event) => {
   const { user } = await getUserSession(event)
@@ -53,6 +54,7 @@ export default defineEventHandler(async (event) => {
     return update
   } catch (e) {
     consola.error(e)
+    captureException(e)
     return null
   }
 })

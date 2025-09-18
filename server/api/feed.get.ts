@@ -2,6 +2,7 @@ import { Feed } from 'feed'
 import rssFeedQuery from '@/sanity/queries/rssFeed.sanity'
 import { RSS_FEED_QUERYResult } from '@/sanity/types'
 import { isExternalLink, isNews, isLibrary } from '@/assets/utils/article-types'
+import { captureException } from '@sentry/nuxt'
 
 export default eventHandler(async (event) => {
   const { fetch } = useSanity()
@@ -64,6 +65,7 @@ export default eventHandler(async (event) => {
   } catch (e) {
     const { message } = e as Error
     console.log('error', message)
+    captureException(e)
     return {
       error: message,
     }

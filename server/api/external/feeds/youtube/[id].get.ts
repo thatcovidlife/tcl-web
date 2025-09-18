@@ -1,4 +1,5 @@
 import { parseStringPromise } from 'xml2js'
+import { captureException } from '@sentry/nuxt'
 
 export default defineEventHandler(async (event) => {
   const { id } = getRouterParams(event)
@@ -15,6 +16,7 @@ export default defineEventHandler(async (event) => {
       throw new Error('No feed found')
     }
   } catch (e) {
+    captureException(e)
     sendError(event, e as Error)
   }
 })

@@ -1,4 +1,5 @@
 import ogs from 'open-graph-scraper'
+import { captureException } from '@sentry/nuxt'
 
 export default defineEventHandler(async (event) => {
   const { posts } = await readBody(event)
@@ -26,6 +27,7 @@ export default defineEventHandler(async (event) => {
         }
       })
   } catch (e) {
+    captureException(e)
     throw e
   }
 })

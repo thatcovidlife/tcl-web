@@ -1,4 +1,5 @@
 import { Resend } from 'resend'
+import { captureException } from '@sentry/nuxt'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -25,6 +26,7 @@ export default eventHandler(async (event) => {
   } catch (e) {
     const { message } = e as Error
     console.error(message, body)
+    captureException(e)
     sendError(
       event,
       createError({ statusCode: 500, statusMessage: message, data: body }),

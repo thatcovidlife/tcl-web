@@ -2,6 +2,7 @@ import { consola } from 'consola'
 import { Feed } from 'feed'
 import { parseStringPromise } from 'xml2js'
 import _ from 'lodash'
+import { captureException } from '@sentry/nuxt'
 
 import ytFeedQuery from '@/sanity/queries/ytFeed.sanity'
 import { YT_FEED_QUERYResult } from '@/sanity/types'
@@ -106,6 +107,7 @@ export default defineEventHandler(async (event) => {
     return feed.rss2()
   } catch (e) {
     consola.error(e)
+    captureException(e)
     return null
   }
 })

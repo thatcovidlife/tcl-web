@@ -1,5 +1,6 @@
 import { Translator } from 'deepl-node'
 import { consola } from 'consola'
+import { captureException } from '@sentry/nuxt'
 
 export default eventHandler(async (event) => {
   const { locale = null, text = null } = await readBody(event)
@@ -37,6 +38,7 @@ export default eventHandler(async (event) => {
   } catch (e) {
     const { message } = e as Error
     console.error(e)
+    captureException(e)
     sendError(event, createError({ statusCode: 500, statusMessage: message }))
   }
 })

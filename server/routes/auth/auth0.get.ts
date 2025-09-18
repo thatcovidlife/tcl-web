@@ -1,3 +1,5 @@
+import { captureException } from '@sentry/nuxt'
+
 export default defineOAuthAuth0EventHandler({
   config: {
     emailRequired: true,
@@ -19,6 +21,7 @@ export default defineOAuthAuth0EventHandler({
   // Optional, will return a json error and 401 status code by default
   onError(event, error) {
     console.error('Auth0 OAuth error:', error)
+    captureException(error)
     const locale = getCookie(event, 'i18n_redirected')
     // TODO: redirect to error page?
     return sendRedirect(
