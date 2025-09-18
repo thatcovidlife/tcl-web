@@ -4,7 +4,7 @@ import { motion } from 'motion-v'
 
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 
-const { locale } = useI18n()
+const { locale, t } = useI18n()
 const { ANDROID_URL, IOS_URL, appleStoreBtn, googlePlayBtn } =
   useMobileButtons()
 </script>
@@ -14,8 +14,8 @@ const { ANDROID_URL, IOS_URL, appleStoreBtn, googlePlayBtn } =
     <section class="grid grid-cols-[67%_auto] gap-8 items-center">
       <div class="flex flex-col justify-center">
         <h1 class="text-4xl font-bold mb-4 font-pt text-center lg:text-left">
-          <span v-text="$t('mobile.header')" /><br />
-          <span class="text-primary" v-text="$t('mobile.subheader')" />
+          <span v-text="t('mobile.header')" /><br />
+          <span class="text-primary" v-text="t('mobile.subheader')" />
         </h1>
         <div
           class="flex items-center justify-center lg:justify-start flex-col sm:flex-row"
@@ -52,13 +52,13 @@ const { ANDROID_URL, IOS_URL, appleStoreBtn, googlePlayBtn } =
           <CardHeader>
             <h3
               class="font-pt text-xl font-semibold tracking-wide"
-              v-text="$t('mobile.details.informed.title')"
+              v-text="t('mobile.details.informed.title')"
             />
           </CardHeader>
           <CardContent>
             <p
               class="text-sm"
-              v-text="$t('mobile.details.informed.description')"
+              v-text="t('mobile.details.informed.description')"
             />
           </CardContent>
         </Card>
@@ -72,13 +72,13 @@ const { ANDROID_URL, IOS_URL, appleStoreBtn, googlePlayBtn } =
           <CardHeader>
             <h3
               class="font-pt text-xl font-semibold tracking-wide"
-              v-text="$t('mobile.details.archive.title')"
+              v-text="t('mobile.details.archive.title')"
             />
           </CardHeader>
           <CardContent>
             <p
               class="text-sm"
-              v-text="$t('mobile.details.archive.description')"
+              v-text="t('mobile.details.archive.description')"
             />
           </CardContent>
         </Card>
@@ -92,13 +92,13 @@ const { ANDROID_URL, IOS_URL, appleStoreBtn, googlePlayBtn } =
           <CardHeader>
             <h3
               class="font-pt text-xl font-semibold tracking-wide"
-              v-text="$t('mobile.details.contribute.title')"
+              v-text="t('mobile.details.contribute.title')"
             />
           </CardHeader>
           <CardContent>
             <p
               class="text-sm"
-              v-text="$t('mobile.details.contribute.description')"
+              v-text="t('mobile.details.contribute.description')"
             />
           </CardContent>
         </Card>
