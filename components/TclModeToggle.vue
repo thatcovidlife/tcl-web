@@ -21,20 +21,23 @@ const { t } = useI18n()
     <DropdownMenuContent align="end">
       <DropdownMenuLabel>{{ t('layout.theme') }}</DropdownMenuLabel>
       <DropdownMenuSeparator />
-      <DropdownMenuItem @click="colorMode.preference = 'light'">
-        <span class="hover:cursor-pointer">{{
-          t('layout.themeOptions.light')
-        }}</span>
+      <DropdownMenuItem
+        @click="colorMode.preference = 'light'"
+        class="hover:cursor-pointer"
+      >
+        <span>{{ t('layout.themeOptions.light') }}</span>
       </DropdownMenuItem>
-      <DropdownMenuItem @click="colorMode.preference = 'dark'">
-        <span class="hover:cursor-pointer">{{
-          t('layout.themeOptions.dark')
-        }}</span>
+      <DropdownMenuItem
+        @click="colorMode.preference = 'dark'"
+        class="hover:cursor-pointer"
+      >
+        <span>{{ t('layout.themeOptions.dark') }}</span>
       </DropdownMenuItem>
-      <DropdownMenuItem @click="colorMode.preference = 'system'">
-        <span class="hover:cursor-pointer">{{
-          t('layout.themeOptions.system')
-        }}</span>
+      <DropdownMenuItem
+        @click="colorMode.preference = 'system'"
+        class="hover:cursor-pointer"
+      >
+        <span>{{ t('layout.themeOptions.system') }}</span>
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>

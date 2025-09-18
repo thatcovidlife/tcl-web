@@ -17,21 +17,16 @@ const { t } = useI18n()
     <DropdownMenuContent align="end">
       <DropdownMenuLabel>{{ t('layout.contactInfo') }}</DropdownMenuLabel>
       <DropdownMenuSeparator />
-      <!-- <DropdownMenuItem>
-        <NuxtLink :to="localePath('/contact-us')">{{
-          t('layout.contactUs')
-        }}</NuxtLink>
-      </DropdownMenuItem> -->
-      <DropdownMenuItem>
-        <NuxtLink :to="localePath('/contribute')">{{
-          t('layout.submitContent')
-        }}</NuxtLink>
-      </DropdownMenuItem>
-      <DropdownMenuItem>
-        <NuxtLink :to="localePath('/support')">{{
-          t('layout.support')
-        }}</NuxtLink>
-      </DropdownMenuItem>
+      <NuxtLink :to="localePath('/contribute')">
+        <DropdownMenuItem class="hover:cursor-pointer">
+          {{ t('layout.submitContent') }}
+        </DropdownMenuItem>
+      </NuxtLink>
+      <NuxtLink :to="localePath('/support')">
+        <DropdownMenuItem class="hover:cursor-pointer">
+          {{ t('layout.support') }}
+        </DropdownMenuItem>
+      </NuxtLink>
     </DropdownMenuContent>
   </DropdownMenu>
 </template>

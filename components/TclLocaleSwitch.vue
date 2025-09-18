@@ -16,11 +16,15 @@ const switchLocalePath = useSwitchLocalePath()
     <DropdownMenuContent align="end">
       <DropdownMenuLabel>{{ $t('layout.language') }}</DropdownMenuLabel>
       <DropdownMenuSeparator />
-      <DropdownMenuItem v-for="locale in locales" :key="locale.code">
-        <NuxtLink :to="switchLocalePath(locale.code)">{{
-          locale.name
-        }}</NuxtLink>
-      </DropdownMenuItem>
+      <NuxtLink
+        v-for="locale in locales"
+        :to="switchLocalePath(locale.code)"
+        :key="locale.code"
+      >
+        <DropdownMenuItem class="hover:cursor-pointer">
+          {{ locale.name }}
+        </DropdownMenuItem>
+      </NuxtLink>
     </DropdownMenuContent>
   </DropdownMenu>
 </template>
