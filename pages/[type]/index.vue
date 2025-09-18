@@ -7,6 +7,7 @@ import {
   isProduct,
   showPublicationDate,
 } from '@/assets/utils/article-types'
+import * as Sentry from '@sentry/nuxt'
 
 import type { Tag } from '@/lib/types'
 
@@ -30,17 +31,25 @@ const hasLocale = computed(
 
 watch(
   () => filters.value,
-  () => {
-    buildDynamicQuery({
-      end:
-        parseInt(filters.value.offset as string) +
-        parseInt(filters.value.limit as string),
-      filters: filters.value as Record<string, string>,
-      locale: hasLocale.value ? locale.value : null,
-      searchTerm: (filters.value.q ?? '') as string,
-      start: parseInt(filters.value.offset as string),
-      type: type.value as string,
-    })
+  async () => {
+    await Sentry.startSpan(
+      {
+        name: 'fetch category publications',
+        op: 'sanity.query',
+      },
+      async () => {
+        buildDynamicQuery({
+          end:
+            parseInt(filters.value.offset as string) +
+            parseInt(filters.value.limit as string),
+          filters: filters.value as Record<string, string>,
+          locale: hasLocale.value ? locale.value : null,
+          searchTerm: (filters.value.q ?? '') as string,
+          start: parseInt(filters.value.offset as string),
+          type: type.value as string,
+        })
+      },
+    )
   },
   { deep: true, immediate: true },
 )

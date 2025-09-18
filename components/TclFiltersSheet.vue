@@ -4,6 +4,7 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 import { cn } from '@/lib/utils'
 import { ListFilterPlus } from 'lucide-vue-next'
+import * as Sentry from '@sentry/nuxt'
 
 import { Check, ChevronsUpDown } from 'lucide-vue-next'
 
@@ -21,11 +22,21 @@ const emit = defineEmits<{
   (e: 'update:filters', payload: Record<string, string>): void
 }>()
 
-const { data: tagList, status } =
-  await useLazySanityQuery<TAGS_BY_TYPE_QUERYResult>(TAGS_BY_TYPE_QUERY, {
-    locale: props.locale,
-    type: props.type,
-  })
+const { data: tagList, status } = await Sentry.startSpan(
+  {
+    name: 'fetch publication tags',
+    op: 'sanity.query',
+  },
+  async () => {
+    return await useLazySanityQuery<TAGS_BY_TYPE_QUERYResult>(
+      TAGS_BY_TYPE_QUERY,
+      {
+        locale: props.locale,
+        type: props.type,
+      },
+    )
+  },
+)
 
 const formSchema = toTypedSchema(
   z.object({

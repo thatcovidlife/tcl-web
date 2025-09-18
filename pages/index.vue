@@ -3,16 +3,24 @@ import { motion } from 'motion-v'
 import type { Tag } from '@/lib/types'
 import LATEST_PUBLICATIONS_QUERY from '@/sanity/queries/latestPublications.sanity'
 import type { LATEST_PUBLICATIONS_QUERYResult } from '@/sanity/types'
+import * as Sentry from '@sentry/nuxt'
 
-const host = computed(() => window?.location?.origin || '')
+// const host = computed(() => window?.location?.origin || '')
 const { locale, t } = useI18n()
 const localePath = useLocalePath()
 
-const { data, status } =
-  await useLazySanityQuery<LATEST_PUBLICATIONS_QUERYResult>(
-    LATEST_PUBLICATIONS_QUERY,
-    { locale },
-  )
+const { data, status } = await Sentry.startSpan(
+  {
+    name: 'fetch latest publications',
+    op: 'sanity.query',
+  },
+  async () => {
+    return await useLazySanityQuery<LATEST_PUBLICATIONS_QUERYResult>(
+      LATEST_PUBLICATIONS_QUERY,
+      { locale },
+    )
+  },
+)
 
 const loading = computed(
   () => status?.value === 'pending' || status?.value === 'idle',

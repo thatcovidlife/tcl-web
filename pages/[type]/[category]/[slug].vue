@@ -18,6 +18,7 @@ import type {
 } from '@/sanity/types'
 import type { FeaturedPost, Tag } from '@/lib/types'
 import { convertTs } from '@/assets/utils/convert-timestamp'
+import * as Sentry from '@sentry/nuxt'
 
 const route = useRoute()
 const { locale, t } = useI18n()
@@ -31,13 +32,18 @@ const {
 
 const { category, slug, type } = route.params
 
-const { data: metadata } = useLazySanityQuery<METADATA_QUERYResult>(
-  METADATA_QUERY,
+const { data: metadata } = await Sentry.startSpan(
   {
-    category,
-    locale,
-    slug,
-    type,
+    name: 'fetch publication metadata',
+    op: 'sanity.query',
+  },
+  async () => {
+    return await useLazySanityQuery<METADATA_QUERYResult>(METADATA_QUERY, {
+      category,
+      locale,
+      slug,
+      type,
+    })
   },
 )
 
@@ -66,13 +72,23 @@ const location = computed(() => {
   return `${article.value.info.city}, ${article.value.info.country}`
 })
 
-const { data: article, status } =
-  await useLazySanityQuery<PUBLICATION_QUERYResult>(PUBLICATION_QUERY, {
-    category,
-    locale,
-    slug,
-    type,
-  })
+const { data: article, status } = await Sentry.startSpan(
+  {
+    name: 'fetch publication',
+    op: 'sanity.query',
+  },
+  async () => {
+    return await useLazySanityQuery<PUBLICATION_QUERYResult>(
+      PUBLICATION_QUERY,
+      {
+        category,
+        locale,
+        slug,
+        type,
+      },
+    )
+  },
+)
 
 const channelFeed = await useAsyncData(
   'channelFeed',
