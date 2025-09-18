@@ -163,6 +163,7 @@ export default defineNuxtConfig({
     'nuxt-llms',
     'nuxt-security',
     'shadcn-nuxt',
+    '@sentry/nuxt/module',
   ],
 
   ogImage: {
@@ -171,18 +172,6 @@ export default defineNuxtConfig({
 
   pinia: {
     storesDirs: ['./store/**'],
-  },
-
-  // posthog: {
-  //   publicKey: process.env.POSTHOG_PUBLIC_KEY,
-  //   host: process.env.POSTHOG_HOST,
-  //   disabled: process.env.NODE_ENV === 'development',
-  // },
-
-  prisma: {
-    // installCLI: process.env.NODE_ENV === 'development',
-    // installClient: process.env.NODE_ENV === 'development',
-    // installStudio: false,
   },
 
   robots: {
@@ -246,6 +235,15 @@ export default defineNuxtConfig({
     },
   },
 
+  sentry: {
+    sourceMapsUploadOptions: {
+      org: 'that-covid-life-j1',
+      project: 'javascript-nuxt',
+    },
+
+    autoInjectServerSentry: 'top-level-import',
+  },
+
   shadcn: {
     prefix: '',
     componentDir: './components/ui',
@@ -273,6 +271,10 @@ export default defineNuxtConfig({
         sources: ['/api/__sitemap__/urls?locale=pt'],
       },
     },
+  },
+
+  sourcemap: {
+    client: 'hidden',
   },
 
   tailwindcss: {
