@@ -255,6 +255,7 @@ export default {
       darkMode: 'Alternar para o modo escuro',
       lightMode: 'Alternar para o modo de luz',
     },
+    tag: 'Etiqueta',
     tcl: 'That Covid Life',
     terms: 'Termos e Condições',
     theme: 'Tema de Cores',
@@ -722,6 +723,7 @@ export default {
     resource: 'Uma lista de recursos úteis sobre a COVID-19.',
     search:
       'Pesquise nossos arquivos por notícias, artigos científicos e mais.',
+    tag: 'Navegue por nossos arquivos por etiqueta.',
     video: 'Os últimos vídeos sobre a COVID-19.',
   },
 

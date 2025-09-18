@@ -10,6 +10,19 @@ const { slug } = useRoute().params
       image-type="image/jpeg"
       :title="t(`layout.tag`)"
     />
-    <h1>Tag: {{ slug }}</h1>
+    <div class="flex justify-between items-center">
+      <div>
+        <h1
+          class="scroll-m-20 text-4xl font-extrabold lg:text-5xl font-title uppercase"
+        >
+          {{ t(`layout.tag`) }}
+        </h1>
+        <h4
+          class="scroll-m-20 text-base lg:text-xl font-semibold tracking-tight"
+        >
+          {{ t(`description.tag`) }}
+        </h4>
+      </div>
+    </div>
   </div>
 </template>

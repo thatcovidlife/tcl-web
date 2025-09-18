@@ -252,6 +252,7 @@ export default {
       darkMode: 'Switch To Dark Mode',
       lightMode: 'Switch To Light Mode',
     },
+    tag: 'Tag',
     tcl: 'That Covid Life',
     terms: 'Terms & Conditions',
     theme: 'Color Theme',
@@ -709,6 +710,7 @@ export default {
       'The latest news on emerging pandemics, such as Mpox and H5N1.',
     resource: 'A list of useful resources around COVID-19.',
     search: 'Search our archives for news, scientific papers, and more.',
+    tag: 'Browse our archives by tag.',
     video: 'The latest videos about COVID-19.',
   },
 
