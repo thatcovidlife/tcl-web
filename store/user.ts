@@ -1,5 +1,6 @@
 import consola from 'consola'
 import { useApiRoutes } from '@/composables/useApiRoutes'
+import * as Sentry from '@sentry/nuxt'
 
 export type UserInfo = {
   id?: number
@@ -38,6 +39,12 @@ export const useUserStore = defineStore('user', {
         this.info = null
         return
       }
+
+      // Set user context in Sentry
+      Sentry.setUser({
+        id: user.value.sub,
+        email: user.value.email,
+      })
 
       if (payload) {
         this.info = {

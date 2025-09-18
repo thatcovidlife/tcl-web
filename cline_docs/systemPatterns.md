@@ -1,33 +1,33 @@
 # System Patterns
 
-## UI Implementation Patterns
+## Architecture
 
-### Mobile Page Modernization
+- Nuxt.js application with server-side API routes
+- Sanity as headless CMS for content management
+- Drizzle ORM for database operations
+- Centralized state management with Pinia stores
 
-- Uses Tailwind CSS utility classes instead of SCSS
-- Implements shadcn/ui Card components with CardHeader and CardContent structure
-- Uses motion-v for animations with fade-in and slide-up effects
-- Follows responsive design patterns with mobile-first approach
-- Maintains proper internationalization support
+## Database Operations
 
-### Animation Patterns
+- All database queries use Drizzle ORM
+- Database calls are wrapped with Sentry spans for observability
+- Consistent error handling across all database operations
 
-- Initial state: opacity: 0, y: 20 (for cards) or opacity: 0 (for images)
-- Final state: opacity: 1, y: 0 (for cards) or opacity: 1 (for images)
-- Transition duration: 0.5-0.8 seconds
-- Staggered delays for multiple elements (0s, 0.1s, 0.2s)
-- Applied to container divs for consistent experience
+## Error Handling
 
-### Responsive Design Patterns
+- Sentry integration for error tracking and performance monitoring
+- Consistent error patterns across API routes
+- User context is set in Sentry when available
 
-- Grid layouts with responsive breakpoints
-- Text alignment changes based on screen size
-- Flex direction changes for button layouts
-- Proper spacing adjustments for different screen sizes
+## API Patterns
 
-### Component Integration Patterns
+- Server API routes follow consistent structure
+- All API endpoints include proper error handling
+- Database queries are wrapped with Sentry spans
+- User authentication checks where required
 
-- Import and use shadcn/ui components directly
-- Wrap content in appropriate Card components
-- Use motion-v components for animations
-- Maintain proper Vue binding syntax for motion attributes
+## User Management
+
+- User store handles profile updates and authentication
+- Sentry user context is set when updating user information
+- Consistent user data fetching patterns across the application

@@ -2,40 +2,36 @@
 
 ## Technologies Used
 
-### Frontend
+- **Nuxt.js**: Vue.js framework with server-side rendering
+- **TypeScript**: Type-safe JavaScript
+- **Sanity**: Headless CMS for content management
+- **Drizzle ORM**: Type-safe database ORM
+- **Sentry**: Error tracking and performance monitoring
+- **Tailwind CSS**: Utility-first CSS framework
+- **Pinia**: State management
+- **Vue I18n**: Internationalization
 
-- **Vue 3** with Composition API
-- **Nuxt 3** for SSR and routing
-- **TypeScript** for type safety
-- **Tailwind CSS** for styling
-- **shadcn/ui** component library
-- **motion-v** for animations
-- **Nuxt Image** for optimized image handling
-- **i18n** for internationalization
+## Database
 
-### UI Components
+- Uses Drizzle ORM for database operations
+- Database queries are consistently wrapped with Sentry spans for observability
+- All database operations include proper error handling
 
-- Card, CardHeader, CardContent from `components/ui/card`
-- Motion components from `motion-v`
-- NuxtImg for optimized image display
+## API Structure
 
-### Animation System
+- Server API routes located in `server/api/` directory
+- Consistent error handling across all endpoints
+- User authentication where required
+- Database queries wrapped with Sentry spans
 
-- **motion-v** library for smooth animations
-- Fade-in and slide-up effects for UI elements
-- Staggered animations for multiple components
-- Proper Vue binding syntax for motion attributes
+## State Management
 
-### Styling Approach
+- Pinia stores for centralized state
+- User store handles profile updates and authentication
+- Sentry user context is set when updating user information
 
-- **Tailwind CSS** utility classes replacing previous SCSS
-- Responsive design with mobile-first approach
-- Custom breakpoints for different screen sizes
-- Consistent spacing and typography
+## Error Tracking
 
-### Responsive Design
-
-- Grid layouts with responsive breakpoints
-- Flexbox for dynamic layouts
-- Text alignment changes based on screen size
-- Proper spacing adjustments for different screen sizes
+- Sentry integration for comprehensive error tracking
+- User context included in error reports
+- Performance monitoring for database operations
