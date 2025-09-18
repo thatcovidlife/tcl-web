@@ -3,6 +3,7 @@ import { defineSitemapEventHandler } from '#imports'
 import sitemapQuery from '@/sanity/queries/sitemap.sanity'
 import { SITEMAP_QUERYResult } from '@/sanity/types'
 import { captureException } from '@sentry/nuxt'
+import * as Sentry from '@sentry/nuxt'
 
 const pages = [
   '/',
@@ -27,7 +28,15 @@ export default defineSitemapEventHandler(async (event) => {
   const { fetch } = useSanity()
 
   try {
-    const posts = await fetch<SITEMAP_QUERYResult>(sitemapQuery)
+    const posts = await Sentry.startSpan(
+      {
+        name: 'fetch sitemap data',
+        op: 'database.query',
+      },
+      async () => {
+        return await fetch<SITEMAP_QUERYResult>(sitemapQuery)
+      },
+    )
     return [
       ...pages.map((p) => ({
         loc: formatUrl(p, origin, locale as string | null),

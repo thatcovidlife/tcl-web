@@ -2,7 +2,7 @@ import { consola } from 'consola'
 import { Feed } from 'feed'
 import { parseStringPromise } from 'xml2js'
 import _ from 'lodash'
-import { captureException } from '@sentry/nuxt'
+import * as Sentry from '@sentry/nuxt'
 
 import ytFeedQuery from '@/sanity/queries/ytFeed.sanity'
 import { YT_FEED_QUERYResult } from '@/sanity/types'
@@ -48,7 +48,15 @@ export default defineEventHandler(async (event) => {
   const { origin: BASE_URL } = getRequestURL(event)
 
   try {
-    const feedUrls = await sanityFetch<YT_FEED_QUERYResult>(ytFeedQuery)
+    const feedUrls = await Sentry.startSpan(
+      {
+        name: 'fetch YouTube feed URLs',
+        op: 'database.query',
+      },
+      async () => {
+        return await sanityFetch<YT_FEED_QUERYResult>(ytFeedQuery)
+      },
+    )
     const calls = feedUrls.map(async ({ feedURL }) => {
       try {
         const data = await fetch(feedURL as string)
@@ -107,7 +115,7 @@ export default defineEventHandler(async (event) => {
     return feed.rss2()
   } catch (e) {
     consola.error(e)
-    captureException(e)
+    Sentry.captureException(e)
     return null
   }
 })

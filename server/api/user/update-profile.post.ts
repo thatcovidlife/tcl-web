@@ -2,7 +2,7 @@ import { consola } from 'consola'
 import { db } from '@/lib/db'
 import { users, profiles } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
-import { captureException } from '@sentry/nuxt'
+import * as Sentry from '@sentry/nuxt'
 
 export default defineEventHandler(async (event) => {
   const { user } = await getUserSession(event)
@@ -25,12 +25,20 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const [profile] = await db
-      .select({ id: profiles.id })
-      .from(profiles)
-      .leftJoin(users, eq(profiles.userId, users.id))
-      .where(eq(users.email, user.email))
-      .limit(1)
+    const [profile] = await Sentry.startSpan(
+      {
+        name: 'verify profile ownership',
+        op: 'database.query',
+      },
+      async () => {
+        return await db
+          .select({ id: profiles.id })
+          .from(profiles)
+          .leftJoin(users, eq(profiles.userId, users.id))
+          .where(eq(users.email, user.email))
+          .limit(1)
+      },
+    )
 
     if (!profile || profile.id !== profileId) {
       throw createError({
@@ -40,11 +48,19 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const [update] = await db
-      .update(profiles)
-      .set(data)
-      .where(eq(profiles.id, profileId))
-      .returning()
+    const [update] = await Sentry.startSpan(
+      {
+        name: 'update profile',
+        op: 'database.query',
+      },
+      async () => {
+        return await db
+          .update(profiles)
+          .set(data)
+          .where(eq(profiles.id, profileId))
+          .returning()
+      },
+    )
 
     // invalidate get user cache on profile update
     // await db.$invalidate({
@@ -54,7 +70,7 @@ export default defineEventHandler(async (event) => {
     return update
   } catch (e) {
     consola.error(e)
-    captureException(e)
+    Sentry.captureException(e)
     return null
   }
 })

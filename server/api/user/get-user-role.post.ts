@@ -2,7 +2,7 @@ import { consola } from 'consola'
 import { db } from '@/lib/db'
 import { users } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
-import { captureException } from '@sentry/nuxt'
+import * as Sentry from '@sentry/nuxt'
 
 export default defineEventHandler(async (event) => {
   const { user } = await getUserSession(event)
@@ -26,17 +26,25 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const [{ role }] = await db
-      .select({ role: users.role })
-      .from(users)
-      .where(eq(users.email, email))
+    const [{ role }] = await Sentry.startSpan(
+      {
+        name: 'get user role',
+        op: 'database.query',
+      },
+      async () => {
+        return await db
+          .select({ role: users.role })
+          .from(users)
+          .where(eq(users.email, email))
+      },
+    )
 
     consola.info('GET USER ROLE - ', role)
 
     return role || null
   } catch (e) {
     consola.error(e)
-    captureException(e)
+    Sentry.captureException(e)
     return null
   }
 })

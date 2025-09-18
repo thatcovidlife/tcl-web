@@ -2,7 +2,7 @@ import { consola } from 'consola'
 import { db } from '@/lib/db'
 import { users, profiles } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
-import { captureException } from '@sentry/nuxt'
+import * as Sentry from '@sentry/nuxt'
 
 export default defineEventHandler(async (event) => {
   const { user } = await getUserSession(event)
@@ -26,31 +26,55 @@ export default defineEventHandler(async (event) => {
 
   try {
     // Create the user
-    const [newUser] = await db
-      .insert(users)
-      .values({
-        email: email,
-      })
-      .returning()
+    const [newUser] = await Sentry.startSpan(
+      {
+        name: 'insert user',
+        op: 'database.query',
+      },
+      async () => {
+        return await db
+          .insert(users)
+          .values({
+            email: email,
+          })
+          .returning()
+      },
+    )
 
     // Create an empty profile for the user
     if (newUser) {
-      await db.insert(profiles).values({
-        userId: newUser.id,
-      })
+      await Sentry.startSpan(
+        {
+          name: 'insert user profile',
+          op: 'database.query',
+        },
+        async () => {
+          return await db.insert(profiles).values({
+            userId: newUser.id,
+          })
+        },
+      )
     }
 
     // Fetch the profile
-    const [profile] = await db
-      .select()
-      .from(profiles)
-      .where(eq(profiles.userId, newUser!.id))
-      .limit(1)
+    const [profile] = await Sentry.startSpan(
+      {
+        name: 'fetch user profile',
+        op: 'database.query',
+      },
+      async () => {
+        return await db
+          .select()
+          .from(profiles)
+          .where(eq(profiles.userId, newUser!.id))
+          .limit(1)
+      },
+    )
 
     return { ...newUser, profile }
   } catch (e) {
     consola.error(e)
-    captureException(e)
+    Sentry.captureException(e)
     return null
   }
 })

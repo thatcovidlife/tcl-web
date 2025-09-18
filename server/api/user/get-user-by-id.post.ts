@@ -2,7 +2,7 @@ import { consola } from 'consola'
 import { db } from '@/lib/db'
 import { users, profiles } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
-import { captureException } from '@sentry/nuxt'
+import * as Sentry from '@sentry/nuxt'
 
 export default defineEventHandler(async (event) => {
   const { id } = await readBody(event)
@@ -25,30 +25,38 @@ export default defineEventHandler(async (event) => {
   // }
 
   try {
-    const [user] = await db
-      .select({
-        id: users.id,
-        email: users.email,
-        role: users.role,
-        active: users.active,
-        profile: {
-          id: profiles.id,
-          name: profiles.name,
-          bio: profiles.bio,
-          website: profiles.website,
-        },
-      })
-      .from(users)
-      .leftJoin(profiles, eq(users.id, profiles.userId))
-      .where(eq(users.id, id))
-      .limit(1)
+    const [user] = await Sentry.startSpan(
+      {
+        name: 'get user by id',
+        op: 'database.query',
+      },
+      async () => {
+        return await db
+          .select({
+            id: users.id,
+            email: users.email,
+            role: users.role,
+            active: users.active,
+            profile: {
+              id: profiles.id,
+              name: profiles.name,
+              bio: profiles.bio,
+              website: profiles.website,
+            },
+          })
+          .from(users)
+          .leftJoin(profiles, eq(users.id, profiles.userId))
+          .where(eq(users.id, id))
+          .limit(1)
+      },
+    )
 
     consola.info('GET USER BY ID - ', user)
 
     return user || null
   } catch (e) {
     consola.error(e)
-    captureException(e)
+    Sentry.captureException(e)
     return null
   }
 })

@@ -1,11 +1,19 @@
 import ogs from 'open-graph-scraper'
-import { captureException } from '@sentry/nuxt'
+import * as Sentry from '@sentry/nuxt'
 
 export default defineEventHandler(async (event) => {
   const { posts } = await readBody(event)
 
   try {
-    const info = await Promise.all(posts.map((url: string) => ogs({ url })))
+    const info = await Sentry.startSpan(
+      {
+        name: 'fetch Open Graph data',
+        op: 'external.http',
+      },
+      async () => {
+        return await Promise.all(posts.map((url: string) => ogs({ url })))
+      },
+    )
 
     return info
       .map(({ result }) => result || null)
@@ -27,7 +35,7 @@ export default defineEventHandler(async (event) => {
         }
       })
   } catch (e) {
-    captureException(e)
+    Sentry.captureException(e)
     throw e
   }
 })

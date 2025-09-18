@@ -2,7 +2,7 @@ import { Feed } from 'feed'
 import rssFeedQuery from '@/sanity/queries/rssFeed.sanity'
 import { RSS_FEED_QUERYResult } from '@/sanity/types'
 import { isExternalLink, isNews, isLibrary } from '@/assets/utils/article-types'
-import { captureException } from '@sentry/nuxt'
+import * as Sentry from '@sentry/nuxt'
 
 export default eventHandler(async (event) => {
   const { fetch } = useSanity()
@@ -13,9 +13,14 @@ export default eventHandler(async (event) => {
   const { origin: BASE_URL } = getRequestURL(event)
 
   try {
-    const { entries, settings } = await fetch<RSS_FEED_QUERYResult>(
-      rssFeedQuery,
-      { locale },
+    const { entries, settings } = await Sentry.startSpan(
+      {
+        name: 'fetch RSS feed data',
+        op: 'database.query',
+      },
+      async () => {
+        return await fetch<RSS_FEED_QUERYResult>(rssFeedQuery, { locale })
+      },
     )
 
     const feed = new Feed({
@@ -35,7 +40,7 @@ export default eventHandler(async (event) => {
       },
     })
 
-    entries.forEach((entry) => {
+    entries.forEach((entry: any) => {
       const title =
         isNews(entry.type) || isLibrary(entry.type)
           ? `${entry.source}: ${entry.title}`
@@ -65,7 +70,7 @@ export default eventHandler(async (event) => {
   } catch (e) {
     const { message } = e as Error
     console.log('error', message)
-    captureException(e)
+    Sentry.captureException(e)
     return {
       error: message,
     }

@@ -2,7 +2,7 @@ import { consola } from 'consola'
 import { db } from '@/lib/db'
 import { users, profiles } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
-import { captureException } from '@sentry/nuxt'
+import * as Sentry from '@sentry/nuxt'
 
 export default defineEventHandler(async (event) => {
   // const { user } = await getUserSession(event)
@@ -26,32 +26,40 @@ export default defineEventHandler(async (event) => {
   // }
 
   try {
-    const [user] = await db
-      .select({
-        id: users.id,
-        email: users.email,
-        role: users.role,
-        active: users.active,
-        profile: {
-          id: profiles.id,
-          name: profiles.name,
-          bio: profiles.bio,
-          website: profiles.website,
-          userId: profiles.userId,
-          language: profiles.language,
-          theme: profiles.theme,
-        },
-      })
-      .from(users)
-      .leftJoin(profiles, eq(users.id, profiles.userId))
-      .where(eq(users.email, email))
+    const [user] = await Sentry.startSpan(
+      {
+        name: 'get user',
+        op: 'database.query',
+      },
+      async () => {
+        return await db
+          .select({
+            id: users.id,
+            email: users.email,
+            role: users.role,
+            active: users.active,
+            profile: {
+              id: profiles.id,
+              name: profiles.name,
+              bio: profiles.bio,
+              website: profiles.website,
+              userId: profiles.userId,
+              language: profiles.language,
+              theme: profiles.theme,
+            },
+          })
+          .from(users)
+          .leftJoin(profiles, eq(users.id, profiles.userId))
+          .where(eq(users.email, email))
+      },
+    )
 
     consola.info('GET USER - ', user)
 
     return user || null
   } catch (e) {
     consola.error(e)
-    captureException(e)
+    Sentry.captureException(e)
     return null
   }
 })
