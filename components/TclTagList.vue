@@ -30,7 +30,7 @@ const { t } = useI18n()
     <NuxtLink
       v-for="{ label, slug } in tags"
       :key="slug"
-      :to="localePath(`/tag/${slug}`)"
+      :to="localePath(`/tag/${slug}?offset=0&limit=5`)"
       target="_self"
     >
       <Badge class="uppercase tracking-widest mr-1.5 mb-1" variant="secondary">

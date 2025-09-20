@@ -2,7 +2,7 @@ import consola from 'consola'
 import type { Publication, Tag } from '@/lib/types'
 import { useGroqd } from '@/composables/useGroqd'
 import { BASE_LANGUAGE } from '@/assets/constants/base-language'
-import { isSearch } from '@/assets/utils/article-types'
+import { isSearch, isTag } from '@/assets/utils/article-types'
 
 export const useDynamicQuery = () => {
   const results = ref<Publication[]>([])
@@ -31,9 +31,13 @@ export const useDynamicQuery = () => {
       ? q.star.filterRaw(
           `_type != 'feedSettings' && !(_id in path('drafts.**')) && [coalesce(title[_key == "${locale}"][0].value, title[_key == '${BASE_LANGUAGE}'][0].value, title, null), coalesce(description[_key == "${locale}"][0].value, description[_key == '${BASE_LANGUAGE}'][0].value, [])[0].children[0].text] match "**${searchTerm}**"`,
         )
-      : q.star
-          .filterByType(type as any)
-          .filterRaw(`!(_id in path('drafts.**'))`)
+      : isTag(type)
+        ? q.star.filterRaw(
+            `!(_id in path('drafts.**')) && "${searchTerm}" in tags[]->uri.current`,
+          )
+        : q.star
+            .filterByType(type as any)
+            .filterRaw(`!(_id in path('drafts.**'))`)
 
     if (locale) {
       query = query.filterRaw(`language == "${locale}"`)
