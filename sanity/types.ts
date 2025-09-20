@@ -5822,6 +5822,22 @@ export type SITEMAP_QUERYResult = Array<{
   }>
 }>
 
+// Source: ./sanity/queries/tagLabel.sanity.ts
+// Variable: TAG_LABEL_QUERY
+// Query: *[_type == 'tag' && uri.current == $slug][0] {  "label": coalesce(name[$locale], name['en'], ''),}
+export type TAG_LABEL_QUERYResult = {
+  label:
+    | Array<{
+        _type: 'localeString'
+        en?: string
+        fr?: string
+        pt?: string
+        es?: string
+      }>
+    | string
+    | ''
+} | null
+
 // Source: ./sanity/queries/tagsByType.sanity.ts
 // Variable: TAGS_BY_TYPE_QUERY
 // Query: {  "tags": array::unique(*[_type == $type] {    "tags": tags[]->uri.current  }  .tags[])  } | {    "t": *[_type == 'tag' && uri.current in ^.tags] | order(name[$locale], "desc") {      "value": uri.current,      "label": name[$locale]    }  }.t[]
@@ -5857,6 +5873,7 @@ declare module '@sanity/client' {
     '\n  {\n    "all_entries": *[(_type in ["news", "scientific-library", "video", "resource", "event", "product", "directory", "education", "public-health", "covidnet", "blog"]) && excludeFromRSS != true && !(_id in path(\'drafts.**\'))]| order(_createdAt desc) {\n      "id": _id,\n      "type": _type,\n      "title": coalesce(title[_key == $locale][0].value, title[_key == \'en\'][0].value, title[_key == ^.language][0].value, title[$locale], title[\'en\'], title, null),\n      "description": array::join(string::split((pt::text(coalesce(description[_key == $locale][0].value, description[_key == \'en\'][0].value, null))), "")[0..252], ""),\n      "publishedAt": _createdAt,\n      "updatedAt": _updatedAt,\n      "link": url,\n      "slug": "/" + _type + "/" + tags[0]->uri.current + "/" + uri.current,\n      "source": source,\n      "category": coalesce(tags[0]->name[$locale], tags[0]->name[\'en\'], null),\n      "image": visual.asset->url,\n      "author": author-> { "name": nickname },\n      "contentType": coalesce(contentType, null),\n    },\n    "settings": *[_type == "feedSettings"][0] {\n      "title": title,\n      "description": coalesce(description[_key == $locale][0].value, description[_key == \'en\'][0].value, \'\'),\n      "image": logo.asset->url,\n      "author": {\n        "email": author.email,\n        "name": author.name,\n      },\n    },\n  } | {\n    "entries": all_entries[0..20],\n    "settings": settings\n  }\n': RSS_FEED_QUERYResult
     '\n{\n  "results": *[_type != "feedSettings" && [coalesce(title[_key == $locale][0].value, title[_key == \'en\'][0].value, title, null), coalesce(description[_key == $locale][0].value, description[_key == \'en\'][0].value, [])[0].children[0].text] match $searchTerm] | order(publicationDate desc, _createdAt desc){\n    "id": _id,\n    "title": coalesce(title[_key == $locale][0].value, title[_key == \'en\'][0].value, title[$locale], title[\'en\'], title, null),\n    name,\n    "author": author-> { nickname, "slug": uri.current },\n    "date": coalesce(publicationDate, eventDate, null),\n    "end": endDate,\n    "published": _createdAt,\n    "category": coalesce(tags[0]->name[$locale], tags[0]->name[\'en\'], null),\n    "categoryUri": tags[0]->uri.current,\n    "shortDescription": array::join(string::split(pt::text(coalesce(description[_key == $locale][0].value, description[_key == ^.language][0].value, description[_key == \'en\'][0].value, [])), "")[0..512], "") + "...",\n    "link": url,\n    "path": "/" + _type + "/" + tags[0]->uri.current + "/" + uri.current,\n    "source": source,\n    "thumbnail": visual.asset._ref,\n    "type": _type,\n    "contentType": coalesce(contentType, null),\n    "uri": uri.current,\n    "language": coalesce(language, $locale),\n    "tags": tags[]-> { "name": coalesce(name[$locale], name[\'en\'], \'\'), "uri": uri.current },\n  },\n  "total": count(*[_type != "feedSettings" && [coalesce(title[_key == $locale][0].value, title[_key == \'en\'][0].value, title, null), coalesce(description[_key == $locale][0].value, description[_key == \'en\'][0].value, [])[0].children[0].text] match $searchTerm])\n}\n': SEARCH_QUERYResult
     '\n*[_type in [\'education\', \'product\', \'resource\', \'scientific-library\', \'video\', \'covidnet\', \'brand\'] && !(_id in path(\'drafts.**\'))] | order(_updatedAt desc) {\n  "id": _id,\n  "lastmod": _updatedAt,\n  "loc": "/" + _type + "/" + tags[0]->uri.current + "/" + uri.current,\n  "images": *[_type == ^._type && _id == ^._id && defined(visual.asset)] {\n    "loc": visual.asset->url,\n  },\n}\n': SITEMAP_QUERYResult
+    "\n*[_type == 'tag' && uri.current == $slug][0] {\n  \"label\": coalesce(name[$locale], name['en'], ''),\n}\n": TAG_LABEL_QUERYResult
     '\n  {\n  "tags": array::unique(*[_type == $type] {\n    "tags": tags[]->uri.current\n  }\n  .tags[])\n  } | {\n    "t": *[_type == \'tag\' && uri.current in ^.tags] | order(name[$locale], "desc") {\n      "value": uri.current,\n      "label": name[$locale]\n    }\n  }.t[]\n': TAGS_BY_TYPE_QUERYResult
     "\n  *[_type == 'covidnet' && contentType == 'YouTube' && !(_id in path('drafts.**'))] {\n    \"feedURL\": \"https://www.youtube.com/feeds/videos.xml?channel_id=\" + channelID,\n  }\n": YT_FEED_QUERYResult
   }

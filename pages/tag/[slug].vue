@@ -2,14 +2,12 @@
 import { motion } from 'motion-v'
 import { isExternalLink } from '@/assets/utils/article-types'
 import { useDynamicQuery } from '@/composables/useDynamicQuery'
-import {
-  isBlog,
-  isProduct,
-  showPublicationDate,
-} from '@/assets/utils/article-types'
+import { showPublicationDate } from '@/assets/utils/article-types'
+import TAG_LABEL_QUERY from '@/sanity/queries/tagLabel.sanity'
 import * as Sentry from '@sentry/nuxt'
 
 import type { Tag } from '@/lib/types'
+import type { TAG_LABEL_QUERYResult } from '@/sanity/types'
 
 const type = ref('tag')
 
@@ -21,22 +19,27 @@ const { locale, t } = useI18n()
 const slug = computed(() => route.params.slug)
 const filters = computed(() => route.query || {})
 
+const { data: tagInfo } = await useLazySanityQuery<TAG_LABEL_QUERYResult>(
+  TAG_LABEL_QUERY,
+  {
+    locale,
+    slug: slug.value,
+  },
+)
+
 const { buildDynamicQuery, loading, results, total } = useDynamicQuery()
 
 const onUpdateFilters = (filters: Record<string, string>) =>
   updateQueryParams({ ...filters, offset: '0', limit: '5' })
 
 const hasDate = computed(() => showPublicationDate(<string>type.value))
-const hasLocale = computed(
-  () => !isBlog(<string>type.value) && !isProduct(<string>type.value),
-)
 
 watch(
   () => filters.value,
   async () => {
     await Sentry.startSpan(
       {
-        name: 'fetch category publications',
+        name: 'fetch publications by tag',
         op: 'sanity.query',
       },
       async () => {
@@ -45,7 +48,7 @@ watch(
             parseInt(filters.value.offset as string) +
             parseInt(filters.value.limit as string),
           filters: filters.value as Record<string, string>,
-          locale: hasLocale.value ? locale.value : null,
+          locale: locale.value as string,
           searchTerm: slug.value as string,
           start: parseInt(filters.value.offset as string),
           type: type.value as string,
@@ -70,7 +73,8 @@ watch(
         <h1
           class="scroll-m-20 text-4xl font-extrabold lg:text-5xl font-title uppercase"
         >
-          {{ t(`layout.${type}`) }}
+          {{ t(`layout.${type}`)
+          }}<span v-if="tagInfo?.label">: {{ tagInfo.label }}</span>
         </h1>
         <h4
           class="scroll-m-20 text-base lg:text-xl font-semibold tracking-tight"
