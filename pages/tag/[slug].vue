@@ -19,7 +19,7 @@ const { locale, t } = useI18n()
 const slug = computed(() => route.params.slug)
 const filters = computed(() => route.query || {})
 
-const { data: tagInfo } = await useLazySanityQuery<TAG_LABEL_QUERYResult>(
+const { data: tagInfo } = await useSanityQuery<TAG_LABEL_QUERYResult>(
   TAG_LABEL_QUERY,
   {
     locale,
