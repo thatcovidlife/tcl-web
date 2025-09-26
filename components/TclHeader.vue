@@ -21,11 +21,12 @@ const { t } = useI18n()
     </nav>
     <TclMobileNavigation :logged-in="loggedIn" with-taco />
     <div class="grid grid-flow-col items-center gap-2 md:ml-auto md:gap-4">
-      <NuxtLink :to="localePath('/search')" class="md:hidden">
-        <Button size="icon" variant="outline" class="rounded-full">
-          <SearchIcon />
-        </Button>
-      </NuxtLink>
+      <!-- <NuxtLink :to="localePath('/search')" class="md:hidden"> -->
+      <!-- <Button size="icon" variant="outline" class="rounded-full">
+        <SearchIcon />
+      </Button> -->
+      <!-- </NuxtLink> -->
+      <TclSearchSheet class="md:hidden" />
       <TclSearchbox
         class="hidden md:block min-w-175px md:min-w-[225px] lg:min-w-[350px]"
       />
