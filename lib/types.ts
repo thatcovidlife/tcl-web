@@ -1,3 +1,5 @@
+import type { ZodBoolean, ZodOptional, ZodString } from 'zod'
+
 export enum ARTICLE_TYPE {
   BLOG = 'blog',
   COVIDNET = 'covidnet',
@@ -26,6 +28,17 @@ export type FeaturedPost = {
   type: string | null
   url: string | null
 }
+
+export type Filter = {
+  key: string
+  type:
+    | ZodString
+    | ZodBoolean
+    | ZodOptional<ZodString>
+    | ZodOptional<ZodBoolean>
+}
+
+export type FilterType = Record<ARTICLE_TYPE, Filter[]>
 
 export type Metadata = {
   aspectRatio: number | null
