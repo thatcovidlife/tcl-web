@@ -77,16 +77,21 @@ const onSubmit = handleSubmit((values) => emit('update:filters', values))
       </SheetHeader>
       <form @submit="onSubmit">
         <div class="grid gap-4 py-4">
-          <FormField v-slot="{ componentField }" name="tag">
+          <FormField
+            v-for="(filter, index) in filters"
+            v-slot="{ componentField }"
+            :key="index"
+            :name="filter.key"
+          >
             <FormItem v-auto-animate>
-              <FormLabel>{{ t('filters.label.tag') }}</FormLabel>
+              <FormLabel>{{ t(`filters.label.${filter.key}`) }}</FormLabel>
               <Combobox by="label" class="w-full">
                 <FormControl>
                   <ComboboxAnchor class="flex w-full">
                     <div class="relative w-full items-center">
                       <ComboboxInput
                         :display-value="(val) => val?.label ?? ''"
-                        :placeholder="t('filters.placeholder.tag')"
+                        :placeholder="t(`filters.placeholder.${filter.key}`)"
                       />
                       <ComboboxTrigger
                         class="absolute end-0 inset-y-0 flex items-center justify-center px-3"

@@ -736,13 +736,13 @@ export default {
     close: 'Cerrar',
     description: 'Usa estos filtros para refinar tu búsqueda.',
     label: {
-      brand: 'Marca',
+      brand: 'Marcas',
       isEventFree: '¿Evento Gratis?',
-      language: 'Idioma',
+      language: 'Idiomas',
       onlineOnly: '¿Solo en línea?',
-      source: 'Fuente',
+      source: 'Fuentes',
       tag: 'Etiquetas',
-      type: 'Tipo de contenido',
+      type: 'Tipos de contenido',
     },
     noResults: 'No se encontró nada.',
     placeholder: {

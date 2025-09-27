@@ -732,13 +732,13 @@ export default {
     close: 'Fechar',
     description: 'Use estes filtros para refinar sua busca.',
     label: {
-      brand: 'Marca',
+      brand: 'Marcas',
       isEventFree: 'Evento Gratuito?',
-      language: 'Idioma',
+      language: 'Idiomas',
       onlineOnly: 'Apenas Online?',
-      source: 'Fonte',
+      source: 'Fontes',
       tag: 'Tags',
-      type: 'Tipo de Conteúdo',
+      type: 'Tipos de Conteúdo',
     },
     noResults: 'Nada encontrado.',
     placeholder: {

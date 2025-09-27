@@ -719,13 +719,13 @@ export default {
     close: 'Close',
     description: 'Use these filters to refine your search.',
     label: {
-      brand: 'Brand',
+      brand: 'Brands',
       isEventFree: 'Free Event?',
-      language: 'Language',
+      language: 'Languages',
       onlineOnly: 'Online Only?',
-      source: 'Source',
+      source: 'Sources',
       tag: 'Tags',
-      type: 'Content Type',
+      type: 'Content Types',
     },
     noResults: 'Nothing found.',
     placeholder: {
