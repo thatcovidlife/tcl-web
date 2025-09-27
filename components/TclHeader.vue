@@ -26,7 +26,7 @@ const { t } = useI18n()
         <SearchIcon />
       </Button> -->
       <!-- </NuxtLink> -->
-      <TclSearchSheet class="md:hidden" />
+      <TclSearchSheet />
       <TclSearchbox
         class="hidden md:block min-w-175px md:min-w-[225px] lg:min-w-[350px]"
       />

@@ -95,7 +95,7 @@ watch(searchQuery, (newValue) => {
     "
   >
     <DrawerTrigger>
-      <Button size="icon" variant="outline" class="rounded-full">
+      <Button size="icon" variant="outline" class="rounded-full md:hidden">
         <SearchIcon />
       </Button>
     </DrawerTrigger>
