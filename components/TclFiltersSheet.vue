@@ -9,6 +9,7 @@ import * as Sentry from '@sentry/nuxt'
 import { Check, ChevronsUpDown } from 'lucide-vue-next'
 
 import TAGS_BY_TYPE_QUERY from '@/sanity/queries/tagsByType.sanity'
+import { ARTICLE_TYPE } from '@/lib/types'
 import type { TAGS_BY_TYPE_QUERYResult } from '@/sanity/types'
 
 const { t } = useI18n()

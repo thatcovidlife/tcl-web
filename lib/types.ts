@@ -1,3 +1,17 @@
+export enum ARTICLE_TYPE {
+  BLOG = 'blog',
+  COVIDNET = 'covidnet',
+  DIRECTORY = 'directory',
+  EVENT = 'event',
+  HEALTH = 'public-health',
+  LIBRARY = 'scientific-library',
+  NEWS = 'news',
+  PRODUCT = 'product',
+  RESOURCE = 'resource',
+  TAG = 'tag',
+  VIDEO = 'video',
+}
+
 export type FeaturedPost = {
   date: string | null
   description: string | null
