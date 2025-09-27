@@ -741,11 +741,11 @@ export default {
     close: 'Fermer',
     description: 'Utilisez ces filtres pour affiner votre recherche.',
     label: {
-      tags: 'Tags',
+      tag: 'Tags',
     },
     noResults: 'Rien trouvé.',
     placeholder: {
-      tags: 'Sélectionner un tag…',
+      tag: 'Sélectionner un tag…',
     },
     reset: 'Réinitialiser les filtres',
     title: 'Filtres',

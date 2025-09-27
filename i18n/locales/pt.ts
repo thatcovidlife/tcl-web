@@ -732,11 +732,11 @@ export default {
     close: 'Fechar',
     description: 'Use estes filtros para refinar sua busca.',
     label: {
-      tags: 'Tags',
+      tag: 'Tags',
     },
     noResults: 'Nada encontrado.',
     placeholder: {
-      tags: 'Selecionar tag...',
+      tag: 'Selecionar tag...',
     },
     reset: 'Redefinir filtros',
     title: 'Filtros',

@@ -79,14 +79,14 @@ const onSubmit = handleSubmit((values) => emit('update:filters', values))
         <div class="grid gap-4 py-4">
           <FormField v-slot="{ componentField }" name="tag">
             <FormItem v-auto-animate>
-              <FormLabel>{{ t('filters.label.tags') }}</FormLabel>
+              <FormLabel>{{ t('filters.label.tag') }}</FormLabel>
               <Combobox by="label" class="w-full">
                 <FormControl>
                   <ComboboxAnchor class="flex w-full">
                     <div class="relative w-full items-center">
                       <ComboboxInput
                         :display-value="(val) => val?.label ?? ''"
-                        :placeholder="t('filters.placeholder.tags')"
+                        :placeholder="t('filters.placeholder.tag')"
                       />
                       <ComboboxTrigger
                         class="absolute end-0 inset-y-0 flex items-center justify-center px-3"

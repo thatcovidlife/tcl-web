@@ -719,11 +719,11 @@ export default {
     close: 'Close',
     description: 'Use these filters to refine your search.',
     label: {
-      tags: 'Tags',
+      tag: 'Tags',
     },
     noResults: 'Nothing found.',
     placeholder: {
-      tags: 'Select tag...',
+      tag: 'Select tag...',
     },
     reset: 'Reset Filters',
     title: 'Filters',

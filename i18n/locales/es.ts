@@ -736,11 +736,11 @@ export default {
     close: 'Cerrar',
     description: 'Usa estos filtros para refinar tu búsqueda.',
     label: {
-      tags: 'Etiquetas',
+      tag: 'Etiquetas',
     },
     noResults: 'No se encontró nada.',
     placeholder: {
-      tags: 'Seleccionar etiqueta...',
+      tag: 'Seleccionar etiqueta...',
     },
     reset: 'Restablecer filtros',
     title: 'Filtros',
