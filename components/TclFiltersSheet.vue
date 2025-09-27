@@ -10,18 +10,21 @@ import { Check, ChevronsUpDown } from 'lucide-vue-next'
 
 import TAGS_BY_TYPE_QUERY from '@/sanity/queries/tagsByType.sanity'
 import { ARTICLE_TYPE } from '@/lib/types'
+import { FILTER_TYPES } from '@/assets/utils/filter-types'
 import type { TAGS_BY_TYPE_QUERYResult } from '@/sanity/types'
 
 const { t } = useI18n()
 
 const props = defineProps<{
   locale: string
-  type: string
+  type: ARTICLE_TYPE
 }>()
 
 const emit = defineEmits<{
   (e: 'update:filters', payload: Record<string, string>): void
 }>()
+
+const filters = computed(() => FILTER_TYPES[props.type] || [])
 
 const { data: tagList, status } = await Sentry.startSpan(
   {
