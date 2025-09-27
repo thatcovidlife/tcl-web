@@ -3,6 +3,7 @@ import type { Publication, Tag } from '@/lib/types'
 import { useGroqd } from '@/composables/useGroqd'
 import { BASE_LANGUAGE } from '@/assets/constants/base-language'
 import { isSearch, isTag } from '@/assets/utils/article-types'
+import { ARTICLE_TYPE } from '@/lib/types'
 
 export const useDynamicQuery = () => {
   const results = ref<Publication[]>([])
@@ -25,7 +26,7 @@ export const useDynamicQuery = () => {
     locale: string | null
     searchTerm?: string
     start: number
-    type: string
+    type: ARTICLE_TYPE | string
   }) => {
     let query = isSearch(type)
       ? q.star.filterRaw(

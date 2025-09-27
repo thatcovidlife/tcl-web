@@ -6,10 +6,11 @@ import { showPublicationDate } from '@/assets/utils/article-types'
 import TAG_LABEL_QUERY from '@/sanity/queries/tagLabel.sanity'
 import * as Sentry from '@sentry/nuxt'
 
+import { ARTICLE_TYPE } from '@/lib/types'
 import type { Tag } from '@/lib/types'
 import type { TAG_LABEL_QUERYResult } from '@/sanity/types'
 
-const type = ref('tag')
+const type = ref(ARTICLE_TYPE.TAG)
 
 const { currentPage, limit, onPageChange, route, updateQueryParams } =
   usePagination()
@@ -51,7 +52,7 @@ watch(
           locale: locale.value as string,
           searchTerm: slug.value as string,
           start: parseInt(filters.value.offset as string),
-          type: type.value as string,
+          type: type.value,
         })
       },
     )
@@ -84,7 +85,7 @@ watch(
       </div>
       <TclFiltersSheet
         :locale="locale"
-        :type="<string>type"
+        :type="type"
         @update:filters="onUpdateFilters"
       />
     </div>

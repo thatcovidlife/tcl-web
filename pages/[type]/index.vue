@@ -10,13 +10,14 @@ import {
 import * as Sentry from '@sentry/nuxt'
 
 import type { Tag } from '@/lib/types'
+import { ARTICLE_TYPE } from '@/lib/types'
 
 const { currentPage, limit, onPageChange, route, updateQueryParams } =
   usePagination()
 
 const { locale, t } = useI18n()
 
-const type = computed(() => route.params.type)
+const type = computed(() => route.params.type as ARTICLE_TYPE)
 const filters = computed(() => route.query || {})
 
 const { buildDynamicQuery, loading, results, total } = useDynamicQuery()
@@ -46,7 +47,7 @@ watch(
           locale: hasLocale.value ? locale.value : null,
           searchTerm: (filters.value.q ?? '') as string,
           start: parseInt(filters.value.offset as string),
-          type: type.value as string,
+          type: type.value,
         })
       },
     )
@@ -78,7 +79,7 @@ watch(
       </div>
       <TclFiltersSheet
         :locale="locale"
-        :type="<string>type"
+        :type="type"
         @update:filters="onUpdateFilters"
       />
     </div>
