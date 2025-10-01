@@ -7,10 +7,8 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
-  DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
 
@@ -100,7 +98,6 @@ watch(searchQuery, (newValue) => {
       </Button>
     </DrawerTrigger>
     <DrawerContent>
-      <!-- <DrawerHeader> title </DrawerHeader> -->
       <DrawerHeader class="mb-2 border-b">
         <div class="relative">
           <Input
