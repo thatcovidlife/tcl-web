@@ -19,6 +19,7 @@ const { t } = useI18n()
 
 const props = defineProps<{
   locale: string
+  tag?: string
   type: ARTICLE_TYPE
 }>()
 
@@ -38,12 +39,39 @@ const { data: filterOptions, status } = await Sentry.startSpan(
       FILTER_OPTIONS_QUERY,
       {
         locale: props.locale,
-        tag: '', // TODO: enable on tag page
+        tag: props.tag || '', // TODO: enable on tag page
         type: props.type,
       },
     )
   },
 )
+
+console.log('filterOptions', filterOptions.value)
+
+const brandList = computed(() => {
+  if (status.value !== 'success') return []
+  return filterOptions.value?.brands || []
+})
+
+const contentTypeList = computed(() => {
+  if (status.value !== 'success') return []
+  return (
+    filterOptions.value?.types?.map((type) => ({
+      label: t(`layout.${type}`),
+      value: type,
+    })) || []
+  )
+})
+
+const freeEventOptions = computed(() => {
+  if (status.value !== 'success') return []
+  return (
+    filterOptions.value?.isEventFree?.map((isFree) => ({
+      label: t(`filters.options.${isFree.toString()}`),
+      value: isFree.toString(),
+    })) || []
+  )
+})
 
 const languageList = computed(() => {
   if (status.value !== 'success') return []
@@ -51,6 +79,16 @@ const languageList = computed(() => {
     filterOptions.value?.languages?.map((code) => ({
       label: codeToLabel(code),
       value: code,
+    })) || []
+  )
+})
+
+const onlineOptions = computed(() => {
+  if (status.value !== 'success') return []
+  return (
+    filterOptions.value?.onlineOnly?.map((isOnline) => ({
+      label: t(`filters.options.${isOnline.toString()}`),
+      value: isOnline.toString(),
     })) || []
   )
 })
@@ -72,19 +110,18 @@ const tagList = computed(() => {
 
 const formSchema = toTypedSchema(
   z.object({
+    brand: z.string().optional(),
+    free: z.string().optional(),
     language: z.string().optional(),
+    online: z.string().optional(),
     source: z.string().optional(),
     tag: z.string().optional(),
+    type: z.string().optional(),
   }),
 )
 
 const { handleSubmit, setFieldValue } = useForm({
   validationSchema: formSchema,
-  initialValues: {
-    language: '',
-    source: '',
-    tag: '',
-  },
 })
 
 const isFormValid = useIsFormValid()
@@ -138,6 +175,40 @@ const onSubmit = handleSubmit((values) => emit('update:filters', values))
                 >
                   <ComboboxEmpty>{{ t('filters.noResults') }}</ComboboxEmpty>
                   <ComboboxGroup>
+                    <template v-if="filter.key === 'brand'">
+                      <ComboboxItem
+                        v-for="brand in brandList"
+                        :key="<string>brand.value"
+                        :value="brand"
+                        @select="
+                          () => {
+                            setFieldValue('brand', brand.value as string)
+                          }
+                        "
+                      >
+                        {{ brand.label }}
+                        <ComboboxItemIndicator>
+                          <Check :class="cn('ml-auto h-4 w-4')" />
+                        </ComboboxItemIndicator>
+                      </ComboboxItem>
+                    </template>
+                    <template v-if="filter.key === 'isEventFree'">
+                      <ComboboxItem
+                        v-for="isFree in freeEventOptions"
+                        :key="isFree.value"
+                        :value="isFree"
+                        @select="
+                          () => {
+                            setFieldValue('free', isFree.value)
+                          }
+                        "
+                      >
+                        {{ isFree.label }}
+                        <ComboboxItemIndicator>
+                          <Check :class="cn('ml-auto h-4 w-4')" />
+                        </ComboboxItemIndicator>
+                      </ComboboxItem>
+                    </template>
                     <template v-if="filter.key === 'language'">
                       <ComboboxItem
                         v-for="lang in languageList"
@@ -150,6 +221,23 @@ const onSubmit = handleSubmit((values) => emit('update:filters', values))
                         "
                       >
                         {{ lang.label }}
+                        <ComboboxItemIndicator>
+                          <Check :class="cn('ml-auto h-4 w-4')" />
+                        </ComboboxItemIndicator>
+                      </ComboboxItem>
+                    </template>
+                    <template v-if="filter.key === 'onlineOnly'">
+                      <ComboboxItem
+                        v-for="isOnline in onlineOptions"
+                        :key="isOnline.value"
+                        :value="isOnline"
+                        @select="
+                          () => {
+                            setFieldValue('online', isOnline.value)
+                          }
+                        "
+                      >
+                        {{ isOnline.label }}
                         <ComboboxItemIndicator>
                           <Check :class="cn('ml-auto h-4 w-4')" />
                         </ComboboxItemIndicator>
@@ -184,6 +272,23 @@ const onSubmit = handleSubmit((values) => emit('update:filters', values))
                         "
                       >
                         {{ tag.label }}
+                        <ComboboxItemIndicator>
+                          <Check :class="cn('ml-auto h-4 w-4')" />
+                        </ComboboxItemIndicator>
+                      </ComboboxItem>
+                    </template>
+                    <template v-if="filter.key === 'type'">
+                      <ComboboxItem
+                        v-for="type in contentTypeList"
+                        :key="type.value"
+                        :value="type"
+                        @select="
+                          () => {
+                            setFieldValue('type', type.value as string)
+                          }
+                        "
+                      >
+                        {{ type.label }}
                         <ComboboxItemIndicator>
                           <Check :class="cn('ml-auto h-4 w-4')" />
                         </ComboboxItemIndicator>

@@ -728,6 +728,10 @@ export default {
       type: 'Content Types',
     },
     noResults: 'Nothing found.',
+    options: {
+      true: 'Yes',
+      false: 'No',
+    },
     placeholder: {
       brand: 'Select brand...',
       isEventFree: 'Select event type...',

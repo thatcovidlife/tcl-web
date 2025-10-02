@@ -750,6 +750,10 @@ export default {
       type: 'Types de Contenu',
     },
     noResults: 'Rien trouvé.',
+    options: {
+      true: 'Oui',
+      false: 'Non',
+    },
     placeholder: {
       brand: 'Sélectionner une marque…',
       isEventFree: "Sélectionner un type d'événement…",

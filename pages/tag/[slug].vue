@@ -17,7 +17,7 @@ const { currentPage, limit, onPageChange, route, updateQueryParams } =
 
 const { locale, t } = useI18n()
 
-const slug = computed(() => route.params.slug)
+const slug = computed(() => route.params.slug as string)
 const filters = computed(() => route.query || {})
 
 const { data: tagInfo } = await useSanityQuery<TAG_LABEL_QUERYResult>(
@@ -85,6 +85,7 @@ watch(
       </div>
       <TclFiltersSheet
         :locale="locale"
+        :tag="slug"
         :type="type"
         @update:filters="onUpdateFilters"
       />
