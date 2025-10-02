@@ -8,10 +8,12 @@ import * as Sentry from '@sentry/nuxt'
 
 import { Check, ChevronsUpDown } from 'lucide-vue-next'
 
-import TAGS_BY_TYPE_QUERY from '@/sanity/queries/tagsByType.sanity'
+import FILTER_OPTIONS_QUERY from '@/sanity/queries/filterOptions.sanity'
 import { ARTICLE_TYPE } from '@/lib/types'
 import { FILTER_TYPES } from '@/assets/utils/filter-types'
-import type { TAGS_BY_TYPE_QUERYResult } from '@/sanity/types'
+import type { FILTER_OPTIONS_QUERYResult } from '@/sanity/types'
+
+import { codeToLabel } from '@/assets/utils/language-labels'
 
 const { t } = useI18n()
 
@@ -26,31 +28,61 @@ const emit = defineEmits<{
 
 const filters = computed(() => FILTER_TYPES[props.type] || [])
 
-const { data: tagList, status } = await Sentry.startSpan(
+const { data: filterOptions, status } = await Sentry.startSpan(
   {
-    name: 'fetch publication tags',
+    name: 'fetch publication filter options',
     op: 'sanity.query',
   },
   async () => {
-    return await useLazySanityQuery<TAGS_BY_TYPE_QUERYResult>(
-      TAGS_BY_TYPE_QUERY,
+    return await useLazySanityQuery<FILTER_OPTIONS_QUERYResult>(
+      FILTER_OPTIONS_QUERY,
       {
         locale: props.locale,
+        tag: '', // TODO: enable on tag page
         type: props.type,
       },
     )
   },
 )
 
+const languageList = computed(() => {
+  if (status.value !== 'success') return []
+  return (
+    filterOptions.value?.languages?.map((code) => ({
+      label: codeToLabel(code),
+      value: code,
+    })) || []
+  )
+})
+
+const sourceList = computed(() => {
+  if (status.value !== 'success') return []
+  return (
+    filterOptions.value?.sources.map((source) => ({
+      label: source,
+      value: source,
+    })) || []
+  )
+})
+
+const tagList = computed(() => {
+  if (status.value !== 'success') return []
+  return filterOptions.value?.tags || []
+})
+
 const formSchema = toTypedSchema(
   z.object({
-    tag: z.string(),
+    language: z.string().optional(),
+    source: z.string().optional(),
+    tag: z.string().optional(),
   }),
 )
 
 const { handleSubmit, setFieldValue } = useForm({
   validationSchema: formSchema,
   initialValues: {
+    language: '',
+    source: '',
     tag: '',
   },
 })
@@ -106,21 +138,57 @@ const onSubmit = handleSubmit((values) => emit('update:filters', values))
                 >
                   <ComboboxEmpty>{{ t('filters.noResults') }}</ComboboxEmpty>
                   <ComboboxGroup>
-                    <ComboboxItem
-                      v-for="tag in tagList"
-                      :key="<string>tag.value"
-                      :value="tag"
-                      @select="
-                        () => {
-                          setFieldValue('tag', tag.value as string)
-                        }
-                      "
-                    >
-                      {{ tag.label }}
-                      <ComboboxItemIndicator>
-                        <Check :class="cn('ml-auto h-4 w-4')" />
-                      </ComboboxItemIndicator>
-                    </ComboboxItem>
+                    <template v-if="filter.key === 'language'">
+                      <ComboboxItem
+                        v-for="lang in languageList"
+                        :key="lang.value"
+                        :value="lang"
+                        @select="
+                          () => {
+                            setFieldValue('language', lang.value as string)
+                          }
+                        "
+                      >
+                        {{ lang.label }}
+                        <ComboboxItemIndicator>
+                          <Check :class="cn('ml-auto h-4 w-4')" />
+                        </ComboboxItemIndicator>
+                      </ComboboxItem>
+                    </template>
+                    <template v-if="filter.key === 'source'">
+                      <ComboboxItem
+                        v-for="source in sourceList"
+                        :key="<string>source.value"
+                        :value="source"
+                        @select="
+                          () => {
+                            setFieldValue('source', source.value as string)
+                          }
+                        "
+                      >
+                        {{ source.label }}
+                        <ComboboxItemIndicator>
+                          <Check :class="cn('ml-auto h-4 w-4')" />
+                        </ComboboxItemIndicator>
+                      </ComboboxItem>
+                    </template>
+                    <template v-if="filter.key === 'tag'">
+                      <ComboboxItem
+                        v-for="tag in tagList"
+                        :key="tag.value!"
+                        :value="tag"
+                        @select="
+                          () => {
+                            setFieldValue('tag', tag.value as string)
+                          }
+                        "
+                      >
+                        {{ tag.label }}
+                        <ComboboxItemIndicator>
+                          <Check :class="cn('ml-auto h-4 w-4')" />
+                        </ComboboxItemIndicator>
+                      </ComboboxItem>
+                    </template>
                   </ComboboxGroup>
                 </ComboboxList>
               </Combobox>
