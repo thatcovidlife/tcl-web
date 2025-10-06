@@ -47,6 +47,14 @@ export const useDynamicQuery = () => {
     Object.keys(filters).forEach((key: string) => {
       if (key === 'tag') {
         query = query.filterRaw(`"${filters[key]}" in tags[]->uri.current`)
+      } else if (key === 'isEventFree' || key === 'onlineOnly') {
+        query = query.filterRaw(`${key} == ${filters[key] === 'true'}`)
+      } else if (key === 'type') {
+        query = query.filterRaw(`_type == "${filters[key]}"`)
+      } else if (key === 'brand') {
+        query = query.filterRaw(`${key}->uri.current == "${filters[key]}"`)
+      } else {
+        query = query.filterRaw(`${key} == "${filters[key]}"`)
       }
     })
 

@@ -18,7 +18,18 @@ const { currentPage, limit, onPageChange, route, updateQueryParams } =
 const { locale, t } = useI18n()
 
 const type = computed(() => route.params.type as ARTICLE_TYPE)
-const filters = computed(() => route.query || {})
+
+const filters = computed(() => {
+  if (!route.query) return {}
+  const { offset, limit, ...rest } = route.query
+  return rest
+})
+const start = computed(() =>
+  route.query.offset ? parseInt(route.query.offset as string) : 0,
+)
+const end = computed(() =>
+  route.query.limit ? start.value + parseInt(route.query.limit as string) : 5,
+)
 
 const { buildDynamicQuery, loading, results, total } = useDynamicQuery()
 
@@ -40,13 +51,11 @@ watch(
       },
       async () => {
         buildDynamicQuery({
-          end:
-            parseInt(filters.value.offset as string) +
-            parseInt(filters.value.limit as string),
+          end: end.value,
           filters: filters.value as Record<string, string>,
           locale: hasLocale.value ? locale.value : null,
           searchTerm: (filters.value.q ?? '') as string,
-          start: parseInt(filters.value.offset as string),
+          start: start.value,
           type: type.value,
         })
       },

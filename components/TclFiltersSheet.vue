@@ -46,8 +46,6 @@ const { data: filterOptions, status } = await Sentry.startSpan(
   },
 )
 
-console.log('filterOptions', filterOptions.value)
-
 const brandList = computed(() => {
   if (status.value !== 'success') return []
   return filterOptions.value?.brands || []
@@ -111,9 +109,9 @@ const tagList = computed(() => {
 const formSchema = toTypedSchema(
   z.object({
     brand: z.string().optional(),
-    free: z.string().optional(),
+    isEventFree: z.string().optional(),
     language: z.string().optional(),
-    online: z.string().optional(),
+    onlineOnly: z.string().optional(),
     source: z.string().optional(),
     tag: z.string().optional(),
     type: z.string().optional(),
@@ -199,7 +197,7 @@ const onSubmit = handleSubmit((values) => emit('update:filters', values))
                         :value="isFree"
                         @select="
                           () => {
-                            setFieldValue('free', isFree.value)
+                            setFieldValue('isEventFree', isFree.value)
                           }
                         "
                       >
@@ -233,7 +231,7 @@ const onSubmit = handleSubmit((values) => emit('update:filters', values))
                         :value="isOnline"
                         @select="
                           () => {
-                            setFieldValue('online', isOnline.value)
+                            setFieldValue('onlineOnly', isOnline.value)
                           }
                         "
                       >

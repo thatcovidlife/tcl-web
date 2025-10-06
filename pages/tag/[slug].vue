@@ -18,7 +18,17 @@ const { currentPage, limit, onPageChange, route, updateQueryParams } =
 const { locale, t } = useI18n()
 
 const slug = computed(() => route.params.slug as string)
-const filters = computed(() => route.query || {})
+const filters = computed(() => {
+  if (!route.query) return {}
+  const { offset, limit, ...rest } = route.query
+  return rest
+})
+const start = computed(() =>
+  route.query.offset ? parseInt(route.query.offset as string) : 0,
+)
+const end = computed(() =>
+  route.query.limit ? start.value + parseInt(route.query.limit as string) : 5,
+)
 
 const { data: tagInfo } = await useSanityQuery<TAG_LABEL_QUERYResult>(
   TAG_LABEL_QUERY,
@@ -45,13 +55,11 @@ watch(
       },
       async () => {
         buildDynamicQuery({
-          end:
-            parseInt(filters.value.offset as string) +
-            parseInt(filters.value.limit as string),
+          end: end.value,
           filters: filters.value as Record<string, string>,
           locale: locale.value as string,
           searchTerm: slug.value as string,
-          start: parseInt(filters.value.offset as string),
+          start: start.value,
           type: type.value,
         })
       },
