@@ -54,7 +54,9 @@ export const useDynamicQuery = () => {
       } else if (key === 'brand') {
         query = query.filterRaw(`${key}->uri.current == "${filters[key]}"`)
       } else {
-        query = query.filterRaw(`${key} == "${filters[key]}"`)
+        if (key !== 'q') {
+          query = query.filterRaw(`${key} == "${filters[key]}"`)
+        }
       }
     })
 
