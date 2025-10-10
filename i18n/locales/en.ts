@@ -669,7 +669,7 @@ export default {
           title: 'Resources',
         },
       },
-      title: 'Other',
+      title: 'Tools',
     },
   },
   footer: {

@@ -680,7 +680,7 @@ export default {
           title: 'Recursos',
         },
       },
-      title: 'Outros',
+      title: 'Ferramentas',
     },
   },
   footer: {

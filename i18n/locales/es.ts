@@ -685,7 +685,7 @@ export default {
           title: 'Recursos',
         },
       },
-      title: 'Otros',
+      title: 'Herramientas',
     },
   },
   footer: {

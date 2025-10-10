@@ -689,7 +689,7 @@ export default {
           title: 'Ressources',
         },
       },
-      title: 'Autre',
+      title: 'Outils',
     },
   },
   footer: {
