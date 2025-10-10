@@ -621,7 +621,7 @@ export default {
   },
   topNav: {
     blog: {
-      title: 'Blogue',
+      title: 'Blog',
     },
     forum: {
       title: 'Fórum',
