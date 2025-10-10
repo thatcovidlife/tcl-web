@@ -182,7 +182,7 @@ export default {
     events: 'Événements à venir',
     latestNews: 'Dernières nouvelles',
     library: 'Bibliothèque scientifique',
-    phw: 'Veille de santé publique',
+    phw: 'Veille sanitaire',
     seeAllEvents: 'Voir tous les événements à venir et passés',
     seeAllLibrary: 'Voir tous les articles scientifiques',
     seeAllNews: 'Voir toutes les dernières nouvelles',
@@ -736,7 +736,7 @@ export default {
     video: 'Les dernières vidéos sur la COVID-19.',
   },
 
-  filtres: {
+  filters: {
     apply: 'Appliquer les filtres',
     close: 'Fermer',
     description: 'Utilisez ces filtres pour affiner votre recherche.',
