@@ -661,7 +661,7 @@ export default {
           'Una lista seleccionada de noticias, artículos científicos y eventos.',
         title: 'Últimas publicaciones',
       },
-      title: 'Últimas noticias',
+      title: 'Recientes',
     },
     other: {
       children: {

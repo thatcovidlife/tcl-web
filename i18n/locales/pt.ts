@@ -656,7 +656,7 @@ export default {
           'Uma lista selecionada de notícias, artigos científicos e eventos.',
         title: 'Últimas postagens',
       },
-      title: 'Últimas',
+      title: 'Recentes',
     },
     other: {
       children: {
