@@ -665,7 +665,7 @@ export default {
           "Une liste organisée d'actualités, d'articles scientifiques et événements.",
         title: 'Articles Récents',
       },
-      title: 'Récents',
+      title: 'Récent',
     },
     other: {
       children: {
