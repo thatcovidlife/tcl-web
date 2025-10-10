@@ -13,14 +13,14 @@ export default {
       },
       website: {
         invalid: 'Veuillez entrer une URL valide.',
-        max: 'L’URL de votre site web ne peut pas dépasser 255 caractères.',
+        max: "L'URL de votre site web ne peut pas dépasser 255 caractères.",
       },
     },
     help: {
       bio: 'Une courte biographie à propos de vous.',
       language: 'Sélectionnez votre langue préférée.',
       theme: 'Sélectionnez votre thème de couleur préféré.',
-      website: 'L’URL de votre site personnel ou professionnel.',
+      website: "L'URL de votre site personnel ou professionnel.",
     },
     labels: {
       bio: 'Biographie',
@@ -802,7 +802,7 @@ export default {
         required: 'Veuillez sélectionner un produit.',
       },
       subject: {
-        min: 'L’objet doit contenir au moins 5 caractères.',
+        min: "L'objet doit contenir au moins 5 caractères.",
         required: 'Veuillez entrer un objet.',
       },
       message: {
@@ -812,8 +812,8 @@ export default {
     },
     help: {
       email:
-        'Nous l’utiliserons uniquement pour vous répondre concernant votre demande.',
-      product: 'Sélectionnez le produit pour lequel vous avez besoin d’aide.',
+        "Nous l'utiliserons uniquement pour vous répondre concernant votre demande.",
+      product: "Sélectionnez le produit pour lequel vous avez besoin d'aide.",
       subject: 'Un court résumé de votre demande.',
       message: 'Fournissez autant de détails que possible sur votre demande.',
     },
