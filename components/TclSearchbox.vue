@@ -16,8 +16,6 @@ import {
 // Import shadcn-vue components
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import type { InputEvent } from 'happy-dom'
-
 const { locale, t } = useI18n()
 const localePath = useLocalePath()
 const router = useRouter()
