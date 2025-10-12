@@ -1,249 +1,169 @@
-<template>
-  <div class="contribute-page">
-    <h1 class="contribute-page__title" v-text="$t('contribute.title')" />
-
-    <template v-if="sent">
-      <p>{{ $t('contribute.sent') }}</p>
-      <NuxtLink :to="localePath('/')"
-        >{{ $t('contribute.back') }} &raquo;</NuxtLink
-      >
-    </template>
-
-    <template v-else>
-      <p v-text="$t('contribute.description')" />
-      <IForm class="contribute-page__form" v-model="form" @submit="onSubmit">
-        <IFormGroup required>
-          <IFormLabel>{{ $t('contribute.labels.name') }}</IFormLabel>
-          <IInput
-            name="from_name"
-            :placeholder="$t('contribute.placeholders.name')"
-            :error="['invalid']"
-          />
-          <IFormError for="from_name" :visible="['invalid']" />
-        </IFormGroup>
-        <IFormGroup required>
-          <IFormLabel>{{ $t('contribute.labels.email') }}</IFormLabel>
-          <IInput
-            name="email"
-            :placeholder="$t('contribute.placeholders.email')"
-            :error="['invalid']"
-          />
-          <IFormError for="email" :visible="['invalid']" />
-        </IFormGroup>
-        <IFormGroup required>
-          <IFormLabel>{{ $t('contribute.labels.category') }}</IFormLabel>
-          <ISelect
-            name="category"
-            :options="categories"
-            :placeholder="$t('contribute.placeholders.category')"
-            :error="['invalid']"
-          />
-          <IFormError for="category" :visible="['invalid']" />
-        </IFormGroup>
-        <IFormGroup required>
-          <IFormLabel>{{ $t('contribute.labels.description') }}</IFormLabel>
-          <ITextarea
-            name="description"
-            :placeholder="$t('contribute.placeholders.description')"
-            :error="['invalid']"
-          />
-          <IFormError for="description" :visible="['invalid']" />
-        </IFormGroup>
-        <IFormGroup>
-          <IFormLabel>{{ $t('contribute.labels.link') }}</IFormLabel>
-          <IInput
-            name="link"
-            :placeholder="$t('contribute.placeholders.link')"
-            :error="['invalid']"
-          />
-          <IFormError for="link" :visible="['invalid']" />
-        </IFormGroup>
-        <IFormGroup>
-          <NuxtTurnstile class="contribute-page__captcha" v-model="token" />
-        </IFormGroup>
-        <IFormGroup>
-          <IButton type="submit" :disabled="buttonDisabled">
-            <Icon
-              class="contribute-page__loading"
-              name="eos-icons:loading"
-              v-if="isSubmitting"
-            />
-            <template v-else>
-              {{ $t('contribute.labels.submit') }}
-            </template>
-          </IButton>
-        </IFormGroup>
-      </IForm>
-    </template>
-
-    <IToastContainer />
-  </div>
-</template>
-<script setup>
-import { useForm, useToast } from '@inkline/inkline'
-import { urlValidator } from '~/assets/utils/url-validator'
-import { DIRECTORY, NEWS, PRODUCT } from '~/assets/constants/types'
+<script setup lang="ts">
+import { motion } from 'motion-v'
+import { useForm } from 'vee-validate'
+import { toTypedSchema } from '@vee-validate/zod'
+import * as z from 'zod'
+import Textarea from '@/components/ui/textarea/Textarea.vue'
+import { toast } from 'vue-sonner'
+import { useUserStore } from '@/store/user'
 
 const { t } = useI18n()
-const localePath = useLocalePath()
-const toast = useToast()
+const userStore = useUserStore()
 
-const categories = [
-  { id: DIRECTORY, label: t(`layout.${DIRECTORY}`) },
-  { id: NEWS, label: t(`layout.${NEWS}`) },
-  { id: PRODUCT, label: t(`layout.${PRODUCT}`) },
-]
+const formSchema = toTypedSchema(
+  z.object({
+    from_name: z
+      .string({ required_error: t('contribute.errors.from_name.required') })
+      .min(3, t('contribute.errors.from_name.min')),
+    email: z
+      .string({ required_error: t('contribute.errors.email.required') })
+      .email(t('contribute.errors.email.invalid')),
+    category: z
+      .string({
+        required_error: t('contribute.errors.category.required'),
+      })
+      .min(1, t('contribute.errors.category.required')),
+    description: z
+      .string({ required_error: t('contribute.errors.description.required') })
+      .min(20, t('contribute.errors.description.min'))
+      .max(500),
+  }),
+)
 
-const { schema: form } = useForm({
-  category: {
-    validators: [
-      {
-        message: t('contribute.errors.category.required'),
-        name: 'required',
-      },
-    ],
-    value: '',
-  },
-  description: {
-    validators: [
-      {
-        message: t('contribute.errors.description.required'),
-        name: 'required',
-      },
-      {
-        message: t('contribute.errors.description.min'),
-        name: 'minLength',
-        value: 20,
-      },
-    ],
-    value: '',
-  },
-  email: {
-    validators: [
-      {
-        message: t('contribute.errors.email.required'),
-        name: 'required',
-      },
-      {
-        message: t('contribute.errors.email.invalid'),
-        name: 'email',
-      },
-    ],
-    value: '',
-  },
-  from_name: {
-    validators: [
-      {
-        message: t('contribute.errors.from_name.required'),
-        name: 'required',
-      },
-      {
-        message: t('contribute.errors.from_name.min'),
-        name: 'minLength',
-        value: 3,
-      },
-    ],
-    value: '',
-  },
-  link: {
-    validators: [
-      {
-        message: t('contribute.errors.link.invalid'),
-        name: 'custom',
-        validator: urlValidator,
-      },
-    ],
-    value: '',
+const { handleSubmit, resetForm } = useForm({
+  validationSchema: formSchema,
+  initialValues: {
+    from_name: userStore.info?.profile?.name || '',
+    email: userStore.info?.email || '',
+    category: '',
+    description: '',
   },
 })
 
-const isSubmitting = ref(false)
-const sent = ref(false)
+const onSubmit = handleSubmit((values) => {
+  if (!token.value) return
 
-const showErrorToast = () => {
-  toast.show({
-    title: t('contribute.toast.error.title'),
-    message: t('contribute.toast.error.message'),
-    color: 'danger',
+  const payload = {
+    ...values,
+  }
+
+  // Send to server
+  $fetch('/api/contribute', {
+    method: 'POST',
+    body: payload,
   })
-}
-
-const showSuccessToast = () => {
-  sent.value = true
-
-  toast.show({
-    title: t('contribute.toast.success.title'),
-    message: t('contribute.toast.success.message'),
-    color: 'success',
-  })
-}
-
-const onSubmit = async () => {
-  isSubmitting.value = true
-  sent.value = false
-
-  try {
-    const { data } = await useFetch('/api/contribute', {
-      method: 'POST',
-      body: form.value,
+    .then(() => {
+      toast.success(t('contribute.toast.success.title'), {
+        description: t('contribute.toast.success.message'),
+      })
     })
-
-    if (data.value?.ok) {
-      showSuccessToast()
-    } else {
-      showErrorToast()
-    }
-  } catch (e) {
-    showErrorToast()
-  } finally {
-    isSubmitting.value = false
-  }
-}
-
-const token = ref(null)
-const tokenValidation = computed(
-  () => token.value || process.env.NODE_ENV === 'development',
-)
-
-const buttonDisabled = computed(
-  () =>
-    form.value.untouched ||
-    form.value.invalid ||
-    !tokenValidation.value ||
-    isSubmitting.value,
-)
-
-useHead({
-  meta: [{ name: 'description', content: t('contribute.description') }],
-  title: t('contribute.pageTitle'),
+    .catch((error) => {
+      toast.error(t('contribute.toast.error.title'), {
+        description: t('contribute.toast.error.message'),
+      })
+    })
+    .finally(() => {
+      // Reset form
+      resetForm()
+      token.value = ''
+    })
 })
 
-umTrackView()
+const token = ref()
 </script>
-<style lang="scss" scoped>
-@import '~/assets/sass/mixins.scss';
-@import '@inkline/inkline/css/mixins';
 
-.contribute-page {
-  max-width: 34rem;
-  margin: 0 auto;
-
-  &__title {
-    @include title();
-  }
-
-  &__captcha {
-    margin-top: 7px;
-  }
-
-  &__loading {
-    margin: 4px 11px;
-  }
-
-  @include breakpoint-down('md') {
-    &__form {
-      width: 100%;
-    }
-  }
-}
-</style>
+<template>
+  <motion.div
+    :initial="{ opacity: 0, y: 20 }"
+    :animate="{ opacity: 1, y: 0 }"
+    :transition="{ duration: 0.5 }"
+    class="container max-w-3xl py-4 md:py-8 mx-auto"
+  >
+    <h1
+      class="font-pt antialiased text-4xl leading-[42px] font-bold mb-4 md:mb-8"
+    >
+      {{ t('contribute.title') }}
+    </h1>
+    <p class="text-base mb-4 md:mb-8">{{ t('contribute.description') }}</p>
+    <form @submit="onSubmit" class="grid gap-4 md:gap-8">
+      <FormField v-slot="{ componentField }" name="from_name">
+        <FormItem>
+          <FormLabel>{{ t('contribute.labels.name') }}</FormLabel>
+          <FormControl>
+            <Input
+              type="text"
+              :placeholder="t('contribute.placeholders.name')"
+              v-bind="componentField"
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+      <FormField v-slot="{ componentField }" name="email">
+        <FormItem>
+          <FormLabel>{{ t('contribute.labels.email') }}</FormLabel>
+          <FormControl>
+            <Input
+              type="text"
+              :placeholder="t('contribute.placeholders.email')"
+              v-bind="componentField"
+            />
+          </FormControl>
+          <FormDescription>
+            {{ t('contribute.help.email') }}
+          </FormDescription>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+      <FormField v-slot="{ componentField }" name="category">
+        <FormItem>
+          <FormLabel>{{ t('contribute.labels.category') }}</FormLabel>
+          <FormControl>
+            <Select v-bind="componentField">
+              <SelectTrigger>
+                <SelectValue
+                  :placeholder="t('contribute.placeholders.category')"
+                />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="Directory">
+                    {{ t('layout.directory') }}
+                  </SelectItem>
+                  <SelectItem value="News"> {{ t('layout.news') }} </SelectItem>
+                  <SelectItem value="PPE">
+                    {{ t('layout.product') }}
+                  </SelectItem>
+                  <SelectItem value="Video">
+                    {{ t('layout.video') }}
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+      <FormField v-slot="{ componentField }" name="description">
+        <FormItem>
+          <FormLabel>{{ t('contribute.labels.description') }}</FormLabel>
+          <FormControl>
+            <Textarea
+              type="text"
+              :placeholder="t('contribute.placeholders.description')"
+              v-bind="componentField"
+            />
+          </FormControl>
+          <FormDescription>
+            {{ t('contribute.help.description') }}
+          </FormDescription>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+      <NuxtTurnstile v-model="token" />
+      <Button type="submit" :disabled="!token">{{
+        t('contribute.labels.submit')
+      }}</Button>
+    </form>
+  </motion.div>
+</template>

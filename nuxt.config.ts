@@ -1,10 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  // devtools: { enabled: process.env.NODE_ENV === 'development' },
-  extends: ['nuxt-umami'],
-
-  devtools: { enabled: false },
-
   app: {
     head: {
       link: [
@@ -21,11 +16,7 @@ export default defineNuxtConfig({
         },
         {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap',
-        },
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Oswald:wght@200..700&display=swap',
+          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Oswald:wght@200..700&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap',
         },
         {
           rel: 'stylesheet',
@@ -41,95 +32,40 @@ export default defineNuxtConfig({
     },
   },
 
-  // @ts-ignore
-  modules: [
-    '@pinia/nuxt',
-    '@vueuse/nuxt',
-    '@inkline/plugin/nuxt',
-    '@nuxtjs/tailwindcss',
-    '@nuxtjs/i18n',
-    '@nuxtjs/sanity',
-    '@nuxtjs/turnstile',
-    'nuxt-cloudflare-analytics',
-    'nuxt-icon',
-    'nuxt-security',
-    '@nuxt/image',
-    'nuxt3-leaflet',
-    '@nuxtjs/seo',
-    'nuxt-auth-utils',
-    '@prisma/nuxt',
-    '@nuxt/test-utils/module',
-  ],
-
-  runtimeConfig: {
-    public: {
-      bypassLogin: process.env.APP_BYPASS_LOGIN === '1' || false,
-      forum: {
-        rootPath: '/forum',
-      },
-    },
-    turnstile: {
-      secretKey: process.env.TURNSTILE_SECRET_KEY,
-    },
+  colorMode: {
+    classSuffix: '',
   },
 
-  testUtils: {},
-
-  vite: {
-    resolve: {
-      alias: {
-        '.prisma/client/index-browser':
-          './node_modules/.prisma/client/index-browser.js',
-      },
-    },
-  },
-
-  // module options
-
-  cloudflareAnalytics: {
-    proxyPath: '/api/_ca/p',
-    token: process.env.CLOUDFLARE_ANALYTICS_TOKEN,
-  },
-
-  inkline: {
-    globals: {
-      colorMode: 'light',
-      colorModeStrategy: 'localStorage',
-    },
-  },
+  compatibilityDate: '2024-11-01',
+  devtools: { enabled: false },
 
   i18n: {
     baseUrl: `${process.env.NUXT_PUBLIC_SITE_URL}/`,
     defaultLocale: 'en',
-    langDir: 'locales',
     locales: [
       {
         code: 'en',
         iso: 'en-US',
         name: 'English',
-        flag: 'flag:us-1x1',
-        file: 'en.js',
+        file: 'en.ts',
       },
       {
         code: 'es',
         iso: 'es-MX',
         name: 'Español',
-        flag: 'flag:mx-1x1',
-        file: 'es.js',
+        file: 'es.ts',
       },
       {
         code: 'fr',
         iso: 'fr-FR',
         name: 'Français',
-        flag: 'flag:fr-1x1',
-        file: 'fr.js',
+        file: 'fr.ts',
       },
       {
         code: 'pt',
         iso: 'pt-BR',
         name: 'Português',
-        flag: 'flag:br-1x1',
-        file: 'pt.js',
+        file: 'pt.ts',
       },
     ],
   },
@@ -138,26 +74,131 @@ export default defineNuxtConfig({
     enabled: false,
   },
 
+  llms: {
+    domain: 'https://thatcovid.life',
+    title: 'That Covid Life',
+    description:
+      'This app serves as an educational tool that gathers links to news, research, and other resources relative to COVID-19.',
+    sections: [
+      {
+        title: 'Latest',
+        description: 'A curated list of news, scientific papers and events.',
+        links: [
+          {
+            title: 'News',
+            description: 'The latest news about COVID-19.',
+            href: '/news',
+          },
+          {
+            title: 'Scientific Library',
+            description:
+              'The latest research and scientific papers on COVID-19.',
+            href: '/library',
+          },
+          {
+            title: 'Videos',
+            description: 'The latest videos about COVID-19.',
+            href: '/video',
+          },
+          {
+            title: 'Events',
+            description: 'Upcoming and past events around COVID-19.',
+            href: '/event',
+          },
+          {
+            title: 'Public Health Watch',
+            description:
+              'The latest news on emerging pandemics, such as Mpox and H5N1.',
+            href: '/public-health',
+          },
+        ],
+      },
+      {
+        title: 'Other',
+        links: [
+          {
+            title: 'Covidnet',
+            description:
+              'A curated list of blogs and youtube channels about COVID-19.',
+            href: '/covidnet',
+          },
+          {
+            title: 'Directory',
+            description:
+              'A directory of covid-conscious businesses and healthcare providers.',
+            href: '/directory',
+          },
+          {
+            title: 'PPE',
+            description:
+              'A list of personal protective equipments, such as masks, air purifiers, etc...',
+            href: '/product',
+          },
+          {
+            title: 'Resources',
+            description: 'A list of useful resources around COVID-19.',
+            href: '/resource',
+          },
+        ],
+      },
+    ],
+  },
+
+  modules: [
+    '@formkit/auto-animate/nuxt',
+    '@nuxt/icon',
+    '@nuxt/image',
+    '@nuxt/test-utils/module',
+    '@nuxtjs/color-mode',
+    '@nuxtjs/i18n',
+    '@nuxtjs/leaflet',
+    '@nuxtjs/sanity',
+    '@nuxtjs/seo',
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/turnstile',
+    '@pinia/nuxt',
+    '@vueuse/nuxt',
+    'motion-v/nuxt',
+    'nuxt-auth-utils',
+    'nuxt-llms',
+    'nuxt-security',
+    'shadcn-nuxt',
+    '@sentry/nuxt/module',
+  ],
+
   ogImage: {
     enabled: false,
   },
 
   pinia: {
-    storesDirs: ['./assets/stores/**'],
-  },
-
-  prisma: {
-    installCLI: process.env.NODE_ENV === 'development',
-    installClient: process.env.NODE_ENV === 'development',
-    installStudio: false,
+    storesDirs: ['./store/**'],
   },
 
   robots: {
-    disallow: ['/account', '/forum/create', '/forum/my-posts'],
+    disallow: [
+      '/user/account',
+      '/user/bookmarks',
+      '/forum/create',
+      '/forum/my-posts',
+    ],
+  },
+
+  runtimeConfig: {
+    public: {
+      flagsmith: {
+        environmentId: process.env.FLAGSMITH_ENVIRONMENT_ID,
+      },
+      statsig: {
+        clientKey: process.env.STATSIG_CLIENT_ID,
+      },
+    },
+    turnstile: {
+      secretKey: process.env.TURNSTILE_SECRET_KEY,
+    },
   },
 
   sanity: {
-    apiVersion: '2021-10-21',
+    apiVersion: '2025-03-19',
     dataset: process.env.SANITY_DATASET,
     minimal: true,
     projectId: process.env.SANITY_PROJECTID,
@@ -187,14 +228,25 @@ export default defineNuxtConfig({
           'c.tile.openstreetmap.org',
           'gravatar.com',
           '*.ytimg.com',
+          'prodregistryv2.org',
         ],
       },
       crossOriginEmbedderPolicy: 'unsafe-none',
     },
   },
 
-  seoExperiments: {
-    enabled: false,
+  sentry: {
+    sourceMapsUploadOptions: {
+      org: 'that-covid-life-j1',
+      project: 'javascript-nuxt',
+    },
+
+    autoInjectServerSentry: 'top-level-import',
+  },
+
+  shadcn: {
+    prefix: '',
+    componentDir: './components/ui',
   },
 
   site: {
@@ -221,11 +273,36 @@ export default defineNuxtConfig({
     },
   },
 
+  sourcemap: {
+    client: 'hidden',
+  },
+
   tailwindcss: {
     viewer: false,
   },
 
   turnstile: {
     siteKey: process.env.TURNSTILE_SITE_KEY,
+  },
+
+  vite: {
+    build: {
+      rollupOptions: {
+        external: [
+          'react',
+          'react/jsx-runtime',
+          'react-dom/client',
+          'react-dom',
+          'styled-components',
+          'react-is',
+        ],
+      },
+    },
+    resolve: {
+      alias: {
+        '.prisma/client/index-browser':
+          './node_modules/.prisma/client/index-browser.js',
+      },
+    },
   },
 })
