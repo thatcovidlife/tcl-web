@@ -1,0 +1,28 @@
+**That Covid Life – Copilot Guide**
+
+- **Mission**: Nuxt 3 app curating COVID-19 resources; see pages like `pages/index.vue` that stitch Sanity content into Tcl-branded components.
+- **Nuxt Shell**: Layouts in `layouts/` wrap content with `TclHeader`, `TclBody`, `TclFooter`, and `components/ui/sonner` toasts; prefer slotting new views inside this shell.
+- **Content Source**: All editorial data lives in Sanity via `@nuxtjs/sanity`; GROQ queries live under `sanity/queries` and return typed results from `sanity/types.ts`.
+- **Query Pattern**: Use `composables/useGroqd.ts` to build typed GROQ and `useLazySanityQuery` wrapped in `Sentry.startSpan` (see `pages/index.vue`) to keep telemetry consistent.
+- **Sentry First**: Both client and server code instrument fetches with `@sentry/nuxt`; wrap DB/HTTP calls with `Sentry.startSpan` and surface failures with `captureException` as done in `server/api/__sitemap__/urls.get.ts`.
+- **Database Layer**: User data sits in Postgres via Drizzle (`lib/db/index.ts`, `lib/db/schema/index.ts`); mutations and reads live under `server/api/user/*.post.ts`.
+- **Auth Flow**: Auth0 is wired through `nuxt-auth-utils`; `server/routes/auth/auth0.get.ts` establishes the session and redirects based on the `i18n_redirected` cookie.
+- **Session State**: Pinia store `store/user.ts` pulls user info via `useApiRoutes` and sets the Sentry user context; keep this store the single source of truth for profile data.
+- **API Facade**: `composables/useApiRoutes.ts` centralises `/api/user` calls and normals errors with `consola`; extend it instead of calling `$fetch` ad hoc.
+- **External Feeds**: Server endpoints under `server/api/external/feeds` proxy YouTube RSS and blog OpenGraph data, parsing responses (`xml2js`, `open-graph-scraper`) before returning JSON.
+- **Stats & Flags**: `plugins/statsig.ts` provides a `StatsigClient` via `$statsig`; access it with `composables/useStatsig.ts` whenever gating UI.
+- **Protected Routes**: `middleware/redirect.global.ts` enforces auth for entries in `assets/constants/protected-pages.ts` and directory slugs; rely on `PROTECTED_PAGES` when adding new gated routes.
+- **Internationalization**: `@nuxtjs/i18n` drives locale-aware routing; use `useI18n`, `useLocalePath`, and locale-aware Sanity fields (`assets/constants/base-language.ts`) for new content.
+- **UI System**: Domain components live in `components/` with the `Tcl` prefix, while Shadcn UI primitives live in `components/ui`; use `lib/utils.ts` `cn()` for class merges.
+- **Styling**: Tailwind config (`tailwind.config.js`) sets brand colors/fonts; respect CSS variables (`--primary`, etc.) and the global safelisted `dark` class.
+- **Navigation Config**: `composables/useNavConfig.ts` and `assets/constants` files centralize menu items, filters, and tags; update these sources to sync UI menus.
+- **Developer Workflow**: Yarn 4 is enforced (`packageManager`); use `yarn dev`, `yarn build`, `yarn preview`, and `yarn lint` (Prettier write) during edits.
+- **Testing**: Vitest runs through `@nuxt/test-utils` (`vitest.config.ts`); place suite files under `tests/` like `tests/composables/useApiRoutes.nuxt.spec.ts` and use `registerEndpoint` for server mocks.
+- **Database Ops**: Drizzle CLI scripts (`yarn db:generate`, `yarn db:migrate`, `yarn db:push`) rely on `DZL_DATABASE_URL`; `lib/db/utils/migrate.ts` seeds with TSX via `yarn db:seed`.
+- **Env Contract**: Expect `NUXT_PUBLIC_SITE_URL`, `SANITY_*`, `TURNSTILE_*`, `FLAGSMITH_ENVIRONMENT_ID`, `STATSIG_CLIENT_ID`, `DZL_DATABASE_URL`, and Auth0 credentials for full functionality.
+- **Automation**: Husky installs on `postinstall`; commit messages follow Conventional Commits enforced by `commitlint.config.js`.
+- **LLM Manifest**: `nuxt.config.ts` exposes the `llms` section describing curated navigation—extend it when adding major content areas consumed by AI surfaces.
+- **Performance**: Nuxt security headers and CSP allowlisted domains live in `nuxt.config.ts`; include new assets/domains there to avoid runtime blocking.
+- **Sanity Types**: Regenerate GROQ types with `yarn sanity:gen` after schema changes (`sanity/schema.json`) to keep `sanity/types.ts` in sync.
+- **Error Pages**: On auth errors, users redirect to locale-specific home (`server/routes/auth/auth0.get.ts`); follow that pattern for future OAuth providers.
+- **Post Sign-Out**: `composables/useSignOut.ts` clears the session via `useUserSession().clear()` and reuses `useLocalePath`; reuse this helper.

@@ -1,0 +1,42 @@
+.article-body h3 {
+  font-family:
+    'PT Serif', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+  letter-spacing: 0.1rem;
+  line-height: 2rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.article-body p strong {
+  font-weight: 700;
+}
+
+.article-body p {
+  line-height: 1.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.article-body ul {
+  margin: 0 0 0.75rem 1.5rem;
+  list-style: disc;
+}
+
+.article-body ol {
+  margin: 0 0 0.75rem 1.5rem;
+  list-style: decimal;
+}
+
+.article-body a {
+  color: hsl(var(--primary));
+}
+
+.article-body a:hover {
+  text-decoration: underline;
+}
+
+.video-container > * {
+  width: 100% !important;
+  height: 100% !important;
+}

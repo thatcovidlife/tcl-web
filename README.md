@@ -1,28 +1,23 @@
 # Covid Conscious
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+This is the codebase for [That Covid Life](https://thatcovid.life).
 
 ## Setup
 
-Make sure to install the dependencies:
+Make sure to install dependencies:
 
 ```bash
 # yarn
-yarn install
-
-# npm
-npm install
-
-# pnpm
-pnpm install
+yarn install --immutable
 ```
 
 ## Development Server
 
-Start the development server on `http://localhost:3000`
+Start the development server on `http://localhost:3000`:
 
 ```bash
-npm run dev
+# yarn
+yarn dev
 ```
 
 ## Production
@@ -30,13 +25,15 @@ npm run dev
 Build the application for production:
 
 ```bash
-npm run build
+# yarn
+yarn build
 ```
 
 Locally preview production build:
 
 ```bash
-npm run preview
+# yarn
+yarn preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

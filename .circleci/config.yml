@@ -8,8 +8,9 @@ jobs:
       - image: node:20-alpine
     steps:
       - checkout
+      - run: 'corepack enable'
       - run: 'yarn --immutable'
-      - run: 'yarn prisma:generate'
+      # - run: 'yarn prisma:generate'
       - run: 'yarn test:ci'
 
 workflows:
