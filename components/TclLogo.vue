@@ -1,4 +1,4 @@
-<script setup leng="ts">
+<script setup lang="ts">
 import { motion } from 'motion-v'
 const colorMode = useColorMode()
 const theme = computed(() => colorMode.value)
