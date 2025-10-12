@@ -1,0 +1,4 @@
+lib/db/migrations
+.yarn
+coverage
+components/ui
