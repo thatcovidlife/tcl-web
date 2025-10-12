@@ -75,7 +75,7 @@ export default defineNuxtConfig({
   },
 
   llms: {
-    domain: process.env.NUXT_PUBLIC_SITE_URL,
+    domain: 'https://thatcovid.life',
     title: 'That Covid Life',
     description:
       'This app serves as an educational tool that gathers links to news, research, and other resources relative to COVID-19.',
