@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import type { PromptInputMessage } from '@/components/ai-elements/prompt-input'
+
 definePageMeta({
   layout: 'chatbot',
 })
-
-const text = ref('')
 </script>
 <template>
   <div class="h-full flex flex-col justify-center items-center w-full">
-    <TclPromptInput v-model="text" @submit="({ text }) => console.log(text)" />
+    <TclPromptInput @submit="(data: PromptInputMessage) => console.log(data)" />
   </div>
 </template>

@@ -29,10 +29,7 @@ const emit = defineEmits<{
   (e: 'submit', value: PromptInputMessage): void
 }>()
 
-const text = defineModel<string>({
-  type: String,
-  required: true,
-})
+const text = ref('')
 
 const { t } = useI18n()
 </script>
@@ -41,7 +38,7 @@ const { t } = useI18n()
     <PromptInput
       global-drop
       multiple
-      :on-submit="(message) => emit('submit', message)"
+      :on-submit="(message: PromptInputMessage) => emit('submit', message)"
     >
       <PromptInputBody>
         <PromptInputAttachments>
