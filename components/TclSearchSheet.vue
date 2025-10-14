@@ -1,5 +1,14 @@
 <script setup lang="ts">
-import { Search as SearchIcon } from 'lucide-vue-next'
+import {
+  Search as SearchIcon,
+  X as XIcon,
+  FileText as FileTextIcon,
+  BookOpen as BookOpenIcon,
+  AlertCircle as AlertCircleIcon,
+  Video as VideoIcon,
+  Calendar as CalendarIcon,
+  SearchX as SearchXIcon,
+} from 'lucide-vue-next'
 import QUICK_SEARCH_QUERY from '@/sanity/queries/quickSearch.sanity'
 import type { QUICK_SEARCH_QUERYResult } from '@/sanity/types'
 import { Button } from '@/components/ui/button'
