@@ -825,4 +825,10 @@ export default {
       },
     },
   },
+  chatbot: {
+    input: {
+      placeholder: 'Ask me anything about COVID-19...',
+      selectModel: 'Select a model',
+    },
+  },
 }
