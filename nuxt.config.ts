@@ -36,6 +36,14 @@ export default defineNuxtConfig({
     classSuffix: '',
   },
 
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false,
+      ignore: ['**/ai-elements/**/index.ts', '**/ai-elements/**/types.ts'],
+    },
+  ],
+
   compatibilityDate: '2024-11-01',
   devtools: { enabled: false },
 
