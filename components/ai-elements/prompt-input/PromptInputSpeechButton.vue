@@ -4,6 +4,7 @@ import { MicIcon } from 'lucide-vue-next'
 import { computed, onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
 import { useAttrs } from 'vue'
 import { cn } from '@/lib/utils'
+import { toast } from 'vue-sonner'
 
 import PromptInputButton from './PromptInputButton.vue'
 import { useOptionalPromptInputTextareaRef } from './prompt-input-context'
@@ -73,6 +74,7 @@ const targetTextareaRef = computed(
 )
 
 const isListening = ref(false)
+const hasPermissionError = ref(false)
 const recognition = shallowRef<SpeechRecognition | null>(null)
 const recognitionRef = shallowRef<SpeechRecognition | null>(null)
 
@@ -99,6 +101,7 @@ onMounted(() => {
   }
 
   speechRecognition.onresult = (event: SpeechRecognitionEvent) => {
+    // console.log('Speech recognition result:', event.results)
     let finalTranscript = ''
     for (let i = 0; i < event.results.length; i += 1) {
       const result = event.results.item(i)
@@ -111,21 +114,34 @@ onMounted(() => {
     }
 
     if (finalTranscript) {
-      const textarea = targetTextareaRef.value?.value
-      if (textarea) {
-        const currentValue = textarea.value
-        const nextValue = `${currentValue}${currentValue ? ' ' : ''}${finalTranscript}`
-        textarea.value = nextValue
-        // Trigger input listeners so v-model stays in sync.
-        textarea.dispatchEvent(new Event('input', { bubbles: true }))
-        props.onTranscriptionChange?.(nextValue)
-      }
+      props.onTranscriptionChange?.(finalTranscript)
     }
   }
 
   speechRecognition.onerror = (event: SpeechRecognitionErrorEvent) => {
     console.error('Speech recognition error:', event.error)
     isListening.value = false
+
+    if (event.error === 'not-allowed') {
+      hasPermissionError.value = true
+      toast.error('Microphone access denied', {
+        description:
+          'Please enable microphone permissions in your browser settings and reload the page.',
+        duration: 5000,
+      })
+    } else if (event.error === 'no-speech') {
+      toast.info('No speech detected', {
+        description: 'Please try speaking again.',
+        duration: 3000,
+      })
+    } else if (event.error === 'aborted') {
+      // User stopped - no need to show error
+    } else {
+      toast.error('Speech recognition error', {
+        description: `An error occurred: ${event.error}`,
+        duration: 4000,
+      })
+    }
   }
 
   recognition.value = speechRecognition
@@ -145,17 +161,37 @@ const buttonClass = computed(() =>
   cn(
     'relative transition-all duration-200',
     isListening.value && 'animate-pulse bg-accent text-accent-foreground',
+    hasPermissionError.value && 'opacity-50',
     attrs.class as string | undefined,
   ),
 )
 
-function toggleListening() {
+async function toggleListening() {
   const instance = recognition.value
-  if (!instance) return
+  if (!instance) {
+    toast.error('Speech recognition not available', {
+      description: 'Your browser does not support speech recognition.',
+      duration: 3000,
+    })
+    return
+  }
+
   if (isListening.value) {
     instance.stop()
   } else {
-    instance.start()
+    // Request microphone permission explicitly before starting
+    try {
+      await navigator.mediaDevices.getUserMedia({ audio: true })
+      hasPermissionError.value = false
+      instance.start()
+    } catch (error) {
+      console.error('Microphone permission error:', error)
+      hasPermissionError.value = true
+      toast.error('Microphone access required', {
+        description: 'Please allow microphone access to use voice input.',
+        duration: 5000,
+      })
+    }
   }
 }
 </script>

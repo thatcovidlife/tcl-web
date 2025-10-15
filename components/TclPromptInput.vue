@@ -31,6 +31,10 @@ const emit = defineEmits<{
 
 const text = ref('')
 
+const handleTranscriptionChange = (value: string) => {
+  text.value = value
+}
+
 const { t } = useI18n()
 </script>
 <template>
@@ -53,6 +57,11 @@ const { t } = useI18n()
       </PromptInputBody>
       <PromptInputToolbar>
         <PromptInputTools>
+          <PromptInputSpeechButton
+            size="sm"
+            variant="ghost"
+            :on-transcription-change="handleTranscriptionChange"
+          />
           <PromptInputModelSelect
             :model-value="model"
             @update:modelValue="updateModel"

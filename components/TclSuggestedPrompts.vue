@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { motion } from 'motion-v'
 import ShadButton from './ui/button/Button.vue'
+import type { PromptInputMessage } from '@/components/ai-elements/prompt-input'
 
 defineProps<{
-  sendMessage: (e: Event, input: string) => void
+  sendMessage: (e: Event, input: PromptInputMessage) => void
 }>()
 
 const { t } = useI18n()
@@ -40,7 +41,10 @@ const { loggedIn } = useUserSession()
           variant="ghost"
           class="text-left border rounded-xl px-4 py-3.5 text-sm flex-1 gap-1 sm:flex-col w-full h-auto justify-start items-start hover:cursor-pointer"
           :disabled="!loggedIn"
-          @click="(e: Event) => sendMessage(e, suggestedAction.action)"
+          @click="
+            (e: Event) =>
+              sendMessage(e, { text: suggestedAction.action, files: [] })
+          "
         >
           <p class="font-medium">{{ suggestedAction.title }}</p>
           <p class="text-muted-foreground">

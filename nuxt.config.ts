@@ -240,6 +240,9 @@ export default defineNuxtConfig({
         ],
       },
       crossOriginEmbedderPolicy: 'unsafe-none',
+      permissionsPolicy: {
+        microphone: ['self'],
+      },
     },
   },
 
