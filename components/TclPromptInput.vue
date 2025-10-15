@@ -29,13 +29,17 @@ const emit = defineEmits<{
   (e: 'submit', value: PromptInputMessage): void
 }>()
 
+const { t } = useI18n()
+const searchEnabled = ref(false)
 const text = ref('')
 
 const handleTranscriptionChange = (value: string) => {
   text.value = value
 }
 
-const { t } = useI18n()
+const toggleSearch = () => {
+  searchEnabled.value = !searchEnabled.value
+}
 </script>
 <template>
   <div class="w-full max-w-3xl">
@@ -81,7 +85,10 @@ const { t } = useI18n()
               </PromptInputModelSelectItem>
             </PromptInputModelSelectContent>
           </PromptInputModelSelect>
-          <PromptInputButton>
+          <PromptInputButton
+            @click="toggleSearch"
+            :variant="searchEnabled ? 'default' : 'ghost'"
+          >
             <Globe class="size-4" />
             <span>Search</span>
           </PromptInputButton>
