@@ -39,10 +39,10 @@ const messages = ref<PromptInputMessage[]>([])
     />
     <TclSuggestedPrompts
       v-if="messages.length === 0"
-      :send-message="
-        (e: Event, data: PromptInputMessage) => {
+      @send-message="
+        ({ e, input }) => {
           e.preventDefault()
-          messages.push(data)
+          messages.push(input)
         }
       "
     />

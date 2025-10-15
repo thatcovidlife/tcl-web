@@ -3,8 +3,8 @@ import { motion } from 'motion-v'
 import ShadButton from './ui/button/Button.vue'
 import type { PromptInputMessage } from '@/components/ai-elements/prompt-input'
 
-defineProps<{
-  sendMessage: (e: Event, input: PromptInputMessage) => void
+const emit = defineEmits<{
+  (e: 'send-message', value: { e: Event; input: PromptInputMessage }): void
 }>()
 
 const { t } = useI18n()
@@ -43,7 +43,10 @@ const { loggedIn } = useUserSession()
           :disabled="!loggedIn"
           @click="
             (e: Event) =>
-              sendMessage(e, { text: suggestedAction.action, files: [] })
+              emit('send-message', {
+                e,
+                input: { text: suggestedAction.action, files: [] },
+              })
           "
         >
           <p class="font-medium">{{ suggestedAction.title }}</p>
