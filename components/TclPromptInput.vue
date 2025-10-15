@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// import { Globe } from 'lucide-vue-next'
+import { Globe } from 'lucide-vue-next'
 import {
   PromptInput,
   PromptInputAttachment,
@@ -81,6 +81,10 @@ const { t } = useI18n()
               </PromptInputModelSelectItem>
             </PromptInputModelSelectContent>
           </PromptInputModelSelect>
+          <PromptInputButton>
+            <Globe class="size-4" />
+            <span>Search</span>
+          </PromptInputButton>
         </PromptInputTools>
         <PromptInputSubmit
           :status="submitStatus"
