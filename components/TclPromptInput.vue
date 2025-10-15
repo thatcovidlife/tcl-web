@@ -66,7 +66,7 @@ const { t } = useI18n()
             :model-value="model"
             @update:modelValue="updateModel"
           >
-            <PromptInputModelSelectTrigger>
+            <PromptInputModelSelectTrigger size="sm">
               <PromptInputModelSelectValue
                 :placeholder="t('chatbot.input.selectModel')"
               />
