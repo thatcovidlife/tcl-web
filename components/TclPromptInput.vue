@@ -42,7 +42,7 @@ const toggleSearch = () => {
 }
 </script>
 <template>
-  <div class="w-full max-w-3xl">
+  <div class="w-full max-w-3xl py-6">
     <PromptInput
       global-drop
       multiple
