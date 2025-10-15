@@ -830,5 +830,17 @@ export default {
       placeholder: 'Ask me anything about COVID-19...',
       selectModel: 'Select a model',
     },
+    suggestedPrompts: {
+      prompt1: {
+        title: 'How effective is masking',
+        label: 'against airborne pathogens?',
+        action: 'How effective is masking against airborne pathogens?',
+      },
+      prompt2: {
+        title: 'Where did the virus',
+        label: 'that causes COVID-19 come from?',
+        action: 'Where did the virus that causes COVID-19 come from?',
+      },
+    },
   },
 }

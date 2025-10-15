@@ -34,7 +34,7 @@ const text = ref('')
 const { t } = useI18n()
 </script>
 <template>
-  <div class="h-[230px] w-full max-w-[600px]">
+  <div class="w-full max-w-3xl">
     <PromptInput
       global-drop
       multiple
