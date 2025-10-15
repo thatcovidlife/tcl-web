@@ -830,6 +830,10 @@ export default {
       placeholder: 'Ask me anything about COVID-19...',
       selectModel: 'Select a model',
     },
+    models: {
+      'Qwen/Qwen3-30B-A3B': 'Basic',
+      'openai/gpt-oss-120b': 'Pro',
+    },
     overview: 'Your AI companion for navigating the COVID-19 pandemic.',
     suggestedPrompts: {
       prompt1: {

@@ -21,6 +21,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@ai-sdk/deepinfra": "^1.0.23",
     "@formkit/auto-animate": "^0.9.0",
     "@nuxt/icon": "1.15.0",
     "@nuxt/image": "1.11.0",
