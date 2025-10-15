@@ -37,6 +37,14 @@ const messages = ref<PromptInputMessage[]>([])
       :update-model="updateModel"
       @submit="(data: PromptInputMessage) => messages.push(data)"
     />
-    <TclSuggestedPrompts v-if="messages.length === 0" />
+    <TclSuggestedPrompts
+      v-if="messages.length === 0"
+      :send-message="
+        (e: Event, data: PromptInputMessage) => {
+          e.preventDefault()
+          messages.push(data)
+        }
+      "
+    />
   </div>
 </template>
