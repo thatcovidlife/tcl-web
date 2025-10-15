@@ -73,7 +73,11 @@ const { t } = useI18n()
             </PromptInputModelSelectContent>
           </PromptInputModelSelect>
         </PromptInputTools>
-        <PromptInputSubmit :status="submitStatus" />
+        <PromptInputSubmit
+          :status="submitStatus"
+          class="rounded-full"
+          :disabled="!text.trim().length"
+        />
       </PromptInputToolbar>
     </PromptInput>
   </div>

@@ -7,10 +7,12 @@ import { computed, useAttrs, useSlots } from 'vue'
 const props = withDefaults(
   defineProps<
     BaseInputGroupButtonProps & {
+      disabled?: boolean
       type?: string
     }
   >(),
   {
+    disabled: false,
     variant: 'ghost',
     type: 'button',
   },
@@ -35,6 +37,7 @@ const size = computed(() => {
     :size="size"
     :type="props.type"
     :variant="props.variant"
+    :disabled="props.disabled"
   >
     <slot />
   </InputGroupButton>
