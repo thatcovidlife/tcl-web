@@ -830,6 +830,7 @@ export default {
       placeholder: 'Ask me anything about COVID-19...',
       selectModel: 'Select a model',
     },
+    overview: 'Your AI companion for navigating the COVID-19 pandemic.',
     suggestedPrompts: {
       prompt1: {
         title: 'How effective is masking',
