@@ -11,7 +11,7 @@ import { model } from '@/lib/chat/providers'
 import { ratelimit } from '@/lib/chat/rate-limit'
 import { config } from '@/lib/chat/config'
 import { guardTool, searchTool } from '@/lib/chat/tools'
-import { llmInstructionsV4 } from '@/lib/chat/messages'
+import { fetchPrompt } from '@/lib/chat/prompt'
 
 import type { UIMessage } from 'ai'
 import type { modelID } from '@/lib/chat/providers'
@@ -38,13 +38,15 @@ export default defineLazyEventHandler(() => {
       return errorMessage
     }
 
+    const prompt = await fetchPrompt()
+
     const stream = createUIMessageStream({
       execute: ({ writer }) => {
         const result = streamText({
           model: model.languageModel(selectedModel as modelID),
           temperature: config.llmTemperature,
           maxOutputTokens: config.llmMaxTokens,
-          system: llmInstructionsV4,
+          system: prompt,
           messages: convertToModelMessages(messages),
           stopWhen: stepCountIs(10),
           tools: {
