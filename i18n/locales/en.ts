@@ -831,7 +831,7 @@ export default {
       selectModel: 'Select a model',
     },
     models: {
-      'Qwen/Qwen3-30B-A3B': 'Basic',
+      'openai/gpt-oss-20b': 'Basic',
       'openai/gpt-oss-120b': 'Pro',
     },
     overview: 'Your AI companion for navigating the COVID-19 pandemic.',
