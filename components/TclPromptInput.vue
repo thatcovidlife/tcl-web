@@ -18,15 +18,18 @@ import {
   type PromptInputStatus,
 } from '@/components/ai-elements/prompt-input'
 
+import type { modelID } from '@/lib/chat/providers'
+
 defineProps<{
-  models: { id: string; name: string }[]
-  model: string | null
+  models: { id: modelID; name: string }[]
+  model: modelID | null
   submitStatus: PromptInputStatus
-  updateModel: (model: string) => void
+  // updateModel: (model: string) => void
 }>()
 
 const emit = defineEmits<{
   (e: 'submit', value: PromptInputMessage): void
+  (e: 'update-model', value: modelID): void
 }>()
 
 const { t } = useI18n()
@@ -68,7 +71,7 @@ const toggleSearch = () => {
           />
           <PromptInputModelSelect
             :model-value="model"
-            @update:modelValue="updateModel"
+            @update:modelValue="(model: modelID) => emit('update-model', model)"
           >
             <PromptInputModelSelectTrigger size="sm">
               <PromptInputModelSelectValue
