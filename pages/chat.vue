@@ -77,7 +77,7 @@ const onSubmit = async (data: PromptInputMessage) => {
     class="h-full flex flex-col justify-center items-center w-full max-w-3xl px-8 mx-auto"
   >
     <TclChatOverview v-if="chat.messages.length === 0" />
-    <TclConversation v-else />
+    <TclConversation v-else :messages="chat.messages" />
     <TclPromptInput
       :model="selectedModel"
       :models="models"
