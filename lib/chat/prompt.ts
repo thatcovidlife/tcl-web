@@ -7,7 +7,8 @@ const client = new Client()
 export async function fetchPrompt() {
   try {
     const promptName = 'tcl-chatbot'
-    const prompt = await client._pullPrompt(promptName)
+    const call = await client._pullPrompt(promptName)
+    const prompt = JSON.parse(call)
 
     if (!prompt?.kwargs?.template) {
       throw new Error(`Prompt template not found for prompt: ${promptName}`)
