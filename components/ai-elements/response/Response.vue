@@ -2,7 +2,7 @@
 import { computed, useAttrs } from 'vue'
 import type { HTMLAttributes } from 'vue'
 import { cn } from '@/lib/utils'
-import MDC from '@nuxtjs/mdc/runtime/components/MDC.vue'
+import { renderMarkdown } from './markdown'
 
 defineOptions({ inheritAttrs: false, name: 'Response' })
 
@@ -17,39 +17,25 @@ type MDCValue = string | Record<string, unknown>
 
 const responseClasses = computed(() =>
   cn(
-    'size-full [&>*:first-child]:mt-0 [&>*:last-child]:mb-0',
+    'size-full [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 markdown-body',
     props.class,
     attrs.class as HTMLAttributes['class'],
   ),
 )
+const content = ref<string>('')
 
-const resolvedValue = computed<MDCValue>(() => {
-  if (props.value !== undefined) {
-    return props.value as MDCValue
-  }
-
-  const { value: attrValue } = attrs as Record<string, unknown>
-
-  if (attrValue !== undefined) {
-    return attrValue as MDCValue
-  }
-
-  return ''
-})
-
-const restAttrs = computed(() => {
-  const {
-    class: _class,
-    value: _value,
-    ...rest
-  } = attrs as Record<string, unknown>
-
-  return rest
-})
+watch(
+  () => props.value,
+  async (newValue) => {
+    if (typeof newValue === 'string') {
+      const rendered = await renderMarkdown(newValue)
+      content.value = rendered
+    }
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
-  <MDC :class="responseClasses" :value="resolvedValue" v-bind="restAttrs">
-    <slot />
-  </MDC>
+  <span :class="responseClasses" v-html="content" />
 </template>
