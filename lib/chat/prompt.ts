@@ -6,7 +6,7 @@ const client = new Client()
 
 export async function fetchPrompt() {
   try {
-    const promptName = 'tcl-chatbot'
+    const promptName = 'tcl-chatbot-stg' // TODO: revert this
     const call = await client._pullPrompt(promptName)
     const prompt = JSON.parse(call)
 
