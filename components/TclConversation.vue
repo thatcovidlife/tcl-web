@@ -82,9 +82,8 @@ const mapStep = (step: UIMessage['parts'][number], index: number) => {
       ).map((result) => ({
         domain: getHostname(result.payload.metadata.url),
         favicon: getFavicon(result.payload.metadata.url),
+        url: result.payload.metadata.url,
       }))
-
-      console.log('Search results:', results)
 
       return {
         id: index,
@@ -156,17 +155,21 @@ watch(
                   <ChainOfThoughtSearchResults
                     v-if="step?.results && step?.results.length > 0"
                   >
-                    <ChainOfThoughtSearchResult
+                    <NuxtLink
+                      :to="result.url"
                       v-for="(result, index) in step?.results"
                       :key="`cot-${message.id}-step-${step?.id}-result-${index}`"
+                      target="_blank"
                     >
-                      <NuxtImg
-                        :alt="`${result.domain} favicon`"
-                        :src="result.favicon"
-                        class="size-4 rounded"
-                      />
-                      {{ result.domain }}
-                    </ChainOfThoughtSearchResult>
+                      <ChainOfThoughtSearchResult>
+                        <NuxtImg
+                          :alt="`${result.domain} favicon`"
+                          :src="result.favicon"
+                          class="size-4 rounded"
+                        />
+                        {{ result.domain }}
+                      </ChainOfThoughtSearchResult>
+                    </NuxtLink>
                   </ChainOfThoughtSearchResults>
                 </ChainOfThoughtStep>
               </ChainOfThoughtContent>
