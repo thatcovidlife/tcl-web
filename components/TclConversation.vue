@@ -8,8 +8,8 @@ import {
   ChainOfThoughtHeader,
   ChainOfThoughtContent,
   ChainOfThoughtStep,
-  // ChainOfThoughtSearchResults,
-  // ChainOfThoughtSearchResult,
+  ChainOfThoughtSearchResults,
+  ChainOfThoughtSearchResult,
   // ChainOfThoughtImage,
 } from '@/components/ai-elements/chain-of-thought'
 import {
@@ -42,6 +42,10 @@ const onOpenChange = (isOpen: boolean) => {
 const userStore = useUserStore()
 
 const avatarUrl = ref<string | null>(null)
+
+const getHostname = (url: string) => new URL(url).hostname
+const getFavicon = (url: string) =>
+  `https://www.google.com/s2/favicons?sz=64&domain_url=${encodeURIComponent(url)}`
 
 const mapStep = (step: UIMessage['parts'][number], index: number) => {
   switch (step.type) {
@@ -76,8 +80,8 @@ const mapStep = (step: UIMessage['parts'][number], index: number) => {
         (step.output as any[]) || [],
         'payload.metadata.url',
       ).map((result) => ({
-        title: result.payload.metadata.title || 'The Lancet',
-        url: result.payload.metadata.url,
+        domain: getHostname(result.payload.metadata.url),
+        favicon: getFavicon(result.payload.metadata.url),
       }))
 
       console.log('Search results:', results)
@@ -91,6 +95,7 @@ const mapStep = (step: UIMessage['parts'][number], index: number) => {
             ? 'Search complete'
             : 'Searching...',
         content: `Found ${results.length} results in ${label}.`,
+        results,
       }
     default:
       return null
@@ -148,6 +153,21 @@ watch(
                   :label="step?.label || ''"
                 >
                   <p>{{ step?.content }}</p>
+                  <ChainOfThoughtSearchResults
+                    v-if="step?.results && step?.results.length > 0"
+                  >
+                    <ChainOfThoughtSearchResult
+                      v-for="(result, index) in step?.results"
+                      :key="`cot-${message.id}-step-${step?.id}-result-${index}`"
+                    >
+                      <NuxtImg
+                        :alt="`${result.domain} favicon`"
+                        :src="result.favicon"
+                        class="size-4 rounded"
+                      />
+                      {{ result.domain }}
+                    </ChainOfThoughtSearchResult>
+                  </ChainOfThoughtSearchResults>
                 </ChainOfThoughtStep>
               </ChainOfThoughtContent>
             </ChainOfThought>

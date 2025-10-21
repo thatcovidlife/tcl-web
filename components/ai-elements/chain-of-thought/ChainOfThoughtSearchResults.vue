@@ -7,7 +7,10 @@ defineOptions({ inheritAttrs: false })
 const attrs = useAttrs()
 
 const rootClasses = computed(() =>
-  cn('flex items-center gap-2', attrs.class as string | string[] | undefined),
+  cn(
+    'flex items-center gap-2 flex-wrap',
+    attrs.class as string | string[] | undefined,
+  ),
 )
 
 const restAttrs = computed(() => {

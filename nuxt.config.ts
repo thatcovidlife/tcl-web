@@ -237,6 +237,8 @@ export default defineNuxtConfig({
           'gravatar.com',
           '*.ytimg.com',
           'prodregistryv2.org',
+          'www.google.com',
+          '*.gstatic.com',
         ],
       },
       crossOriginEmbedderPolicy: 'unsafe-none',
