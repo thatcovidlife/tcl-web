@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // import { MessageSquareIcon } from 'lucide-vue-next'
-import { Search, Brain } from 'lucide-vue-next'
+import { Search, Brain, ShieldCheck } from 'lucide-vue-next'
+import { uniqBy } from 'lodash'
 
 import {
   ChainOfThought,
@@ -49,28 +50,31 @@ const mapStep = (step: UIMessage['parts'][number], index: number) => {
         id: index,
         icon: Brain,
         status: 'complete',
-        label: 'Thinking...',
+        label: 'Thought for a few seconds',
         content: step.text,
       }
     case 'tool-checkContent':
       return {
         id: index,
-        icon: Search,
+        icon: ShieldCheck,
         status: 'complete',
-        label: 'Searching...',
-        content: 'validating content...',
+        label: 'Analysis complete',
+        content: 'Validated user question against content policy',
       }
     case 'tool-getInformation':
+      const label =
+        // @ts-expect-error
+        step.input?.selectedCollection === 'lancet'
+          ? 'scientific papers'
+          : 'general documents'
+
       return {
         id: index,
         icon: Search,
         status: 'complete',
-        label: 'Searching...',
+        label: 'Search',
         // @ts-expect-error
-        content: `Found ${step.output?.length || 0} results in ${
-          // @ts-expect-error
-          step.input?.selectedCollection
-        }`,
+        content: `Found ${uniqBy(step.output, 'payload.metadata.url')?.length || 0} results in ${label}`,
       }
     default:
       return null
@@ -127,7 +131,7 @@ watch(
                   :status="<'pending' | 'active' | 'complete'>step?.status"
                   :label="step?.label || ''"
                 >
-                  {{ step?.content }}
+                  <p>{{ step?.content }}</p>
                 </ChainOfThoughtStep>
               </ChainOfThoughtContent>
             </ChainOfThought>
