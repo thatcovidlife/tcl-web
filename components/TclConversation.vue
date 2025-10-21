@@ -49,17 +49,21 @@ const mapStep = (step: UIMessage['parts'][number], index: number) => {
       return {
         id: index,
         icon: Brain,
-        status: 'complete',
-        label: 'Thought for a few seconds',
+        status: step.state === 'done' ? 'complete' : 'active',
+        label:
+          step.state === 'done' ? 'Thought for a few seconds' : 'Thinking...',
         content: step.text,
       }
     case 'tool-checkContent':
       return {
         id: index,
         icon: ShieldCheck,
-        status: 'complete',
-        label: 'Analysis complete',
-        content: 'Validated user question against content policy',
+        status: step.state === 'output-available' ? 'complete' : 'active',
+        label:
+          step.state === 'output-available'
+            ? 'Analysis complete'
+            : 'Analyzing...',
+        content: 'Validated user question against content policy.',
       }
     case 'tool-getInformation':
       const label =
@@ -68,13 +72,25 @@ const mapStep = (step: UIMessage['parts'][number], index: number) => {
           ? 'scientific papers'
           : 'general documents'
 
+      const results = uniqBy(
+        (step.output as any[]) || [],
+        'payload.metadata.url',
+      ).map((result) => ({
+        title: result.payload.metadata.title || 'The Lancet',
+        url: result.payload.metadata.url,
+      }))
+
+      console.log('Search results:', results)
+
       return {
         id: index,
         icon: Search,
-        status: 'complete',
-        label: 'Search',
-        // @ts-expect-error
-        content: `Found ${uniqBy(step.output, 'payload.metadata.url')?.length || 0} results in ${label}`,
+        status: step.state === 'output-available' ? 'complete' : 'active',
+        label:
+          step.state === 'output-available'
+            ? 'Search complete'
+            : 'Searching...',
+        content: `Found ${results.length} results in ${label}.`,
       }
     default:
       return null
