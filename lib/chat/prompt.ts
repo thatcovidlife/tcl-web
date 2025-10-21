@@ -1,12 +1,16 @@
 import { Client } from 'langsmith'
 import { captureException } from '@sentry/nuxt'
 import { llmInstructionsV4 } from './messages'
+import { config } from './config'
 
 const client = new Client()
 
 export async function fetchPrompt() {
   try {
-    const promptName = 'tcl-chatbot-stg' // TODO: revert this
+    const promptName = config.promptName
+    if (!promptName) {
+      throw new Error('Prompt name is not defined in configuration.')
+    }
     const call = await client._pullPrompt(promptName)
     const prompt = JSON.parse(call)
 

@@ -7,9 +7,9 @@ import {
   ChainOfThoughtHeader,
   ChainOfThoughtContent,
   ChainOfThoughtStep,
-  ChainOfThoughtSearchResults,
-  ChainOfThoughtSearchResult,
-  ChainOfThoughtImage,
+  // ChainOfThoughtSearchResults,
+  // ChainOfThoughtSearchResult,
+  // ChainOfThoughtImage,
 } from '@/components/ai-elements/chain-of-thought'
 import {
   Conversation,
@@ -82,10 +82,10 @@ watch(
               @update:open="onOpenChange"
             >
               <ChainOfThoughtHeader />
-              <ChainOfThoughtContent
-                v-for="step in getChainOfThought(message.parts)"
-              >
+              <ChainOfThoughtContent>
                 <ChainOfThoughtStep
+                  v-for="(step, stepIndex) in getChainOfThought(message.parts)"
+                  :key="`cot-step-${message.id}-step-${stepIndex}`"
                   :icon="step.type === 'reasoning' ? Brain : Search"
                   status="complete"
                   :label="

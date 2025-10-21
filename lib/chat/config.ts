@@ -14,6 +14,7 @@ export const config = {
   qdrantKey: process.env.QDRANT_KEY,
   qdrantMaxResults: parseInt(process.env.DEEPINFRA_MAX_RESULTS!),
   qdrantUrl: process.env.QDRANT_URL,
+  promptName: process.env.LANGSMITH_PROMPT_NAME,
   // rewriterModel: process.env.DEEPINFRA_REWRITER_MODEL,
   // workflowName: process.env.WORKFLOW_NAME,
   upstashToken: process.env.UPSTASH_REDIS_REST_TOKEN,
