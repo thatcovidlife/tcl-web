@@ -46,7 +46,7 @@ const mapStep = (step: UIMessage['parts'][number], index: number) => {
   switch (step.type) {
     case 'reasoning':
       return {
-        id: `cot-step-${index}`,
+        id: index,
         icon: Brain,
         status: 'complete',
         label: 'Thinking...',
@@ -54,7 +54,7 @@ const mapStep = (step: UIMessage['parts'][number], index: number) => {
       }
     case 'tool-checkContent':
       return {
-        id: `cot-step-${index}`,
+        id: index,
         icon: Search,
         status: 'complete',
         label: 'Searching...',
@@ -62,11 +62,13 @@ const mapStep = (step: UIMessage['parts'][number], index: number) => {
       }
     case 'tool-getInformation':
       return {
-        id: `cot-step-${index}`,
+        id: index,
         icon: Search,
         status: 'complete',
         label: 'Searching...',
+        // @ts-expect-error
         content: `Found ${step.output?.length || 0} results in ${
+          // @ts-expect-error
           step.input?.selectedCollection
         }`,
       }
@@ -120,9 +122,9 @@ watch(
               <ChainOfThoughtContent>
                 <ChainOfThoughtStep
                   v-for="step in getChainOfThought(message.parts)"
-                  :key="step?.id"
+                  :key="`cot-${message.id}-step-${step?.id}`"
                   :icon="step?.icon"
-                  :status="step?.status"
+                  :status="<'pending' | 'active' | 'complete'>step?.status"
                   :label="step?.label || ''"
                 >
                   {{ step?.content }}
