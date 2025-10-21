@@ -42,12 +42,47 @@ const userStore = useUserStore()
 
 const avatarUrl = ref<string | null>(null)
 
+const mapStep = (step: UIMessage['parts'][number], index: number) => {
+  switch (step.type) {
+    case 'reasoning':
+      return {
+        id: `cot-step-${index}`,
+        icon: Brain,
+        status: 'complete',
+        label: 'Thinking...',
+        content: step.text,
+      }
+    case 'tool-checkContent':
+      return {
+        id: `cot-step-${index}`,
+        icon: Search,
+        status: 'complete',
+        label: 'Searching...',
+        content: 'validating content...',
+      }
+    case 'tool-getInformation':
+      return {
+        id: `cot-step-${index}`,
+        icon: Search,
+        status: 'complete',
+        label: 'Searching...',
+        content: `Found ${step.output?.length || 0} results in ${
+          step.input?.selectedCollection
+        }`,
+      }
+    default:
+      return null
+  }
+}
+
 const getChainOfThought = (parts: UIMessage['parts']) => {
-  return parts.filter((part) =>
-    ['reasoning', 'tool-checkContent', 'tool-getInformation'].includes(
-      part.type,
-    ),
-  )
+  return parts
+    .filter((part) =>
+      ['reasoning', 'tool-checkContent', 'tool-getInformation'].includes(
+        part.type,
+      ),
+    )
+    .map(mapStep)
 }
 
 watch(
@@ -84,24 +119,13 @@ watch(
               <ChainOfThoughtHeader />
               <ChainOfThoughtContent>
                 <ChainOfThoughtStep
-                  v-for="(step, stepIndex) in getChainOfThought(message.parts)"
-                  :key="`cot-step-${message.id}-step-${stepIndex}`"
-                  :icon="step.type === 'reasoning' ? Brain : Search"
-                  status="complete"
-                  :label="
-                    step.type === 'reasoning' ? 'Thinking...' : 'Searching...'
-                  "
+                  v-for="step in getChainOfThought(message.parts)"
+                  :key="step?.id"
+                  :icon="step?.icon"
+                  :status="step?.status"
+                  :label="step?.label || ''"
                 >
-                  <span v-if="step.type === 'reasoning'">
-                    {{ step.text }}
-                  </span>
-                  <span v-if="step.type === 'tool-checkContent'">
-                    validating content...
-                  </span>
-                  <span v-if="step.type === 'tool-getInformation'">
-                    Found {{ step.output?.length || 0 }} results in
-                    {{ step.input?.selectedCollection }}
-                  </span>
+                  {{ step?.content }}
                 </ChainOfThoughtStep>
               </ChainOfThoughtContent>
             </ChainOfThought>
