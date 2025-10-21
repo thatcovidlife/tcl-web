@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, useAttrs } from 'vue'
-import { Brain, ChevronDown } from 'lucide-vue-next'
+import { Brain, Link, ChevronDown } from 'lucide-vue-next'
 import { cn } from '@/lib/utils'
 import { CollapsibleTrigger } from '@/components/ui/collapsible'
 import { useChainOfThought } from './chain-of-thought-context'
@@ -26,7 +26,7 @@ const restAttrs = computed(() => {
 
 <template>
   <CollapsibleTrigger :class="triggerClasses" v-bind="restAttrs">
-    <Brain class="size-4" />
+    <Link class="size-4" />
     <span class="flex-1 text-left">
       <slot>Chain of Thought</slot>
     </span>

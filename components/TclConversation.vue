@@ -1,11 +1,21 @@
 <script setup lang="ts">
 // import { MessageSquareIcon } from 'lucide-vue-next'
+import { Search, Brain } from 'lucide-vue-next'
 
+import {
+  ChainOfThought,
+  ChainOfThoughtHeader,
+  ChainOfThoughtContent,
+  ChainOfThoughtStep,
+  ChainOfThoughtSearchResults,
+  ChainOfThoughtSearchResult,
+  ChainOfThoughtImage,
+} from '@/components/ai-elements/chain-of-thought'
 import {
   Conversation,
   ConversationContent,
   // ConversationEmptyState,
-  ConversationScrollButton,
+  // ConversationScrollButton,
 } from '@/components/ai-elements/conversation'
 import {
   Message,
@@ -23,9 +33,22 @@ defineProps<{
   messages: UIMessage[]
 }>()
 
+const open = ref(true)
+const onOpenChange = (isOpen: boolean) => {
+  open.value = isOpen
+}
+
 const userStore = useUserStore()
 
 const avatarUrl = ref<string | null>(null)
+
+const getChainOfThought = (parts: UIMessage['parts']) => {
+  return parts.filter((part) =>
+    ['reasoning', 'tool-checkContent', 'tool-getInformation'].includes(
+      part.type,
+    ),
+  )
+}
 
 watch(
   () => userStore?.info?.email,
@@ -41,23 +64,6 @@ watch(
   >
     <Conversation class="relative size-full">
       <ConversationContent>
-        <!-- <ConversationEmptyState
-          v-if="messages.length === 0"
-          :icon="MessageSquareIcon"
-          icon-class="size-6"
-          title="Start a conversation"
-          description="Messages will appear here as the conversation progresses."
-        /> -->
-        <!-- <template v-else> -->
-        <!-- <Message
-          v-for="(message, index) in messages"
-          :key="message.id"
-          :from="message.role"
-        >
-          <MessageContent>{{ message }}</MessageContent>
-          <MessageAvatar :name="message.name" :src="message.avatar" />
-        </Message> -->
-        <!-- </template> -->
         <template v-for="message in messages" :key="message.id">
           <Message v-if="message.role === 'user'" from="user">
             <MessageContent class="rounded-br-none">{{
@@ -70,6 +76,35 @@ watch(
             />
           </Message>
           <template v-else-if="message.role === 'assistant'">
+            <ChainOfThought
+              v-model="open"
+              :default-open="open"
+              @update:open="onOpenChange"
+            >
+              <ChainOfThoughtHeader />
+              <ChainOfThoughtContent
+                v-for="step in getChainOfThought(message.parts)"
+              >
+                <ChainOfThoughtStep
+                  :icon="step.type === 'reasoning' ? Brain : Search"
+                  status="complete"
+                  :label="
+                    step.type === 'reasoning' ? 'Thinking...' : 'Searching...'
+                  "
+                >
+                  <span v-if="step.type === 'reasoning'">
+                    {{ step.text }}
+                  </span>
+                  <span v-if="step.type === 'tool-checkContent'">
+                    validating content...
+                  </span>
+                  <span v-if="step.type === 'tool-getInformation'">
+                    Found {{ step.output?.length || 0 }} results in
+                    {{ step.input?.selectedCollection }}
+                  </span>
+                </ChainOfThoughtStep>
+              </ChainOfThoughtContent>
+            </ChainOfThought>
             <template
               v-for="(part, index) in message.parts"
               :key="`message-${message.id}-part-${index}`"
