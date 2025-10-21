@@ -12,12 +12,13 @@
 }
 
 .markdown-body p {
+  font-size: theme('fontSize.base');
   margin-bottom: theme('spacing.4');
 }
 
 .markdown-body p strong {
   font-weight: bold;
-  font-size: 1rem;
+  /* font-size: 1rem; */
 }
 
 .markdown-body ol,
@@ -50,12 +51,12 @@
 }
 
 .markdown-body table thead {
-  background-color: theme('colors.muted.foreground');
+  /* background-color: theme('colors.muted.foreground'); */
   font-size: 0.9rem;
   font-weight: bold;
   text-align: left;
   vertical-align: top;
-  white-space: nowrap;
+  /* white-space: nowrap; */
 }
 
 .markdown-body table tbody {

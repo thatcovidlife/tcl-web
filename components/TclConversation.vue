@@ -74,17 +74,16 @@ watch(
               v-for="(part, index) in message.parts"
               :key="`message-${message.id}-part-${index}`"
             >
-              <Message v-if="part.type === 'text'" from="assistant">
-                <MessageContent class="rounded-bl-none">
-                  <Response :value="part.text" />
-                </MessageContent>
-                <MessageAvatar name="That Covid Life AI" src="/ai-avatar.png" />
-              </Message>
+              <Response
+                class="mt-4 block"
+                v-if="part.type === 'text'"
+                :value="part.text"
+              />
             </template>
           </template>
         </template>
       </ConversationContent>
-      <ConversationScrollButton />
+      <!-- <ConversationScrollButton /> -->
     </Conversation>
   </div>
 </template>
