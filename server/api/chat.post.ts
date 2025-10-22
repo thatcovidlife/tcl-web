@@ -18,6 +18,9 @@ import type { modelID } from '@/lib/chat/providers'
 
 export default defineLazyEventHandler(() => {
   return defineEventHandler(async (event) => {
+    // bypass XSS validator for this endpoint
+    event.node.req.headers['x-skip-xss-validator'] = 'true'
+
     const {
       messages,
       selectedModel,
@@ -67,6 +70,11 @@ export default defineLazyEventHandler(() => {
           // onStepFinish: ({ stepType }) => {
           //   console.log('Step finished:', stepType)
           // },
+          onError: (error) => {
+            captureException(error, {
+              extra: { userId, selectedModel, messages },
+            })
+          },
         })
 
         writer.merge(

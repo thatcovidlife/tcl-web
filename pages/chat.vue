@@ -66,6 +66,7 @@ const onSubmit = async (data: PromptInputMessage) => {
       },
     )
   } catch (error) {
+    captureException(error)
     console.error('Error sending message:', error)
   }
 }
