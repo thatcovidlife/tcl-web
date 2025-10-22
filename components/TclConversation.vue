@@ -67,7 +67,10 @@ const mapStep = (step: UIMessage['parts'][number], index: number) => {
           step.state === 'output-available'
             ? 'Analysis complete'
             : 'Analyzing...',
-        content: 'Validated user question against content policy.',
+        content:
+          step.state === 'output-available'
+            ? 'Validated user question against content policy.'
+            : 'Validating...',
       }
     case 'tool-getInformation':
       const label =
@@ -93,7 +96,10 @@ const mapStep = (step: UIMessage['parts'][number], index: number) => {
           step.state === 'output-available'
             ? 'Search complete'
             : 'Searching...',
-        content: `Found ${results.length} results in ${label}.`,
+        content:
+          step.state === 'output-available'
+            ? `Found ${results.length} results in ${label}.`
+            : 'Digging through the archives...',
         results,
       }
     default:

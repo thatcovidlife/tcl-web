@@ -7,10 +7,6 @@ import type { PromptInputMessage } from '@/components/ai-elements/prompt-input'
 import TclSuggestedPrompts from '@/components/TclSuggestedPrompts.vue'
 import { defaultModel, MODELS } from '@/lib/chat/providers'
 
-import sampleMessages from '@/assets/data/sample'
-
-// import { cn } from '@/lib/utils'
-
 import type { modelID } from '@/lib/chat/providers'
 
 definePageMeta({
@@ -78,9 +74,8 @@ const onSubmit = async (data: PromptInputMessage) => {
   <div
     class="h-full flex flex-col justify-center items-center w-full max-w-3xl px-8 mx-auto"
   >
-    <!-- <TclChatOverview v-if="chat.messages.length === 0" /> -->
-    <!-- <TclConversation v-else :messages="chat.messages" /> -->
-    <TclConversation :messages="sampleMessages" />
+    <TclChatOverview v-if="chat.messages.length === 0" />
+    <TclConversation v-else :messages="chat.messages" />
     <TclPromptInput
       :model="selectedModel"
       :models="models"
@@ -88,7 +83,7 @@ const onSubmit = async (data: PromptInputMessage) => {
       @submit="onSubmit"
       @update-model="setSelectedModel"
     />
-    <!-- <TclSuggestedPrompts
+    <TclSuggestedPrompts
       v-if="chat.messages.length === 0"
       @send-message="
         ({ e, input }) => {
@@ -96,6 +91,6 @@ const onSubmit = async (data: PromptInputMessage) => {
           onSubmit(input)
         }
       "
-    /> -->
+    />
   </div>
 </template>
