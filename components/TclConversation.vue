@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// import { MessageSquareIcon } from 'lucide-vue-next'
 import { Search, Brain, ShieldCheck } from 'lucide-vue-next'
 import { uniqBy } from 'lodash'
 
@@ -10,13 +9,10 @@ import {
   ChainOfThoughtStep,
   ChainOfThoughtSearchResults,
   ChainOfThoughtSearchResult,
-  // ChainOfThoughtImage,
 } from '@/components/ai-elements/chain-of-thought'
 import {
   Conversation,
   ConversationContent,
-  // ConversationEmptyState,
-  // ConversationScrollButton,
 } from '@/components/ai-elements/conversation'
 import {
   Message,
@@ -30,16 +26,26 @@ import { getGravatarUrl } from '@/assets/utils/gravatar'
 
 import type { TextUIPart, UIMessage } from 'ai'
 
-defineProps<{
+const props = defineProps<{
   messages: UIMessage[]
 }>()
 
-const open = ref(true)
-const onOpenChange = (isOpen: boolean) => {
-  open.value = isOpen
+const userStore = useUserStore()
+
+// Map to store open state for each assistant message by id
+const messageOpenStates = reactive<Record<string, boolean>>({})
+
+const onOpenChange = (messageId: string, isOpen: boolean) => {
+  messageOpenStates[messageId] = isOpen
 }
 
-const userStore = useUserStore()
+const getOpenState = (messageId: string) => {
+  return messageOpenStates[messageId] ?? true
+}
+
+const hasTextResponse = (parts: UIMessage['parts']) => {
+  return parts.some((part) => part.type === 'text')
+}
 
 const avatarUrl = ref<string | null>(null)
 
@@ -124,6 +130,25 @@ watch(
   },
   { immediate: true },
 )
+
+// Watch messages and auto-close chain of thought when text response arrives
+watch(
+  () => props.messages,
+  (msgs) => {
+    msgs.forEach((message) => {
+      if (message.role === 'assistant') {
+        // Auto-close when text response is present
+        if (hasTextResponse(message.parts)) {
+          messageOpenStates[message.id] = false
+        } else {
+          // Keep open if still streaming
+          messageOpenStates[message.id] = true
+        }
+      }
+    })
+  },
+  { deep: true },
+)
 </script>
 <template>
   <div
@@ -131,7 +156,7 @@ watch(
   >
     <Conversation class="relative size-full">
       <ConversationContent>
-        <template v-for="message in messages" :key="message.id">
+        <template v-for="message in props.messages" :key="message.id">
           <Message v-if="message.role === 'user'" from="user">
             <MessageContent class="rounded-br-none">{{
               (message.parts[0] as TextUIPart).text
@@ -144,9 +169,8 @@ watch(
           </Message>
           <template v-else-if="message.role === 'assistant'">
             <ChainOfThought
-              v-model="open"
-              :default-open="open"
-              @update:open="onOpenChange"
+              :model-value="getOpenState(message.id)"
+              @update:model-value="(isOpen) => onOpenChange(message.id, isOpen)"
             >
               <ChainOfThoughtHeader />
               <ChainOfThoughtContent>

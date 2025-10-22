@@ -48,9 +48,9 @@ const chat = new Chat({
   },
 })
 
-const isLoading = computed(
-  () => chat.status === 'streaming' || chat.status === 'submitted',
-)
+// const isLoading = computed(
+//   () => chat.status === 'streaming' || chat.status === 'submitted',
+// )
 
 const onSubmit = async (data: PromptInputMessage) => {
   try {
