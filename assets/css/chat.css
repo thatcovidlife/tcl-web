@@ -36,9 +36,18 @@
   list-style-type: disc;
 }
 
+.markdown-body > ol,
+.markdown-body > ul {
+  margin-left: theme('spacing.2');
+}
+
 .markdown-body ol > li,
 .markdown-body ul > li {
   margin-bottom: theme('spacing.2');
+}
+
+.markdown-body li > p {
+  display: inline-block;
 }
 
 .markdown-body a:hover {
