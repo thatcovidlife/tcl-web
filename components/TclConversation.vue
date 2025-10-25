@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Search, Brain, ShieldCheck } from 'lucide-vue-next'
-import { uniqBy } from 'lodash'
+import lodash from 'lodash'
 
 import {
   ChainOfThought,
@@ -30,6 +30,7 @@ const props = defineProps<{
   messages: UIMessage[]
 }>()
 
+const { uniqBy } = lodash
 const userStore = useUserStore()
 
 // Map to store open state for each assistant message by id
