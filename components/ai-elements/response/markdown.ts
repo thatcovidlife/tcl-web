@@ -1,5 +1,5 @@
 import { marked } from 'marked'
-import DOMPurify from 'isomorphic-dompurify'
+// import DOMPurify from 'isomorphic-dompurify'
 
 // Optional: Configure Marked
 marked.setOptions({
@@ -12,5 +12,6 @@ marked.setOptions({
 // Convert markdown → sanitized HTML
 export async function renderMarkdown(markdown: string): Promise<string> {
   const html = await marked.parse(markdown)
-  return DOMPurify.sanitize(html)
+  // return DOMPurify.sanitize(html)
+  return html
 }
