@@ -16,6 +16,11 @@ definePageMeta({
 const { t } = useI18n()
 const user = useUserSession()
 
+const route = useRoute()
+const router = useRouter()
+
+const conversationId = ref(route.query?.id || crypto.randomUUID())
+
 const models = computed(() => {
   return MODELS.map((model) => ({
     id: model as modelID,
@@ -53,6 +58,10 @@ const chat = new Chat({
 // )
 
 const onSubmit = async (data: PromptInputMessage) => {
+  if (!route.query.id) {
+    router.replace({ query: { id: conversationId.value } })
+  }
+
   try {
     await chat.sendMessage(
       {
