@@ -11,6 +11,10 @@
   margin-bottom: theme('spacing.2');
 }
 
+.markdown-body hr {
+  display: none;
+}
+
 .markdown-body p {
   font-size: theme('fontSize.base');
   margin-bottom: theme('spacing.4');
@@ -47,7 +51,7 @@
 }
 
 .markdown-body li > p {
-  display: inline-block;
+  display: inline;
 }
 
 .markdown-body a:hover {
