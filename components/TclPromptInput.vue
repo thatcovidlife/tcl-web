@@ -88,13 +88,13 @@ const toggleSearch = () => {
               </PromptInputModelSelectItem>
             </PromptInputModelSelectContent>
           </PromptInputModelSelect>
-          <PromptInputButton
+          <!-- <PromptInputButton
             @click="toggleSearch"
             :variant="searchEnabled ? 'default' : 'ghost'"
           >
             <Globe class="size-4" />
             <span>Search</span>
-          </PromptInputButton>
+          </PromptInputButton> -->
         </PromptInputTools>
         <PromptInputSubmit
           :status="submitStatus"
