@@ -845,4 +845,28 @@ export default {
       },
     },
   },
+  chatbot: {
+    input: {
+      placeholder: 'Pregúntame lo que quieras sobre el COVID-19...',
+      selectModel: 'Selecciona un modelo',
+    },
+    models: {
+      'openai/gpt-oss-20b': 'Básico',
+      'openai/gpt-oss-120b': 'Pro',
+    },
+    overview: 'Tu compañero de IA para navegar la pandemia de COVID-19.',
+    suggestedPrompts: {
+      prompt1: {
+        title: '¿Qué tan efectivo es el uso de mascarillas',
+        label: 'contra los patógenos en el aire?',
+        action:
+          '¿Qué tan efectivo es el uso de mascarillas contra los patógenos en el aire?',
+      },
+      prompt2: {
+        title: '¿De dónde proviene el virus',
+        label: 'que causa el COVID-19?',
+        action: '¿De dónde proviene el virus que causa el COVID-19?',
+      },
+    },
+  },
 }

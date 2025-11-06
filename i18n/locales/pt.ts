@@ -838,4 +838,29 @@ export default {
       },
     },
   },
+  chatbot: {
+    input: {
+      placeholder: 'Pergunte-me qualquer coisa sobre a COVID-19...',
+      selectModel: 'Selecione um modelo',
+    },
+    models: {
+      'openai/gpt-oss-20b': 'Básico',
+      'openai/gpt-oss-120b': 'Pro',
+    },
+    overview:
+      'Seu companheiro de IA para navegar durante a pandemia de COVID-19.',
+    suggestedPrompts: {
+      prompt1: {
+        title: 'Quão eficaz é o uso de máscaras',
+        label: 'contra patógenos transmitidos pelo ar?',
+        action:
+          'Quão eficaz é o uso de máscaras contra patógenos transmitidos pelo ar?',
+      },
+      prompt2: {
+        title: 'De onde veio o vírus',
+        label: 'que causa a COVID-19?',
+        action: 'De onde veio o vírus que causa a COVID-19?',
+      },
+    },
+  },
 }

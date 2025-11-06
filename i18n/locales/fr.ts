@@ -849,4 +849,29 @@ export default {
       },
     },
   },
+  chatbot: {
+    input: {
+      placeholder: "Demandez-moi n'importe quoi sur la COVID-19...",
+      selectModel: 'Sélectionnez un modèle',
+    },
+    models: {
+      'openai/gpt-oss-20b': 'Basique',
+      'openai/gpt-oss-120b': 'Pro',
+    },
+    overview:
+      'Votre compagnon IA pour naviguer pendant la pandémie de COVID-19.',
+    suggestedPrompts: {
+      prompt1: {
+        title: "Quelle est l'efficacité du port du masque",
+        label: 'contre les agents pathogènes aériens ?',
+        action:
+          "Quelle est l'efficacité du port du masque contre les agents pathogènes aériens ?",
+      },
+      prompt2: {
+        title: "D'où vient le virus",
+        label: 'responsable de la COVID-19 ?',
+        action: "D'où vient le virus responsable de la COVID-19 ?",
+      },
+    },
+  },
 }
