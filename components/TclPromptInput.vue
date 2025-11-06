@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Globe } from 'lucide-vue-next'
+// import { Globe } from 'lucide-vue-next'
 import {
   PromptInput,
   PromptInputAttachment,
@@ -20,7 +20,7 @@ import {
 
 import type { modelID } from '@/lib/chat/providers'
 
-defineProps<{
+const props = defineProps<{
   models: { id: modelID; name: string }[]
   model: modelID | null
   submitStatus: PromptInputStatus
@@ -33,16 +33,26 @@ const emit = defineEmits<{
 }>()
 
 const { t } = useI18n()
-const searchEnabled = ref(false)
+// const searchEnabled = ref(false)
 const text = ref('')
 
 const handleTranscriptionChange = (value: string) => {
   text.value = value
 }
 
-const toggleSearch = () => {
-  searchEnabled.value = !searchEnabled.value
+const onPressEnter = () => {
+  if (
+    (!text.value.trim().length && props.submitStatus === 'ready') ||
+    props.submitStatus === 'error'
+  )
+    return
+  emit('submit', { text: text.value.trim(), files: [] })
+  text.value = ''
 }
+
+// const toggleSearch = () => {
+//   searchEnabled.value = !searchEnabled.value
+// }
 </script>
 <template>
   <div class="w-full max-w-3xl py-6">
@@ -60,6 +70,7 @@ const toggleSearch = () => {
         <PromptInputTextarea
           v-model="text"
           :placeholder="t('chatbot.input.placeholder')"
+          @keydown.enter.exact.prevent="onPressEnter"
         />
       </PromptInputBody>
       <PromptInputToolbar>
@@ -70,7 +81,7 @@ const toggleSearch = () => {
             :on-transcription-change="handleTranscriptionChange"
           />
           <PromptInputModelSelect
-            :model-value="model"
+            :model-value="props.model"
             @update:modelValue="(model: modelID) => emit('update-model', model)"
           >
             <PromptInputModelSelectTrigger size="sm">
@@ -80,7 +91,7 @@ const toggleSearch = () => {
             </PromptInputModelSelectTrigger>
             <PromptInputModelSelectContent>
               <PromptInputModelSelectItem
-                v-for="modelOption in models"
+                v-for="modelOption in props.models"
                 :key="modelOption.id"
                 :value="modelOption.id"
               >
@@ -99,7 +110,10 @@ const toggleSearch = () => {
         <PromptInputSubmit
           :status="submitStatus"
           class="rounded-full"
-          :disabled="!text.trim().length"
+          :disabled="
+            (!text.trim().length && props.submitStatus === 'ready') ||
+            props.submitStatus === 'error'
+          "
         />
       </PromptInputToolbar>
     </PromptInput>
