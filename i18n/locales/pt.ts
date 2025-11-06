@@ -847,8 +847,7 @@ export default {
       'openai/gpt-oss-20b': 'Básico',
       'openai/gpt-oss-120b': 'Pro',
     },
-    overview:
-      'Seu companheiro de IA para navegar durante a pandemia de COVID-19.',
+    overview: 'Seu companheiro de IA para navegar a pandemia de COVID-19.',
     suggestedPrompts: {
       prompt1: {
         title: 'Quão eficaz é o uso de máscaras',

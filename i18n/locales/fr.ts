@@ -851,15 +851,14 @@ export default {
   },
   chatbot: {
     input: {
-      placeholder: "Demandez-moi n'importe quoi sur la COVID-19...",
+      placeholder: 'Demandez-moi ce que vous souhaitez sur la COVID-19...',
       selectModel: 'Sélectionnez un modèle',
     },
     models: {
       'openai/gpt-oss-20b': 'Basique',
       'openai/gpt-oss-120b': 'Pro',
     },
-    overview:
-      'Votre compagnon IA pour naviguer pendant la pandémie de COVID-19.',
+    overview: 'Votre compagnon IA pour naviguer la pandémie de COVID-19.',
     suggestedPrompts: {
       prompt1: {
         title: "Quelle est l'efficacité du port du masque",
