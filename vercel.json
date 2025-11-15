@@ -1,9 +1,9 @@
 {
   "redirects": [
     {
-      "source": "/(.*)",
+      "source": "/:path*",
       "has": [{ "type": "host", "value": "covid-conscious.vercel.app" }],
-      "destination": "https://thatcovid.life/:1",
+      "destination": "https://thatcovid.life/:path*",
       "permanent": true
     }
   ]
