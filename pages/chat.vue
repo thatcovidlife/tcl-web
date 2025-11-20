@@ -82,7 +82,7 @@ const onSubmit = async (data: PromptInputMessage) => {
 </script>
 <template>
   <div
-    class="h-full flex flex-col justify-center items-center w-full max-w-3xl px-8 mx-auto"
+    class="h-full max-h-[calc(100vh-64px)] flex flex-col justify-center items-center w-full max-w-3xl px-8 mx-auto"
   >
     <TclChatOverview v-if="chat.messages.length === 0" />
     <TclConversation v-else :messages="chat.messages" />
