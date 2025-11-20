@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import type { Target } from '@/lib/types'
 import { cn } from '@/lib/utils'
+import type { ButtonVariants } from './ui/button'
 
 defineProps<{
   extra?: string
   label: string
   link: string
+  variant?: ButtonVariants['variant']
   target?: Target
 }>()
 
@@ -17,12 +19,8 @@ const localePath = useLocalePath()
     :to="target === '_blank' ? link : localePath(link)"
     :target="target || '_self'"
   >
-    <Button :class="cn('group', extra)">
+    <Button :variant="variant" :class="cn('group', extra)">
       {{ label }}&nbsp;
-      <!-- <ArrowRight
-          size={14}
-          class="transition duration-150 group-hover:translate-x-1"
-        /> -->
       <Icon
         name="material-symbols:arrow-right-alt-rounded"
         :size="14"

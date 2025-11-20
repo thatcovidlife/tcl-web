@@ -57,6 +57,12 @@ const chat = new Chat({
 //   () => chat.status === 'streaming' || chat.status === 'submitted',
 // )
 
+const onNewChat = () => {
+  chat.stop()
+  chat.messages = []
+  selectedModel.value = defaultModel
+}
+
 const onSubmit = async (data: PromptInputMessage) => {
   if (!route.query.id) {
     router.replace({ query: { id: conversationId.value } })
@@ -81,26 +87,29 @@ const onSubmit = async (data: PromptInputMessage) => {
 }
 </script>
 <template>
-  <div
-    class="h-full max-h-[calc(100vh-64px)] flex flex-col justify-center items-center w-full max-w-3xl px-8 mx-auto"
-  >
-    <TclChatOverview v-if="chat.messages.length === 0" />
-    <TclConversation v-else :messages="chat.messages" />
-    <TclPromptInput
-      :model="selectedModel"
-      :models="models"
-      :submit-status="chat.status"
-      @submit="onSubmit"
-      @update-model="setSelectedModel"
-    />
-    <TclSuggestedPrompts
-      v-if="chat.messages.length === 0"
-      @send-message="
-        ({ e, input }) => {
-          e.preventDefault()
-          onSubmit(input)
-        }
-      "
-    />
+  <div class="grid md:grid-cols-[16rem_1fr]">
+    <TclChatSidebar @new-chat="onNewChat" />
+    <div
+      class="h-full max-h-[calc(100vh-64px)] flex flex-col justify-center items-center w-full max-w-3xl px-8 mx-auto"
+    >
+      <TclChatOverview v-if="chat.messages.length === 0" />
+      <TclConversation v-else :messages="chat.messages" />
+      <TclPromptInput
+        :model="selectedModel"
+        :models="models"
+        :submit-status="chat.status"
+        @submit="onSubmit"
+        @update-model="setSelectedModel"
+      />
+      <TclSuggestedPrompts
+        v-if="chat.messages.length === 0"
+        @send-message="
+          ({ e, input }) => {
+            e.preventDefault()
+            onSubmit(input)
+          }
+        "
+      />
+    </div>
   </div>
 </template>
