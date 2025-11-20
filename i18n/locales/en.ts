@@ -834,6 +834,7 @@ export default {
       'openai/gpt-oss-20b': 'Basic',
       'openai/gpt-oss-120b': 'Pro',
     },
+    new: 'New Chat',
     overview: 'Your AI companion for navigating the COVID-19 pandemic.',
     suggestedPrompts: {
       prompt1: {
