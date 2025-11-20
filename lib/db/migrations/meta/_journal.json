@@ -15,6 +15,13 @@
       "when": 1757637108396,
       "tag": "0001_nasty_echo",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1763603979971,
+      "tag": "0002_cool_exodus",
+      "breakpoints": true
     }
   ]
 }
