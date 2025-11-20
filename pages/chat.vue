@@ -87,7 +87,7 @@ const onSubmit = async (data: PromptInputMessage) => {
 }
 </script>
 <template>
-  <div class="grid md:grid-cols-[16rem_1fr]">
+  <div class="grid md:grid-cols-[16rem_1fr] h-full">
     <TclChatSidebar @new-chat="onNewChat" />
     <div
       class="h-full max-h-[calc(100vh-64px)] flex flex-col justify-center items-center w-full max-w-3xl px-8 mx-auto"
