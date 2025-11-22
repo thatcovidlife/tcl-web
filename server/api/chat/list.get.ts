@@ -1,7 +1,7 @@
 import { consola } from 'consola'
 import { db } from '@/lib/db'
 import { chats, users } from '@/lib/db/schema'
-import { eq, desc } from 'drizzle-orm'
+import { eq, desc, count } from 'drizzle-orm'
 import * as Sentry from '@sentry/nuxt'
 
 export default defineEventHandler(async (event) => {
@@ -15,6 +15,14 @@ export default defineEventHandler(async (event) => {
       statusMessage: 'You must be logged in to access chat history',
     })
   }
+
+  // Parse pagination query parameters
+  const query = getQuery(event)
+  const limit = Math.min(
+    Math.max(parseInt(query.limit as string) || 10, 1),
+    100,
+  )
+  const offset = Math.max(parseInt(query.offset as string) || 0, 0)
 
   try {
     // First, get the user ID from the database using the email
@@ -42,7 +50,21 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    // Query database to fetch chats for the authenticated user
+    // Get total count of chats for pagination metadata
+    const [totalCount] = await Sentry.startSpan(
+      {
+        name: 'count user chats',
+        op: 'database.query',
+      },
+      async () => {
+        return await db
+          .select({ count: count() })
+          .from(chats)
+          .where(eq(chats.userId, dbUser.id))
+      },
+    )
+
+    // Query database to fetch chats for the authenticated user with pagination
     const userChats = await Sentry.startSpan(
       {
         name: 'get user chats',
@@ -59,17 +81,30 @@ export default defineEventHandler(async (event) => {
           .from(chats)
           .where(eq(chats.userId, dbUser.id))
           .orderBy(desc(chats.createdAt))
+          .limit(limit)
+          .offset(offset)
       },
     )
 
+    const total = totalCount?.count || 0
+    const hasMore = offset + limit < total
+
     consola.success(
-      `Successfully retrieved ${userChats.length} chats for user ${sessionUser.email}`,
+      `Successfully retrieved ${userChats.length} of ${total} chats for user ${sessionUser.email} (limit: ${limit}, offset: ${offset})`,
     )
 
-    // Return JSON array of chat objects
+    // Return JSON array of chat objects with pagination metadata
     return {
       success: true,
       data: userChats,
+      pagination: {
+        limit,
+        offset,
+        total,
+        hasMore,
+        currentPage: Math.floor(offset / limit) + 1,
+        totalPages: Math.ceil(total / limit),
+      },
     }
   } catch (error) {
     // Log error and capture in Sentry
