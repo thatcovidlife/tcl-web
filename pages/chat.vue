@@ -40,8 +40,6 @@ const setSelectedModel = (newModel: modelID) => {
 
 const chat = new Chat({
   onFinish: async (message) => {
-    console.log('Message finished:', message)
-
     // Save the last two messages (user prompt + assistant response)
     const lastTwoMessages = chat.messages.slice(-2)
     const chatId =
@@ -68,7 +66,6 @@ const chat = new Chat({
           .filter((msg) => msg.content && msg.content.trim().length > 0)
 
         if (messagesToSave.length > 0) {
-          console.log('Saving messages:', messagesToSave)
           await saveMessages(chatId, messagesToSave)
         }
       } catch (error) {
