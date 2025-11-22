@@ -16,7 +16,7 @@ definePageMeta({
 const { t } = useI18n()
 const user = useUserSession()
 const userStore = useUserStore()
-const { createChat } = useApiRoutes()
+const { createChat, saveMessages } = useApiRoutes()
 
 const route = useRoute()
 const router = useRouter()
@@ -39,8 +39,43 @@ const setSelectedModel = (newModel: modelID) => {
 // const messages = ref<PromptInputMessage[]>([])
 
 const chat = new Chat({
-  onFinish: (message) => {
+  onFinish: async (message) => {
     console.log('Message finished:', message)
+
+    // Save the last two messages (user prompt + assistant response)
+    const lastTwoMessages = chat.messages.slice(-2)
+    const chatId =
+      typeof conversationId.value === 'string'
+        ? conversationId.value
+        : conversationId.value?.[0]
+
+    if (lastTwoMessages.length > 0 && chatId) {
+      try {
+        // Map UIMessage to the format expected by the API
+        const messagesToSave = lastTwoMessages
+          .map((msg) => {
+            // Extract text content from parts
+            const textPart = msg.parts.find((part: any) => part.type === 'text')
+            const content = textPart ? (textPart as any).text : ''
+
+            return {
+              id: msg.id,
+              role: msg.role,
+              content,
+              parts: msg.parts,
+            }
+          })
+          .filter((msg) => msg.content && msg.content.trim().length > 0)
+
+        if (messagesToSave.length > 0) {
+          console.log('Saving messages:', messagesToSave)
+          await saveMessages(chatId, messagesToSave)
+        }
+      } catch (error) {
+        captureException(error)
+        console.error('Error saving messages:', error)
+      }
+    }
   },
   onData: (data) => {
     console.log('Chat data:', data)

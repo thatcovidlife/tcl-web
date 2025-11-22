@@ -113,6 +113,28 @@ export const useApiRoutes = () => {
     }
   }
 
+  const saveMessages = async (
+    chatId: string,
+    messages: Array<{
+      id?: string
+      role: string
+      content: string
+      parts?: any
+    }>,
+  ) => {
+    try {
+      const res = await $fetch('/api/chat/save', {
+        method: 'POST',
+        body: { chat_id: chatId, messages },
+      })
+
+      return res || null
+    } catch (e) {
+      consola.error(e)
+      return null
+    }
+  }
+
   const updateUserProfile = async (body: { data: any; profileId: number }) => {
     return await $fetch('/api/user/update-profile', {
       method: 'POST',
@@ -129,6 +151,7 @@ export const useApiRoutes = () => {
     getUserById,
     getUsername,
     getUserRole,
+    saveMessages,
     updateUserProfile,
   }
 }
