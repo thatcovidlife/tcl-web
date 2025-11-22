@@ -16,7 +16,7 @@ definePageMeta({
 const { t } = useI18n()
 const user = useUserSession()
 const userStore = useUserStore()
-const { createChat, saveMessages } = useApiRoutes()
+const { createChat, saveMessages, retrieveChat } = useApiRoutes()
 
 const route = useRoute()
 const router = useRouter()
@@ -141,6 +141,36 @@ const onSubmit = async (data: PromptInputMessage) => {
     console.error('Error sending message:', error)
   }
 }
+
+// Load chat on page mount if id is present in route
+onMounted(async () => {
+  const chatId = route.query.id
+  if (chatId && typeof chatId === 'string') {
+    try {
+      const result = await retrieveChat(chatId)
+
+      if (result?.chat && result?.messages) {
+        // Load messages into chat
+        chat.messages = result.messages.map((msg: any) => ({
+          id: msg.id,
+          role: msg.role,
+          parts: msg.parts || [{ type: 'text', text: msg.content }],
+        }))
+        conversationId.value = result.chat.id
+      } else {
+        // Record not found, remove query parameter
+        router.replace({ query: {} })
+        conversationId.value = crypto.randomUUID()
+      }
+    } catch (error) {
+      captureException(error)
+      console.error('Error loading chat:', error)
+      // Remove query parameter on error
+      router.replace({ query: {} })
+      conversationId.value = crypto.randomUUID()
+    }
+  }
+})
 </script>
 <template>
   <div class="grid md:grid-cols-[70px_1fr] lg:grid-cols-[16rem_1fr] h-full">

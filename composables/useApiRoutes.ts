@@ -113,6 +113,20 @@ export const useApiRoutes = () => {
     }
   }
 
+  const retrieveChat = async (chatId: string) => {
+    try {
+      const res = await $fetch('/api/chat/retrieve', {
+        method: 'GET',
+        query: { id: chatId },
+      })
+
+      return res || null
+    } catch (e) {
+      consola.error(e)
+      return null
+    }
+  }
+
   const saveMessages = async (
     chatId: string,
     messages: Array<{
@@ -151,6 +165,7 @@ export const useApiRoutes = () => {
     getUserById,
     getUsername,
     getUserRole,
+    retrieveChat,
     saveMessages,
     updateUserProfile,
   }
