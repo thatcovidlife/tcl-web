@@ -1,6 +1,20 @@
 import consola from 'consola'
 
 export const useApiRoutes = () => {
+  const createChat = async (userId: string, title: string) => {
+    try {
+      const res = await $fetch('/api/chat/create', {
+        method: 'POST',
+        body: { user_id: userId, title },
+      })
+
+      return res || null
+    } catch (e) {
+      consola.error(e)
+      return null
+    }
+  }
+
   const createUser = async (email: string) => {
     try {
       return await $fetch('/api/user/create-user', {
@@ -107,6 +121,7 @@ export const useApiRoutes = () => {
   }
 
   return {
+    createChat,
     createUser,
     findUsername,
     getOrCreateUser,

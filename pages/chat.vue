@@ -15,6 +15,8 @@ definePageMeta({
 
 const { t } = useI18n()
 const user = useUserSession()
+const userStore = useUserStore()
+const { createChat } = useApiRoutes()
 
 const route = useRoute()
 const router = useRouter()
@@ -65,7 +67,29 @@ const onNewChat = () => {
 
 const onSubmit = async (data: PromptInputMessage) => {
   if (!route.query.id) {
-    router.replace({ query: { id: conversationId.value } })
+    // Create a new chat record in the database
+    if (!userStore.info?.id) {
+      toast.error('You must be logged in to start a chat.')
+      return
+    }
+
+    try {
+      const userId = String(userStore.info.id)
+      const result = await createChat(userId, data.text || 'New chat')
+
+      if (result?.chat?.id) {
+        conversationId.value = result.chat.id
+        router.replace({ query: { id: result.chat.id } })
+      } else {
+        toast.error('Failed to create chat session.')
+        return
+      }
+    } catch (error) {
+      captureException(error)
+      console.error('Error creating chat:', error)
+      toast.error('Failed to create chat session.')
+      return
+    }
   }
 
   try {
