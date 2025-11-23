@@ -17,7 +17,7 @@ const emit = defineEmits(['new-chat'])
         class="w-full flex justify-start px-2 gap-1.5 items-center"
       >
         <CircleQuestionMark />
-        About
+        {{ t('chatbot.menu.about') }}
       </Button>
       <NuxtLink :to="localePath('/support')" target="_blank">
         <Button
@@ -26,7 +26,7 @@ const emit = defineEmits(['new-chat'])
           class="w-full flex justify-start px-2 gap-1.5 items-center"
         >
           <SquarePen />
-          Support
+          {{ t('chatbot.menu.support') }}
         </Button>
       </NuxtLink>
     </div>
@@ -40,7 +40,7 @@ const emit = defineEmits(['new-chat'])
       </TclMoreButton>
       <TclMoreButton
         extra="w-full hidden lg:flex"
-        :label="t('chatbot.new')"
+        :label="t('chatbot.menu.new')"
         :link="localePath('/chat')"
         size="lg"
         target="_self"

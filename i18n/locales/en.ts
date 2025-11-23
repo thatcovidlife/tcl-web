@@ -830,12 +830,32 @@ export default {
       placeholder: 'Ask me anything about COVID-19...',
       selectModel: 'Select a model',
     },
+    menu: {
+      about: 'About',
+      support: 'Support',
+      history: 'History',
+      new: 'New Chat',
+    },
     models: {
       'openai/gpt-oss-20b': 'Basic',
       'openai/gpt-oss-120b': 'Pro',
     },
-    new: 'New Chat',
     overview: 'Your AI companion for navigating the COVID-19 pandemic.',
+    search: {
+      description: 'Search your recent conversations or browse chat history',
+      loading: 'Loading...',
+      noResults: {
+        search: 'No chats found matching your search.',
+        empty: 'No chat history yet. Start a conversation!',
+      },
+      openChat: 'Open Chat',
+      placeholder: 'Search chat history...',
+      results: {
+        results: 'Search Results',
+        recentChats: 'Recent Chats',
+      },
+      title: 'Search chat history',
+    },
     suggestedPrompts: {
       prompt1: {
         title: 'How effective is masking',

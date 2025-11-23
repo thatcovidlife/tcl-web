@@ -854,12 +854,34 @@ export default {
       placeholder: 'Demandez-moi ce que vous souhaitez sur la COVID-19...',
       selectModel: 'Sélectionnez un modèle',
     },
+    menu: {
+      about: 'À propos',
+      support: 'Support',
+      history: 'Historique',
+      new: 'Nouveau Chat',
+    },
     models: {
       'openai/gpt-oss-20b': 'Basique',
       'openai/gpt-oss-120b': 'Pro',
     },
-    new: 'Nouveau Chat',
     overview: 'Votre compagnon IA pour naviguer la pandémie de COVID-19.',
+    search: {
+      description:
+        "Recherchez vos conversations récentes ou parcourez l'historique des discussions",
+      loading: 'Chargement...',
+      noResults: {
+        search: 'Aucune conversation ne correspond à votre recherche.',
+        empty:
+          'Aucun historique de conversation pour le moment. Commencez une conversation !',
+      },
+      openChat: 'Ouvrir le chat',
+      placeholder: "Rechercher dans l'historique des discussions...",
+      results: {
+        results: 'Résultats de la recherche',
+        recentChats: 'Discussions récentes',
+      },
+      title: "Rechercher dans l'historique des discussions",
+    },
     suggestedPrompts: {
       prompt1: {
         title: "Quelle est l'efficacité du port du masque",

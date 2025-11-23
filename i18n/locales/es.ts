@@ -850,12 +850,33 @@ export default {
       placeholder: 'Pregúntame lo que quieras sobre el COVID-19...',
       selectModel: 'Selecciona un modelo',
     },
+    menu: {
+      about: 'Acerca de',
+      support: 'Soporte',
+      history: 'Historial',
+      new: 'Nuevo chat',
+    },
     models: {
       'openai/gpt-oss-20b': 'Básico',
       'openai/gpt-oss-120b': 'Pro',
     },
-    new: 'Nuevo Chat',
     overview: 'Tu compañero de IA para navegar la pandemia de COVID-19.',
+    search: {
+      description:
+        'Busca tus conversaciones recientes o navega por el historial de chat',
+      loading: 'Cargando...',
+      noResults: {
+        search: 'No se encontraron chats que coincidan con tu búsqueda.',
+        empty: 'Aún no hay historial de chat. ¡Comienza una conversación!',
+      },
+      openChat: 'Abrir chat',
+      placeholder: 'Buscar en el historial de chat...',
+      results: {
+        results: 'Resultados de la búsqueda',
+        recentChats: 'Chats recientes',
+      },
+      title: 'Buscar en el historial de chat',
+    },
     suggestedPrompts: {
       prompt1: {
         title: '¿Qué tan efectivo es el uso de mascarillas',

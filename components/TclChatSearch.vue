@@ -52,6 +52,8 @@ interface SearchResultChat {
 const router = useRouter()
 const { getUserChats, searchChats } = useApiRoutes()
 const { user } = useUserSession()
+const { t } = useI18n()
+const localePath = useLocalePath()
 
 const open = ref(false)
 const search = ref('')
@@ -148,7 +150,7 @@ const runCommand = (command: () => void) => {
 
 // Navigate to chat
 const goToChat = (chatId: string) => {
-  runCommand(() => router.push(`/chat?id=${chatId}`))
+  runCommand(() => router.push(localePath(`/chat?id=${chatId}`)))
 }
 
 // Format date for display
@@ -225,7 +227,9 @@ onUnmounted(() => {
         class="w-full relative flex items-center justify-between px-2"
         @click="open = true"
       >
-        <span class="flex gap-1.5 items-center"><History /> History</span>
+        <span class="flex gap-1.5 items-center"
+          ><History /> {{ t('chatbot.menu.history') }}</span
+        >
         <!-- <span class="inline-flex lg:hidden">Search...</span> -->
         <div class="gap-1 sm:flex">
           <KbdGroup>
@@ -239,11 +243,10 @@ onUnmounted(() => {
       class="rounded-xl border-none bg-clip-padding p-2 pb-11 shadow-2xl ring-4 ring-neutral-200/80 dark:bg-neutral-900 dark:ring-neutral-800"
     >
       <DialogHeader class="sr-only">
-        <DialogTitle>Search chat history</DialogTitle>
-        <DialogDescription
-          >Search your recent conversations or browse chat
-          history</DialogDescription
-        >
+        <DialogTitle>{{ t('chatbot.search.title') }}</DialogTitle>
+        <DialogDescription>{{
+          t('chatbot.search.description')
+        }}</DialogDescription>
       </DialogHeader>
       <Command
         :class="
@@ -263,7 +266,7 @@ onUnmounted(() => {
         <div class="relative">
           <CommandInput
             v-model="search"
-            placeholder="Search your chat history..."
+            :placeholder="t('chatbot.search.placeholder')"
           />
           <div
             v-if="isSearching || isLoadingDefault"
@@ -279,10 +282,10 @@ onUnmounted(() => {
               <p>
                 {{
                   isSearching || isLoadingDefault
-                    ? 'Loading...'
+                    ? t('chatbot.search.loading')
                     : search.trim()
-                      ? 'No chats found matching your search.'
-                      : 'No chat history yet. Start a conversation!'
+                      ? t('chatbot.search.noResults.search')
+                      : t('chatbot.search.noResults.empty')
                 }}
               </p>
             </div>
@@ -290,7 +293,11 @@ onUnmounted(() => {
 
           <CommandGroup
             v-if="displayedChats.length > 0"
-            :heading="search.trim() ? 'Search Results' : 'Recent Chats'"
+            :heading="
+              search.trim()
+                ? t('chatbot.search.results.results')
+                : t('chatbot.search.results.recentChats')
+            "
             class="!p-0 [&_[cmdk-group-heading]]:scroll-mt-16 [&_[cmdk-group-heading]]:!p-3 [&_[cmdk-group-heading]]:!pb-1"
           >
             <CommandItem
@@ -326,7 +333,7 @@ onUnmounted(() => {
           <Kbd class="flex items-center gap-1">
             <CornerDownLeft class="size-3" />
           </Kbd>
-          <span>Open Chat</span>
+          <span>{{ t('chatbot.search.openChat') }}</span>
         </div>
       </div>
     </DialogContent>

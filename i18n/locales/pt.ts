@@ -843,12 +843,33 @@ export default {
       placeholder: 'Pergunte-me qualquer coisa sobre a COVID-19...',
       selectModel: 'Selecione um modelo',
     },
+    menu: {
+      about: 'Sobre',
+      support: 'Suporte',
+      history: 'Histórico',
+      new: 'Nova Conversa',
+    },
     models: {
       'openai/gpt-oss-20b': 'Básico',
       'openai/gpt-oss-120b': 'Pro',
     },
-    new: 'Novo Chat',
     overview: 'Seu companheiro de IA para navegar a pandemia de COVID-19.',
+    search: {
+      description:
+        'Pesquise suas conversas recentes ou navegue pelo histórico de bate-papo',
+      loading: 'Carregando...',
+      noResults: {
+        search: 'Nenhuma conversa encontrada correspondente à sua pesquisa.',
+        empty: 'Ainda não há histórico de bate-papo. Comece uma conversa!',
+      },
+      openChat: 'Abrir Chat',
+      placeholder: 'Pesquisar no histórico de bate-papo...',
+      results: {
+        results: 'Resultados da Pesquisa',
+        recentChats: 'Conversas Recentes',
+      },
+      title: 'Pesquisar no histórico de bate-papo',
+    },
     suggestedPrompts: {
       prompt1: {
         title: 'Quão eficaz é o uso de máscaras',
