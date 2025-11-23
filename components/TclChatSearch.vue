@@ -92,7 +92,7 @@ const loadDefaultChats = async () => {
 
   isLoadingDefault.value = true
   try {
-    const result = await getUserChats(3, 0)
+    const result = await getUserChats(5, 0)
     if (result?.data) {
       defaultChats.value = result.data
     }
