@@ -1,8 +1,9 @@
 import { consola } from 'consola'
 import { db } from '@/lib/db'
-import { chats, users } from '@/lib/db/schema'
-import { eq, desc, count } from 'drizzle-orm'
+import { chats, users, messages } from '@/lib/db/schema'
+import { eq, desc, count, and, asc } from 'drizzle-orm'
 import * as Sentry from '@sentry/nuxt'
+import { sanitizeMarkdown } from '@/assets/utils/sanitize-markdown'
 
 export default defineEventHandler(async (event) => {
   // Validate user authentication
@@ -65,13 +66,15 @@ export default defineEventHandler(async (event) => {
     )
 
     // Query database to fetch chats for the authenticated user with pagination
+    // Also get the first assistant message for each chat
     const userChats = await Sentry.startSpan(
       {
         name: 'get user chats',
         op: 'database.query',
       },
       async () => {
-        return await db
+        // First, get the chats with pagination
+        const chatList = await db
           .select({
             id: chats.id,
             title: chats.title,
@@ -83,6 +86,42 @@ export default defineEventHandler(async (event) => {
           .orderBy(desc(chats.createdAt))
           .limit(limit)
           .offset(offset)
+
+        // For each chat, get the first assistant message
+        const chatsWithPreview = await Promise.all(
+          chatList.map(async (chat) => {
+            const [firstAssistantMessage] = await db
+              .select({
+                content: messages.content,
+              })
+              .from(messages)
+              .where(
+                and(
+                  eq(messages.chatId, chat.id),
+                  eq(messages.role, 'assistant'),
+                ),
+              )
+              .orderBy(asc(messages.createdAt))
+              .limit(1)
+
+            // Extract first 300 characters and sanitize
+            let preview = ''
+            if (firstAssistantMessage?.content) {
+              const rawContent = firstAssistantMessage.content.substring(0, 300)
+              preview = sanitizeMarkdown(rawContent)
+              if (firstAssistantMessage.content.length > 300) {
+                preview = preview.substring(0, 300) + '...'
+              }
+            }
+
+            return {
+              ...chat,
+              preview,
+            }
+          }),
+        )
+
+        return chatsWithPreview
       },
     )
 
