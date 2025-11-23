@@ -206,7 +206,7 @@ watch(open, (isOpen) => {
         <div class="relative">
           <CommandInput
             v-model="search"
-            placeholder="Search documentation..."
+            placeholder="Search your chat history..."
           />
           <div
             v-if="isSearching"

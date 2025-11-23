@@ -81,6 +81,20 @@ export const useApiRoutes = () => {
     }
   }
 
+  const getUserChats = async (limit: number = 5, offset: number = 0) => {
+    try {
+      const res = await $fetch('/api/chat/list', {
+        method: 'GET',
+        query: { limit, offset },
+      })
+
+      return res || null
+    } catch (e) {
+      consola.error(e)
+      return null
+    }
+  }
+
   const getUsername = async (email: string) => {
     try {
       const res = await $fetch('/api/user/get-username', {
@@ -181,6 +195,7 @@ export const useApiRoutes = () => {
     getOrCreateUser,
     getUser,
     getUserById,
+    getUserChats,
     getUsername,
     getUserRole,
     retrieveChat,
