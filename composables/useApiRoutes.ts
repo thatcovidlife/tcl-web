@@ -149,6 +149,24 @@ export const useApiRoutes = () => {
     }
   }
 
+  const searchChats = async (
+    search: string,
+    page: number = 1,
+    pageSize: number = 10,
+  ) => {
+    try {
+      const res = await $fetch('/api/chat/search', {
+        method: 'POST',
+        body: { search, page, pageSize },
+      })
+
+      return res || null
+    } catch (e) {
+      consola.error(e)
+      return null
+    }
+  }
+
   const updateUserProfile = async (body: { data: any; profileId: number }) => {
     return await $fetch('/api/user/update-profile', {
       method: 'POST',
@@ -167,6 +185,7 @@ export const useApiRoutes = () => {
     getUserRole,
     retrieveChat,
     saveMessages,
+    searchChats,
     updateUserProfile,
   }
 }
