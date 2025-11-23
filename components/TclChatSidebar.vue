@@ -19,15 +19,16 @@ const emit = defineEmits(['new-chat'])
         <CircleQuestionMark />
         About
       </Button>
-      <Button
-        size="lg"
-        variant="ghost"
-        class="w-full flex justify-start px-2 gap-1.5 items-center"
-        @click="$router.push(localePath('/support'))"
-      >
-        <SquarePen />
-        Support
-      </Button>
+      <NuxtLink :to="localePath('/support')" target="_blank">
+        <Button
+          size="lg"
+          variant="ghost"
+          class="w-full flex justify-start px-2 gap-1.5 items-center"
+        >
+          <SquarePen />
+          Support
+        </Button>
+      </NuxtLink>
     </div>
     <div>
       <TclMoreButton

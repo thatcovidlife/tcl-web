@@ -31,15 +31,15 @@ export default defineLazyEventHandler(() => {
     const { success, remaining } = await ratelimit.limit(userId)
 
     // TODO: fix this so the LLM sends the message
-    // if (!success && process.env.NODE_ENV !== 'development') {
-    //   const errorMessage = `Too many requests, please try again later. Remaining queries: ${remaining}`
-    //   captureMessage(errorMessage, {
-    //     level: 'warning',
-    //     extra: { userId, selectedModel, messages },
-    //   })
-    //   setResponseStatus(event, 429, errorMessage)
-    //   return errorMessage
-    // }
+    if (!success && process.env.NODE_ENV !== 'development') {
+      const errorMessage = `Too many requests, please try again later. Remaining queries: ${remaining}`
+      captureMessage(errorMessage, {
+        level: 'warning',
+        extra: { userId, selectedModel, messages },
+      })
+      setResponseStatus(event, 429, errorMessage)
+      return errorMessage
+    }
 
     const prompt = await fetchPrompt()
 
