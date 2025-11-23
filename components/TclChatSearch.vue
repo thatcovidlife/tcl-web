@@ -44,6 +44,14 @@ const search = ref('')
 const isSearching = ref(false)
 const selectedType = ref<'page' | 'nav' | null>(null)
 
+// Detect macOS for correct keyboard shortcut display
+const isMac = computed(() => {
+  if (import.meta.client) {
+    return navigator.platform.toUpperCase().indexOf('MAC') >= 0
+  }
+  return false
+})
+
 // Flatten navigation items for search
 const allNavItems = computed(() => {
   const items: Array<{
@@ -167,7 +175,7 @@ watch(open, (isOpen) => {
         <!-- <span class="inline-flex lg:hidden">Search...</span> -->
         <div class="gap-1 sm:flex">
           <KbdGroup>
-            <Kbd class="border">⌘</Kbd>
+            <Kbd class="border">{{ isMac ? '⌘' : 'Ctrl' }}</Kbd>
             <Kbd class="border">K</Kbd>
           </KbdGroup>
         </div>
