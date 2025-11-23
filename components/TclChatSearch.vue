@@ -35,6 +35,7 @@ interface Chat {
   title: string
   createdAt: string | Date
   preview?: string
+  searchKeywords?: string
 }
 
 interface SearchResultChat {
@@ -73,12 +74,20 @@ const isMac = computed(() => {
 
 // Transform search results to match chat format
 const transformedSearchResults = computed(() => {
-  return searchResults.value.map((result) => ({
-    id: result.chatId,
-    title: result.title,
-    createdAt: result.createdAt,
-    preview: result.messageSnippets?.[0]?.content,
-  }))
+  return searchResults.value.map((result) => {
+    const snippetTexts =
+      result.messageSnippets
+        ?.map((snippet) => snippet.content)
+        .filter(Boolean) ?? []
+
+    return {
+      id: result.chatId,
+      title: result.title,
+      createdAt: result.createdAt,
+      preview: snippetTexts[0],
+      searchKeywords: [result.title, ...snippetTexts].filter(Boolean).join(' '),
+    }
+  })
 })
 
 // Compute which chats to display
@@ -303,7 +312,7 @@ onUnmounted(() => {
             <CommandItem
               v-for="chat in displayedChats"
               :key="chat.id"
-              :value="`${chat.title}`"
+              :value="chat.searchKeywords || chat.title"
               :class="
                 cn(
                   'data-[selected=true]:border-input data-[selected=true]:bg-input/50 h-auto min-h-9 rounded-md border border-transparent !px-3 py-2',
@@ -319,6 +328,15 @@ onUnmounted(() => {
                   class="text-muted-foreground text-xs"
                 >
                   {{ formatDate(chat.createdAt) }}
+                </span>
+                <p
+                  v-if="chat.preview"
+                  class="text-muted-foreground mt-1 line-clamp-2 text-xs"
+                >
+                  {{ chat.preview }}
+                </p>
+                <span v-if="chat.searchKeywords" class="sr-only">
+                  {{ chat.searchKeywords }}
                 </span>
               </div>
               <ArrowRight class="size-4 flex-shrink-0 ml-2 opacity-50" />
