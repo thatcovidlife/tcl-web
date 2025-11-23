@@ -95,6 +95,7 @@ const onNewChat = () => {
   chat.stop()
   chat.messages = []
   selectedModel.value = defaultModel
+  conversationId.value = ''
 }
 
 const onSubmit = async (data: PromptInputMessage) => {
