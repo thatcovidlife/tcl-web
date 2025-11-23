@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PenLine } from 'lucide-vue-next'
+import { CircleQuestionMark, PenLine, SquarePen } from 'lucide-vue-next'
 const localePath = useLocalePath()
 const { t } = useI18n()
 
@@ -9,7 +9,26 @@ const emit = defineEmits(['new-chat'])
   <aside
     class="h-[calc(100vh-64px)] hidden md:flex border-r-muted border-r px-4 py-4 lg:py-6 bg-muted/25 flex-col items-stretch justify-between"
   >
-    <div>&nbsp;</div>
+    <div>
+      <TclChatSearch />
+      <Button
+        size="lg"
+        variant="ghost"
+        class="w-full flex justify-start px-2 gap-1.5 items-center"
+      >
+        <CircleQuestionMark />
+        About
+      </Button>
+      <Button
+        size="lg"
+        variant="ghost"
+        class="w-full flex justify-start px-2 gap-1.5 items-center"
+        @click="$router.push(localePath('/support'))"
+      >
+        <SquarePen />
+        Support
+      </Button>
+    </div>
     <div>
       <TclMoreButton
         extra="lg:hidden rounded-full"
