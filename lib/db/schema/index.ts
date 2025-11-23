@@ -66,7 +66,6 @@ export const chats = pgTable(
       .default(sql`now()`),
     userId: uuid('user_id')
       .notNull()
-      .unique()
       .references(() => users.id, { onDelete: 'cascade' }),
     title: text('title').notNull(),
   },

@@ -142,33 +142,53 @@ const onSubmit = async (data: PromptInputMessage) => {
   }
 }
 
+// Load chat history from database
+const loadChatHistory = async (chatId: string) => {
+  try {
+    const result = await retrieveChat(chatId)
+
+    if (result?.chat && result?.messages) {
+      // Load messages into chat
+      chat.messages = result.messages.map((msg: any) => ({
+        id: msg.id,
+        role: msg.role,
+        parts: msg.parts || [{ type: 'text', text: msg.content }],
+      }))
+      conversationId.value = result.chat.id
+    } else {
+      // Record not found, remove query parameter
+      router.replace({ query: {} })
+      conversationId.value = crypto.randomUUID()
+    }
+  } catch (error) {
+    captureException(error)
+    console.error('Error loading chat:', error)
+    // Remove query parameter on error
+    router.replace({ query: {} })
+    conversationId.value = crypto.randomUUID()
+  }
+}
+
+// Watch for route query changes to load chat when navigating
+watch(
+  () => route.query.id,
+  async (newChatId) => {
+    // Only load if there's a valid chat ID and it's different from current
+    if (
+      newChatId &&
+      typeof newChatId === 'string' &&
+      newChatId !== conversationId.value
+    ) {
+      await loadChatHistory(newChatId)
+    }
+  },
+)
+
 // Load chat on page mount if id is present in route
 onMounted(async () => {
   const chatId = route.query.id
   if (chatId && typeof chatId === 'string') {
-    try {
-      const result = await retrieveChat(chatId)
-
-      if (result?.chat && result?.messages) {
-        // Load messages into chat
-        chat.messages = result.messages.map((msg: any) => ({
-          id: msg.id,
-          role: msg.role,
-          parts: msg.parts || [{ type: 'text', text: msg.content }],
-        }))
-        conversationId.value = result.chat.id
-      } else {
-        // Record not found, remove query parameter
-        router.replace({ query: {} })
-        conversationId.value = crypto.randomUUID()
-      }
-    } catch (error) {
-      captureException(error)
-      console.error('Error loading chat:', error)
-      // Remove query parameter on error
-      router.replace({ query: {} })
-      conversationId.value = crypto.randomUUID()
-    }
+    await loadChatHistory(chatId)
   }
 })
 </script>
