@@ -39,7 +39,7 @@
     "@qdrant/js-client-rest": "^1.15.1",
     "@radix-icons/vue": "^1.0.0",
     "@sanity/client": "^6.29.1",
-    "@sentry/nuxt": "^10",
+    "@sentry/nuxt": "^10.27.0",
     "@statsig/js-client": "^3.29.0",
     "@statsig/session-replay": "^3.29.0",
     "@statsig/web-analytics": "^3.29.0",
