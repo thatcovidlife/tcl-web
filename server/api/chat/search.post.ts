@@ -1,27 +1,26 @@
 import { consola } from 'consola'
 import { db } from '@/lib/db'
 import { chats, messages, users } from '@/lib/db/schema'
-import { eq, or, ilike, and, sql, desc } from 'drizzle-orm'
+import { eq, or, ilike, and, sql, desc, asc } from 'drizzle-orm'
 import * as Sentry from '@sentry/nuxt'
+import { sanitizeMarkdown } from '@/assets/utils/sanitize-markdown'
 
 interface SearchResult {
   chatId: string
   title: string
   createdAt: Date
-  messageSnippets: Array<{
-    messageId: string
-    content: string
-    role: string
-    createdAt: Date
-  }>
+  preview: string
 }
 
 interface PaginatedResponse {
-  results: SearchResult[]
+  success: boolean
+  data: SearchResult[]
   pagination: {
+    limit: number
+    offset: number
     total: number
-    page: number
-    pageSize: number
+    hasMore: boolean
+    currentPage: number
     totalPages: number
   }
 }
@@ -106,41 +105,54 @@ export default defineEventHandler(async (event): Promise<PaginatedResponse> => {
 
       const results: SearchResult[] = await Promise.all(
         userChats.map(async (chat) => {
-          // Get the first few messages for snippet
-          const chatMessages = await db
-            .select()
+          // Get the first assistant message for preview
+          const [firstAssistantMessage] = await db
+            .select({
+              content: messages.content,
+            })
             .from(messages)
-            .where(eq(messages.chatId, chat.id))
-            .orderBy(desc(messages.createdAt))
-            .limit(3)
+            .where(
+              and(eq(messages.chatId, chat.id), eq(messages.role, 'assistant')),
+            )
+            .orderBy(asc(messages.createdAt))
+            .limit(1)
+
+          // Extract first 300 characters and sanitize
+          let preview = ''
+          if (firstAssistantMessage?.content) {
+            const rawContent = firstAssistantMessage.content.substring(0, 300)
+            preview = sanitizeMarkdown(rawContent)
+            if (firstAssistantMessage.content.length > 300) {
+              preview = preview.substring(0, 300) + '...'
+            }
+          }
 
           return {
             chatId: chat.id,
             title: chat.title,
             createdAt: chat.createdAt,
-            messageSnippets: chatMessages.map((msg) => ({
-              messageId: msg.messageId,
-              content: msg.content.slice(0, 200), // Truncate long messages
-              role: msg.role,
-              createdAt: msg.createdAt,
-            })),
+            preview,
           }
         }),
       )
 
       const total = countResult?.count || 0
+      const hasMore = offset + pageSizeNum < total
       const totalPages = Math.ceil(total / pageSizeNum)
 
       consola.success(
-        `Retrieved ${results.length} chats for user ${dbUser.id} (page ${pageNum}/${totalPages})`,
+        `Retrieved ${results.length} chats for user ${dbUser.id} (limit: ${pageSizeNum}, offset: ${offset})`,
       )
 
       return {
-        results,
+        success: true,
+        data: results,
         pagination: {
+          limit: pageSizeNum,
+          offset,
           total,
-          page: pageNum,
-          pageSize: pageSizeNum,
+          hasMore,
+          currentPage: Math.floor(offset / pageSizeNum) + 1,
           totalPages,
         },
       }
@@ -185,62 +197,55 @@ export default defineEventHandler(async (event): Promise<PaginatedResponse> => {
     // Get message snippets for each chat
     const results: SearchResult[] = await Promise.all(
       paginatedChats.map(async (chat) => {
-        // Get messages that match the search within this chat
-        const matchingMessages = await Sentry.startSpan(
-          {
-            name: 'get matching messages',
-            op: 'database.query',
-          },
-          async () => {
-            return await db
-              .select()
-              .from(messages)
-              .where(
-                and(
-                  eq(messages.chatId, chat.chatId),
-                  ilike(messages.content, searchPattern),
-                ),
-              )
-              .orderBy(desc(messages.createdAt))
-              .limit(5) // Limit to 5 matching messages per chat
-          },
-        )
+        // Get the first assistant message for preview
+        const [firstAssistantMessage] = await db
+          .select({
+            content: messages.content,
+          })
+          .from(messages)
+          .where(
+            and(
+              eq(messages.chatId, chat.chatId),
+              eq(messages.role, 'assistant'),
+            ),
+          )
+          .orderBy(asc(messages.createdAt))
+          .limit(1)
 
-        // If no messages matched but title did, get recent messages
-        let messageSnippets = matchingMessages
-        if (messageSnippets.length === 0) {
-          messageSnippets = await db
-            .select()
-            .from(messages)
-            .where(eq(messages.chatId, chat.chatId))
-            .orderBy(desc(messages.createdAt))
-            .limit(3)
+        // Extract first 300 characters and sanitize
+        let preview = ''
+        if (firstAssistantMessage?.content) {
+          const rawContent = firstAssistantMessage.content.substring(0, 300)
+          preview = sanitizeMarkdown(rawContent)
+          if (firstAssistantMessage.content.length > 300) {
+            preview = preview.substring(0, 300) + '...'
+          }
         }
 
         return {
           chatId: chat.chatId,
           title: chat.title,
           createdAt: chat.createdAt,
-          messageSnippets: messageSnippets.map((msg) => ({
-            messageId: msg.messageId,
-            content: msg.content.slice(0, 200), // Truncate long messages
-            role: msg.role,
-            createdAt: msg.createdAt,
-          })),
+          preview,
         }
       }),
     )
 
+    const hasMore = offset + pageSizeNum < total
+
     consola.success(
-      `Found ${total} chats matching "${search}" for user ${dbUser.id} (page ${pageNum}/${totalPages})`,
+      `Found ${total} chats matching "${search}" for user ${dbUser.id} (limit: ${pageSizeNum}, offset: ${offset})`,
     )
 
     return {
-      results,
+      success: true,
+      data: results,
       pagination: {
+        limit: pageSizeNum,
+        offset,
         total,
-        page: pageNum,
-        pageSize: pageSizeNum,
+        hasMore,
+        currentPage: Math.floor(offset / pageSizeNum) + 1,
         totalPages,
       },
     }

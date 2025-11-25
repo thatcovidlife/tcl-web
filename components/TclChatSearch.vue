@@ -42,12 +42,7 @@ interface SearchResultChat {
   chatId: string
   title: string
   createdAt: string | Date
-  messageSnippets?: Array<{
-    messageId: string
-    content: string
-    role: string
-    createdAt: string | Date
-  }>
+  preview: string
 }
 
 const router = useRouter()
@@ -74,20 +69,13 @@ const isMac = computed(() => {
 
 // Transform search results to match chat format
 const transformedSearchResults = computed(() => {
-  return searchResults.value?.map((result) => {
-    const snippetTexts =
-      result.messageSnippets
-        ?.map((snippet) => snippet.content)
-        .filter(Boolean) ?? []
-
-    return {
-      id: result.chatId,
-      title: result.title,
-      createdAt: result.createdAt,
-      preview: snippetTexts[0],
-      searchKeywords: [result.title, ...snippetTexts].filter(Boolean).join(' '),
-    }
-  })
+  return searchResults.value?.map((result) => ({
+    id: result.chatId,
+    title: result.title,
+    createdAt: result.createdAt,
+    preview: result.preview,
+    searchKeywords: [result.title, result.preview].filter(Boolean).join(' '),
+  }))
 })
 
 // Compute which chats to display
@@ -103,7 +91,7 @@ const loadDefaultChats = async () => {
 
   isLoadingDefault.value = true
   try {
-    const result = await getUserChats(5, 0)
+    const result = await getUserChats(3, 0)
     if (result?.data) {
       defaultChats.value = result.data
     }
@@ -128,8 +116,8 @@ const performSearch = async (searchTerm: string) => {
   isSearching.value = true
   try {
     const result = await searchChats(searchTerm, 1, 10)
-    if (result?.results) {
-      searchResults.value = result.results
+    if (result?.success && result?.data) {
+      searchResults.value = result.data
     } else {
       searchResults.value = []
     }
