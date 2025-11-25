@@ -3,13 +3,16 @@ import { db } from '@/lib/db'
 import { messages, chats } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
 import * as Sentry from '@sentry/nuxt'
+import { sanitizeChatMessage } from '@/lib/utils'
 
 export default defineEventHandler(async (event) => {
   // Bypass XSS validator for this endpoint since chat messages may contain markdown/HTML
   event.node.req.headers['x-skip-xss-validator'] = 'true'
 
   const { user: sessionUser } = await getUserSession(event)
-  const { chat_id, messages: messageArray } = await readBody(event)
+
+  const body = await readBody(event)
+  const { chat_id, messages: messageArray } = body
 
   if (!chat_id || !messageArray || !Array.isArray(messageArray)) {
     throw createError({
@@ -99,6 +102,56 @@ export default defineEventHandler(async (event) => {
         })
       }
     }
+    consola.success('All messages validated successfully')
+
+    // Sanitize and prepare messages before database insertion
+    const messagesToInsert: Array<{
+      chatId: string
+      messageId: string
+      content: string
+      role: 'user' | 'assistant'
+      parts: any[]
+    }> = []
+
+    for (const msg of messageArray) {
+      // Only sanitize user messages; LLM-generated content is trusted
+      let content = msg.content
+
+      if (msg.role === 'user') {
+        const sanitizationResult = sanitizeChatMessage(msg.content)
+
+        if (!sanitizationResult.isValid) {
+          consola.warn(
+            'Message sanitization failed:',
+            sanitizationResult.errors,
+          )
+          throw createError({
+            status: 400,
+            message: 'Bad request',
+            statusMessage:
+              'Invalid message content: ' +
+              sanitizationResult.errors.join(', '),
+          })
+        }
+
+        if (sanitizationResult.warnings.length > 0) {
+          consola.warn(
+            'Message sanitization warnings:',
+            sanitizationResult.warnings,
+          )
+        }
+
+        content = sanitizationResult.sanitized
+      }
+
+      messagesToInsert.push({
+        chatId: chat_id,
+        messageId: msg.id || crypto.randomUUID(),
+        content,
+        role: msg.role as 'user' | 'assistant',
+        parts: msg.parts || [],
+      })
+    }
 
     // Save messages to database
     const savedMessages = await Sentry.startSpan(
@@ -107,20 +160,17 @@ export default defineEventHandler(async (event) => {
         op: 'database.query',
       },
       async () => {
-        const messagesToInsert = messageArray.map((msg) => ({
-          chatId: chat_id,
-          messageId: msg.id || crypto.randomUUID(),
-          content: msg.content,
-          role: msg.role as 'user' | 'assistant',
-          parts: msg.parts || [],
-        }))
-
-        return await db.insert(messages).values(messagesToInsert).returning()
+        const result = await db
+          .insert(messages)
+          .values(messagesToInsert)
+          .returning()
+        return result
       },
     )
 
     consola.success(`Saved ${savedMessages.length} messages to chat ${chat_id}`)
 
+    consola.success('Returning response to client')
     return {
       success: true,
       messages: savedMessages,
@@ -128,13 +178,20 @@ export default defineEventHandler(async (event) => {
     }
   } catch (error) {
     consola.error('Error saving messages:', error)
+    consola.error('Error type:', typeof error)
+    consola.error('Error details:', JSON.stringify(error, null, 2))
     Sentry.captureException(error)
 
     // Re-throw if it's already a createError
     if (error && typeof error === 'object' && 'statusCode' in error) {
+      consola.error(
+        'Re-throwing createError with statusCode:',
+        (error as any).statusCode,
+      )
       throw error
     }
 
+    consola.error('Throwing generic 500 error')
     throw createError({
       status: 500,
       message: 'Internal server error',

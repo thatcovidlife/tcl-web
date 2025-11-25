@@ -3,6 +3,7 @@ import { db } from '@/lib/db'
 import { chats, users } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
 import * as Sentry from '@sentry/nuxt'
+import { sanitizeChatTitle } from '@/lib/utils'
 
 export default defineEventHandler(async (event) => {
   const { user: sessionUser } = await getUserSession(event)
@@ -13,6 +14,17 @@ export default defineEventHandler(async (event) => {
       status: 400,
       message: 'Bad request',
       statusMessage: 'user_id and title are required',
+    })
+  }
+
+  // Sanitize the title
+  const sanitizedTitle = sanitizeChatTitle(title)
+
+  if (!sanitizedTitle || sanitizedTitle.trim().length === 0) {
+    throw createError({
+      status: 400,
+      message: 'Bad request',
+      statusMessage: 'Invalid chat title',
     })
   }
 
@@ -67,7 +79,7 @@ export default defineEventHandler(async (event) => {
           .insert(chats)
           .values({
             userId: user_id,
-            title: title,
+            title: sanitizedTitle,
           })
           .returning()
       },

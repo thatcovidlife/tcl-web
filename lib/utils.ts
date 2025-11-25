@@ -16,3 +16,12 @@ export function valueUpdater<T extends Updater<any>>(
       ? updaterOrValue(ref.value)
       : updaterOrValue
 }
+
+// Re-export sanitization utilities
+export {
+  sanitizeUserInput,
+  sanitizeChatTitle,
+  sanitizeChatMessage,
+  sanitizeForDatabase,
+  type SanitizationResult,
+} from './utils/sanitize'

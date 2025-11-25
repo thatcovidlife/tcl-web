@@ -248,6 +248,15 @@ export default defineNuxtConfig({
     },
   },
 
+  routeRules: {
+    '/api/chat': {
+      security: { xssValidator: false },
+    },
+    '/api/chat/save': {
+      security: { xssValidator: false },
+    },
+  },
+
   sentry: {
     sourceMapsUploadOptions: {
       org: 'that-covid-life-j1',

@@ -6,6 +6,7 @@ import { toast } from 'vue-sonner'
 import type { PromptInputMessage } from '@/components/ai-elements/prompt-input'
 import TclSuggestedPrompts from '@/components/TclSuggestedPrompts.vue'
 import { defaultModel, MODELS } from '@/lib/chat/providers'
+import { sanitizeChatMessage, sanitizeChatTitle } from '@/lib/utils'
 
 import type { modelID } from '@/lib/chat/providers'
 
@@ -99,6 +100,25 @@ const onNewChat = () => {
 }
 
 const onSubmit = async (data: PromptInputMessage) => {
+  // Sanitize the input message
+  const sanitizationResult = sanitizeChatMessage(data.text)
+
+  if (!sanitizationResult.isValid) {
+    toast.error('Invalid input: ' + sanitizationResult.errors.join(', '))
+    return
+  }
+
+  if (sanitizationResult.warnings.length > 0) {
+    console.warn('Input warnings:', sanitizationResult.warnings)
+  }
+
+  const sanitizedText = sanitizationResult.sanitized
+
+  if (!sanitizedText || sanitizedText.trim().length === 0) {
+    toast.error('Message cannot be empty.')
+    return
+  }
+
   if (!route.query.id) {
     // Create a new chat record in the database
     if (!userStore.info?.id) {
@@ -108,7 +128,8 @@ const onSubmit = async (data: PromptInputMessage) => {
 
     try {
       const userId = String(userStore.info.id)
-      const result = await createChat(userId, data.text || 'New chat')
+      const sanitizedTitle = sanitizeChatTitle(sanitizedText)
+      const result = await createChat(userId, sanitizedTitle)
 
       if (result?.chat?.id) {
         conversationId.value = result.chat.id
@@ -128,7 +149,7 @@ const onSubmit = async (data: PromptInputMessage) => {
   try {
     await chat.sendMessage(
       {
-        text: data.text!,
+        text: sanitizedText,
       },
       {
         body: {
