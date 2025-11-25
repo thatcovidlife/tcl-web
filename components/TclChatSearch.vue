@@ -74,7 +74,7 @@ const isMac = computed(() => {
 
 // Transform search results to match chat format
 const transformedSearchResults = computed(() => {
-  return searchResults.value.map((result) => {
+  return searchResults.value?.map((result) => {
     const snippetTexts =
       result.messageSnippets
         ?.map((snippet) => snippet.content)
@@ -93,7 +93,7 @@ const transformedSearchResults = computed(() => {
 // Compute which chats to display
 const displayedChats = computed(() => {
   return search.value.trim()
-    ? transformedSearchResults.value
+    ? [...transformedSearchResults.value]
     : defaultChats.value
 })
 
@@ -285,7 +285,10 @@ onUnmounted(() => {
           </div>
         </div>
         <CommandList class="no-scrollbar min-h-80 scroll-pt-2 scroll-pb-1.5">
-          <CommandEmpty class="text-muted-foreground py-12 text-center text-sm">
+          <CommandEmpty
+            v-if="!displayedChats?.length"
+            class="text-muted-foreground py-12 text-center text-sm"
+          >
             <div class="flex flex-col items-center gap-2">
               <MessageSquare class="size-8 opacity-50" />
               <p>
@@ -301,7 +304,7 @@ onUnmounted(() => {
           </CommandEmpty>
 
           <CommandGroup
-            v-if="displayedChats.length > 0"
+            v-show="displayedChats.length > 0"
             :heading="
               search.trim()
                 ? t('chatbot.search.results.results')
