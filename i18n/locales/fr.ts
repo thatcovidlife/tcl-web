@@ -850,6 +850,14 @@ export default {
     },
   },
   chatbot: {
+    actions: {
+      labels: {
+        copy: 'Copier',
+        dislike: "Je n'aime pas",
+        export: 'Exporter',
+        like: "J'aime",
+      },
+    },
     input: {
       placeholder: 'Demandez-moi ce que vous souhaitez sur la COVID-19...',
       selectModel: 'Sélectionnez un modèle',

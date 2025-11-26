@@ -830,7 +830,7 @@ export default {
       labels: {
         copy: 'Copy',
         dislike: 'Dislike',
-        export: 'Export Chat',
+        export: 'Export',
         like: 'Like',
       },
     },
