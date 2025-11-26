@@ -1,42 +1,58 @@
 <script setup lang="ts">
 import {
   CopyIcon,
-  ShareIcon,
+  SaveIcon,
   ThumbsDownIcon,
   ThumbsUpIcon,
 } from 'lucide-vue-next'
 import { Action, Actions } from '@/components/ai-elements/actions'
 
+const emit = defineEmits<{
+  (e: 'like', chatId: string, messageId: string): void
+  (e: 'dislike', chatId: string, messageId: string): void
+  (e: 'copy', chatId: string, messageId: string): void
+  (e: 'export', chatId: string, messageId: string): void
+}>()
+
+const props = defineProps<{
+  chatId: string
+  messageId: string
+}>()
+
+const { t } = useI18n()
+
 const actions = [
   {
-    label: 'Like',
+    label: t('chatbot.actions.labels.like'),
     icon: ThumbsUpIcon,
     handler: () => {
-      console.log('like')
+      emit('like', props.chatId, props.messageId)
     },
-    tooltip: 'I like this',
+    tooltip: t('chatbot.actions.labels.like'),
   },
   {
-    label: 'Dislike',
+    label: t('chatbot.actions.labels.dislike'),
     icon: ThumbsDownIcon,
     handler: () => {
-      console.log('dislike')
+      emit('dislike', props.chatId, props.messageId)
     },
-    tooltip: 'I dislike this',
+    tooltip: t('chatbot.actions.labels.dislike'),
   },
   {
-    label: 'Copy',
+    label: t('chatbot.actions.labels.copy'),
     icon: CopyIcon,
     handler: () => {
-      console.log('copy')
+      emit('copy', props.chatId, props.messageId)
     },
+    tooltip: t('chatbot.actions.labels.copy'),
   },
   {
-    label: 'Share',
-    icon: ShareIcon,
+    label: t('chatbot.actions.labels.export'),
+    icon: SaveIcon,
     handler: () => {
-      console.log('share')
+      emit('export', props.chatId, props.messageId)
     },
+    tooltip: t('chatbot.actions.labels.export'),
   },
 ]
 </script>
@@ -47,7 +63,7 @@ const actions = [
       :key="action.label"
       :label="action.label"
       :tooltip="action.tooltip"
-      @click="action.handler"
+      @click-action="action.handler"
     >
       <component :is="action.icon" :size="18" />
     </Action>

@@ -7,6 +7,10 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 
+const emit = defineEmits<{
+  (e: 'click-action'): void
+}>()
+
 defineProps<{
   label: string
   size?: 'default' | 'sm' | 'lg' | 'icon' | 'icon-sm' | 'icon-lg' | null
@@ -30,6 +34,7 @@ defineProps<{
           class="relative size-9 p-1.5 text-muted-foreground hover:text-foreground"
           :size="size || 'sm'"
           :variant="variant || 'ghost'"
+          @click="() => emit('click-action')"
         >
           <slot />
           <span class="sr-only">{{ label }}</span>
@@ -43,6 +48,7 @@ defineProps<{
     class="relative size-9 p-1.5 text-muted-foreground hover:text-foreground"
     :size="size || 'sm'"
     :variant="variant || 'ghost'"
+    @click="() => emit('click-action')"
   >
     <slot />
     <span class="sr-only">{{ label }}</span>

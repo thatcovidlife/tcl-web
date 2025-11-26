@@ -28,6 +28,7 @@ import type { TextUIPart, UIMessage } from 'ai'
 import type { ChatStatus } from 'ai'
 
 const props = defineProps<{
+  chatId: string
   messages: UIMessage[]
   status: ChatStatus
 }>()
@@ -213,7 +214,28 @@ watch(
             >
               <template v-if="part.type === 'text'">
                 <Response class="mt-4 block" :value="part.text" />
-                <TclChatActions v-if="props.status === 'ready'" class="my-2" />
+                <TclChatActions
+                  v-if="props.status === 'ready'"
+                  class="my-2"
+                  :chat-id="props.chatId"
+                  :message-id="message.id"
+                  @like="
+                    (chatId, messageId) =>
+                      console.log('like', chatId, messageId)
+                  "
+                  @dislike="
+                    (chatId, messageId) =>
+                      console.log('dislike', chatId, messageId)
+                  "
+                  @copy="
+                    (chatId, messageId) =>
+                      console.log('copy', chatId, messageId)
+                  "
+                  @export="
+                    (chatId, messageId) =>
+                      console.log('export', chatId, messageId)
+                  "
+                />
               </template>
             </template>
           </template>

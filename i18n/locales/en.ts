@@ -826,6 +826,14 @@ export default {
     },
   },
   chatbot: {
+    actions: {
+      labels: {
+        copy: 'Copy',
+        dislike: 'Dislike',
+        export: 'Export Chat',
+        like: 'Like',
+      },
+    },
     input: {
       placeholder: 'Ask me anything about COVID-19...',
       selectModel: 'Select a model',

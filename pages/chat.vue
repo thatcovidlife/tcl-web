@@ -22,7 +22,9 @@ const { createChat, saveMessages, retrieveChat } = useApiRoutes()
 const route = useRoute()
 const router = useRouter()
 
-const conversationId = ref(route.query?.id || crypto.randomUUID())
+const conversationId = ref<string>(
+  (route.query?.id as string) || crypto.randomUUID(),
+)
 
 const models = computed(() => {
   return MODELS.map((model) => ({
@@ -221,7 +223,12 @@ onMounted(async () => {
       class="h-full max-h-[calc(100vh-64px)] flex flex-col justify-center items-center w-full max-w-3xl px-8 mx-auto"
     >
       <TclChatOverview v-if="chat.messages.length === 0" />
-      <TclConversation v-else :messages="chat.messages" :status="chat.status" />
+      <TclConversation
+        v-else
+        :messages="chat.messages"
+        :status="chat.status"
+        :chat-id="conversationId"
+      />
       <TclPromptInput
         :model="selectedModel"
         :models="models"
