@@ -25,9 +25,11 @@ import { useUserStore } from '@/store/user'
 import { getGravatarUrl } from '@/assets/utils/gravatar'
 
 import type { TextUIPart, UIMessage } from 'ai'
+import type { ChatStatus } from 'ai'
 
 const props = defineProps<{
   messages: UIMessage[]
+  status: ChatStatus
 }>()
 
 const { uniqBy } = lodash
@@ -209,11 +211,10 @@ watch(
               v-for="(part, index) in message.parts"
               :key="`message-${message.id}-part-${index}`"
             >
-              <Response
-                class="mt-4 block"
-                v-if="part.type === 'text'"
-                :value="part.text"
-              />
+              <template v-if="part.type === 'text'">
+                <Response class="mt-4 block" :value="part.text" />
+                <TclChatActions v-if="props.status === 'ready'" class="my-2" />
+              </template>
             </template>
           </template>
         </template>
