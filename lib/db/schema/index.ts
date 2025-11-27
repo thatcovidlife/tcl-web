@@ -106,3 +106,35 @@ export const messages = pgTable(
     }).onDelete('cascade'),
   ],
 )
+
+export const likes = pgTable(
+  'like',
+  {
+    id: uuid('id')
+      .notNull()
+      .default(sql`gen_random_uuid()`)
+      .primaryKey(),
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`now()`),
+    messageId: uuid('message_id')
+      .notNull()
+      .references(() => messages.id, { onDelete: 'cascade' }),
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    like: boolean('like').notNull(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.messageId],
+      foreignColumns: [messages.id],
+      name: 'like_message_fkey',
+    }).onDelete('cascade'),
+    foreignKey({
+      columns: [table.userId],
+      foreignColumns: [users.id],
+      name: 'like_user_fkey',
+    }).onDelete('cascade'),
+  ],
+)
