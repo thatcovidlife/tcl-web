@@ -846,6 +846,15 @@ export default {
         export: 'Exportar',
         like: 'Gostei',
       },
+      toasts: {
+        copy: 'Copiado para a área de transferência',
+        copyError: 'Falha ao copiar a mensagem',
+        dislike: 'Obrigado pelo seu feedback. Vamos trabalhar para melhorar!',
+        feedbackError: 'Falha ao registrar o feedback',
+        feedbackRecorded: 'Feedback registrado',
+        like: 'Obrigado por nos informar que isso foi útil!',
+        unlike: 'Feedback removido',
+      },
     },
     input: {
       placeholder: 'Pergunte-me qualquer coisa sobre a COVID-19...',

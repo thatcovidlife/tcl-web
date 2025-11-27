@@ -833,6 +833,15 @@ export default {
         export: 'Export',
         like: 'Like',
       },
+      toasts: {
+        copy: 'Copied to clipboard',
+        copyError: 'Failed to copy message',
+        dislike: "Thanks for your feedback. We'll work to improve!",
+        feedbackError: 'Failed to record feedback',
+        feedbackRecorded: 'Feedback recorded',
+        like: 'Thanks for letting us know this was helpful!',
+        unlike: 'Feedback removed',
+      },
     },
     input: {
       placeholder: 'Ask me anything about COVID-19...',

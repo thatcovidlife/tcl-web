@@ -853,6 +853,15 @@ export default {
         export: 'Exportar',
         like: 'Me gusta',
       },
+      toasts: {
+        copy: 'Copiado al portapapeles',
+        copyError: 'Error al copiar el mensaje',
+        dislike: 'Gracias por tus comentarios. ¡Trabajaremos para mejorar!',
+        feedbackError: 'Error al registrar los comentarios',
+        feedbackRecorded: 'Comentarios registrados',
+        like: 'Gracias por hacernos saber que esto fue útil.',
+        unlike: 'Comentarios eliminados',
+      },
     },
     input: {
       placeholder: 'Pregúntame lo que quieras sobre el COVID-19...',

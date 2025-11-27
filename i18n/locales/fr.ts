@@ -857,6 +857,16 @@ export default {
         export: 'Exporter',
         like: "J'aime",
       },
+      toasts: {
+        copy: 'Copié dans le presse-papiers',
+        copyError: 'Échec de la copie du message',
+        dislike:
+          "Merci pour vos commentaires. Nous allons travailler à l'amélioration !",
+        feedbackError: "Échec de l'enregistrement des commentaires",
+        feedbackRecorded: 'Commentaires enregistrés',
+        like: 'Merci de nous avoir fait savoir que cela a été utile !',
+        unlike: 'Commentaires supprimés',
+      },
     },
     input: {
       placeholder: 'Demandez-moi ce que vous souhaitez sur la COVID-19...',

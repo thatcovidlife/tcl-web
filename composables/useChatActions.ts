@@ -1,17 +1,23 @@
 import type { TextUIPart, UIMessage } from 'ai'
+import { toast } from 'vue-sonner'
 import { copyMessage } from '@/assets/utils/copy-message'
 
 export const useChatActions = (
   messages: Ref<(UIMessage & { liked?: boolean | null })[]>,
   messageLikes: Ref<Record<string, boolean | null>>,
 ) => {
+  const { t } = useI18n()
   const { likeMessage, deleteLike } = useApiRoutes()
 
   const handleLike = async (chatId: string, messageId: string) => {
     const result = await likeMessage(messageId, true)
     if (result) {
       messageLikes.value[messageId] = true
-      console.log('Like successful:', result)
+      toast.success(t('chatbot.actions.toasts.feedbackRecorded'), {
+        description: t('chatbot.actions.toasts.like'),
+      })
+    } else {
+      toast.error(t('chatbot.actions.toasts.feedbackError'))
     }
   }
 
@@ -19,7 +25,11 @@ export const useChatActions = (
     const result = await likeMessage(messageId, false)
     if (result) {
       messageLikes.value[messageId] = false
-      console.log('Dislike successful:', result)
+      toast.success(t('chatbot.actions.toasts.feedbackRecorded'), {
+        description: t('chatbot.actions.toasts.dislike'),
+      })
+    } else {
+      toast.error(t('chatbot.actions.toasts.feedbackError'))
     }
   }
 
@@ -27,7 +37,9 @@ export const useChatActions = (
     const result = await deleteLike(messageId)
     if (result) {
       messageLikes.value[messageId] = null
-      console.log('Unlike successful:', result)
+      toast.success(t('chatbot.actions.toasts.unlike'))
+    } else {
+      toast.error(t('chatbot.actions.toasts.feedbackError'))
     }
   }
 
@@ -42,8 +54,10 @@ export const useChatActions = (
 
     try {
       await copyMessage(textPart.text)
+      toast.success(t('chatbot.actions.toasts.copy'))
     } catch (error) {
       console.error('Failed to copy message:', error)
+      toast.error(t('chatbot.actions.toasts.copyError'))
     }
   }
 
