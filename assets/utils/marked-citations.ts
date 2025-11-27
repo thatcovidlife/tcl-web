@@ -15,7 +15,6 @@ export const citationExtension = {
   },
   tokenizer(src: string) {
     const match = citationRegex.exec(src)
-    console.log('match', match)
     if (match) {
       return {
         type: 'citation',
