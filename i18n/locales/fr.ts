@@ -865,6 +865,7 @@ export default {
     menu: {
       about: 'À propos',
       support: 'Support',
+      faq: 'FAQ',
       history: 'Historique',
       new: 'Nouveau Chat',
     },

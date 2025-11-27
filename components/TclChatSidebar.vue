@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { CircleQuestionMark, PenLine, SquarePen } from 'lucide-vue-next'
+import {
+  CircleQuestionMark,
+  InfoIcon,
+  PenLine,
+  SquarePen,
+} from 'lucide-vue-next'
 const localePath = useLocalePath()
 const { t } = useI18n()
 
@@ -16,8 +21,16 @@ const emit = defineEmits(['new-chat'])
         variant="ghost"
         class="w-full flex justify-start px-2 gap-1.5 items-center"
       >
-        <CircleQuestionMark />
+        <InfoIcon />
         {{ t('chatbot.menu.about') }}
+      </Button>
+      <Button
+        size="lg"
+        variant="ghost"
+        class="w-full flex justify-start px-2 gap-1.5 items-center"
+      >
+        <CircleQuestionMark />
+        {{ t('chatbot.menu.faq') }}
       </Button>
       <NuxtLink :to="localePath('/support')" target="_blank">
         <Button

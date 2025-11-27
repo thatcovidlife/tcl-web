@@ -854,6 +854,7 @@ export default {
     menu: {
       about: 'Sobre',
       support: 'Suporte',
+      faq: 'FAQ',
       history: 'Histórico',
       new: 'Nova Conversa',
     },

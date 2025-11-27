@@ -841,6 +841,7 @@ export default {
     menu: {
       about: 'About',
       support: 'Support',
+      faq: 'FAQ',
       history: 'History',
       new: 'New Chat',
     },
