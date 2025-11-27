@@ -57,6 +57,7 @@ export default defineEventHandler(async (event) => {
             createdAt: likes.createdAt,
             message: {
               id: messages.id,
+              messageId: messages.messageId,
               content: messages.content,
               role: messages.role,
               chatId: messages.chatId,

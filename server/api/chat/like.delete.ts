@@ -1,6 +1,6 @@
 import { consola } from 'consola'
 import { db } from '@/lib/db'
-import { likes, users } from '@/lib/db/schema'
+import { likes, users, messages } from '@/lib/db/schema'
 import { eq, and } from 'drizzle-orm'
 import * as Sentry from '@sentry/nuxt'
 
@@ -53,7 +53,30 @@ export default defineEventHandler(async (event) => {
 
     const userId = currentUser.id
 
-    // Check if the like exists
+    // First, get the message by messageId (varchar field, not UUID)
+    const [message] = await Sentry.startSpan(
+      {
+        name: 'get message by messageId',
+        op: 'database.query',
+      },
+      async () => {
+        return await db
+          .select()
+          .from(messages)
+          .where(eq(messages.messageId, messageId))
+          .limit(1)
+      },
+    )
+
+    if (!message) {
+      throw createError({
+        status: 404,
+        message: 'Not found',
+        statusMessage: 'Message not found',
+      })
+    }
+
+    // Check if the like exists (using the database UUID)
     const [existingLike] = await Sentry.startSpan(
       {
         name: 'get existing like',
@@ -63,7 +86,7 @@ export default defineEventHandler(async (event) => {
         return await db
           .select()
           .from(likes)
-          .where(and(eq(likes.messageId, messageId), eq(likes.userId, userId)))
+          .where(and(eq(likes.messageId, message.id), eq(likes.userId, userId)))
           .limit(1)
       },
     )

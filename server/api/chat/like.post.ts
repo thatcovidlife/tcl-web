@@ -61,17 +61,17 @@ export default defineEventHandler(async (event) => {
 
     const userId = currentUser.id
 
-    // Verify the message exists
+    // Verify the message exists (search by messageId field, not id)
     const [message] = await Sentry.startSpan(
       {
-        name: 'get message by id',
+        name: 'get message by messageId',
         op: 'database.query',
       },
       async () => {
         return await db
           .select()
           .from(messages)
-          .where(eq(messages.id, messageId))
+          .where(eq(messages.messageId, messageId))
           .limit(1)
       },
     )
@@ -94,7 +94,7 @@ export default defineEventHandler(async (event) => {
         return await db
           .select()
           .from(likes)
-          .where(and(eq(likes.messageId, messageId), eq(likes.userId, userId)))
+          .where(and(eq(likes.messageId, message.id), eq(likes.userId, userId)))
           .limit(1)
       },
     )
@@ -114,7 +114,7 @@ export default defineEventHandler(async (event) => {
         },
       )
     } else {
-      // Create new like/dislike
+      // Create new like/dislike (use the database UUID, not the messageId string)
       await Sentry.startSpan(
         {
           name: 'insert like',
@@ -122,7 +122,7 @@ export default defineEventHandler(async (event) => {
         },
         async () => {
           return await db.insert(likes).values({
-            messageId,
+            messageId: message.id,
             userId,
             like: likeAction,
           })
@@ -143,7 +143,7 @@ export default defineEventHandler(async (event) => {
             dislikes: sql<number>`COUNT(*) FILTER (WHERE ${likes.like} = false)`,
           })
           .from(likes)
-          .where(eq(likes.messageId, messageId))
+          .where(eq(likes.messageId, message.id))
       },
     )
 

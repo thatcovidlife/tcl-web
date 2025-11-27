@@ -175,6 +175,7 @@ const loadChatHistory = async (chatId: string) => {
       // Load messages into chat
       chat.messages = result.messages.map((msg: any) => ({
         id: msg.id,
+        liked: (msg as any).liked ?? null,
         role: msg.role,
         parts: msg.parts || [{ type: 'text', text: msg.content }],
       }))

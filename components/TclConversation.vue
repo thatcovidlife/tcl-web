@@ -27,11 +27,16 @@ import { getGravatarUrl } from '@/assets/utils/gravatar'
 import type { TextUIPart, UIMessage } from 'ai'
 import type { ChatStatus } from 'ai'
 
+const { likeMessage, deleteLike } = useApiRoutes()
+
 const props = defineProps<{
   chatId: string
-  messages: UIMessage[]
+  messages: (UIMessage & { liked?: boolean | null })[]
   status: ChatStatus
 }>()
+
+// Store like states for messages
+const messageLikes = ref<Record<string, boolean | null>>({})
 
 const { uniqBy } = lodash
 const userStore = useUserStore()
@@ -127,6 +132,30 @@ const getChainOfThought = (parts: UIMessage['parts']) => {
     .map(mapStep)
 }
 
+const handleLike = async (chatId: string, messageId: string) => {
+  const result = await likeMessage(messageId, true)
+  if (result) {
+    messageLikes.value[messageId] = true
+    console.log('Like successful:', result)
+  }
+}
+
+const handleDislike = async (chatId: string, messageId: string) => {
+  const result = await likeMessage(messageId, false)
+  if (result) {
+    messageLikes.value[messageId] = false
+    console.log('Dislike successful:', result)
+  }
+}
+
+const handleUnlike = async (chatId: string, messageId: string) => {
+  const result = await deleteLike(messageId)
+  if (result) {
+    messageLikes.value[messageId] = null
+    console.log('Unlike successful:', result)
+  }
+}
+
 watch(
   () => userStore?.info?.email,
   async () => {
@@ -135,12 +164,21 @@ watch(
   { immediate: true },
 )
 
-// Watch messages and auto-close chain of thought when text response arrives
+// Initialize messageLikes from messages when they are loaded
 watch(
   () => props.messages,
   (msgs) => {
     msgs.forEach((message) => {
+      console.log('Processing message for likes:', message)
       if (message.role === 'assistant') {
+        // Initialize like state from message data if available
+        if (
+          'liked' in message &&
+          messageLikes.value[message.id] === undefined
+        ) {
+          messageLikes.value[message.id] = (message as any).liked ?? null
+        }
+
         // Auto-close when text response is present
         if (hasTextResponse(message.parts)) {
           messageOpenStates[message.id] = false
@@ -151,7 +189,7 @@ watch(
       }
     })
   },
-  { deep: true },
+  { deep: true, immediate: true },
 )
 </script>
 <template>
@@ -219,14 +257,10 @@ watch(
                   class="my-2"
                   :chat-id="props.chatId"
                   :message-id="message.id"
-                  @like="
-                    (chatId, messageId) =>
-                      console.log('like', chatId, messageId)
-                  "
-                  @dislike="
-                    (chatId, messageId) =>
-                      console.log('dislike', chatId, messageId)
-                  "
+                  :liked="messageLikes[message.id]"
+                  @like="handleLike"
+                  @dislike="handleDislike"
+                  @unlike="handleUnlike"
                   @copy="
                     (chatId, messageId) =>
                       console.log('copy', chatId, messageId)
