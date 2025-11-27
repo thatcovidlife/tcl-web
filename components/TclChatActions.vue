@@ -101,7 +101,6 @@ const actions = computed(() => {
 </script>
 <template>
   <Actions>
-    <div>{{ actions }}</div>
     <Action
       v-for="action in actions"
       :key="action.label"
