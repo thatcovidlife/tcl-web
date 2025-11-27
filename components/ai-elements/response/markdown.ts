@@ -1,5 +1,6 @@
 import { marked } from 'marked'
 import { citationExtension } from '@/assets/utils/marked-citations'
+import { createRenderer } from '@/assets/utils/marked-renderer'
 
 // Use citation extension
 marked.use({ extensions: [citationExtension] })
@@ -9,6 +10,7 @@ marked.use({ extensions: [citationExtension] })
 marked.setOptions({
   breaks: true, // Treat single line breaks as <br>
   gfm: true, // Enable GitHub-Flavored Markdown
+  renderer: createRenderer(),
   // headerIds: true,
   // mangle: false, // Avoid mangling emails
 })

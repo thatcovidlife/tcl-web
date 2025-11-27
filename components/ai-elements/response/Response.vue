@@ -13,8 +13,6 @@ const props = defineProps<{
 
 const attrs = useAttrs()
 
-type MDCValue = string | Record<string, unknown>
-
 const responseClasses = computed(() =>
   cn(
     'size-full [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 markdown-body',
