@@ -17,22 +17,50 @@ const emit = defineEmits(['new-chat'])
     <div>
       <TclChatSearch />
       <Button
+        size="icon"
+        variant="outline"
+        class="w-full flex justify-start px-2 gap-1.5 items-center lg:hidden rounded-full mb-2"
+      >
+        <InfoIcon />
+      </Button>
+      <Button
+        extra="hidden lg:flex"
         size="lg"
         variant="ghost"
-        class="w-full flex justify-start px-2 gap-1.5 items-center"
+        class="w-full justify-start px-2 gap-1.5 items-center hidden lg:flex"
       >
         <InfoIcon />
         {{ t('chatbot.menu.about') }}
       </Button>
       <Button
+        size="icon"
+        variant="outline"
+        class="w-full flex justify-start px-2 gap-1.5 items-center lg:hidden rounded-full mb-2"
+      >
+        <CircleQuestionMark />
+      </Button>
+      <Button
         size="lg"
         variant="ghost"
-        class="w-full flex justify-start px-2 gap-1.5 items-center"
+        class="w-full justify-start px-2 gap-1.5 items-center hidden lg:flex"
       >
         <CircleQuestionMark />
         {{ t('chatbot.menu.faq') }}
       </Button>
-      <NuxtLink :to="localePath('/support')" target="_blank">
+      <NuxtLink :to="localePath('/support')" target="_blank" class="lg:hidden">
+        <Button
+          size="icon"
+          variant="outline"
+          class="w-full flex justify-start px-2 gap-1.5 items-center rounded-full mb-2"
+        >
+          <CircleQuestionMark />
+        </Button>
+      </NuxtLink>
+      <NuxtLink
+        :to="localePath('/support')"
+        target="_blank"
+        class="hidden lg:block"
+      >
         <Button
           size="lg"
           variant="ghost"

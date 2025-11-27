@@ -219,9 +219,16 @@ onUnmounted(() => {
   <Dialog v-model:open="open">
     <DialogTrigger as-child>
       <Button
+        size="icon"
+        variant="outline"
+        class="w-full flex justify-start px-2 gap-1.5 items-center lg:hidden rounded-full mb-2"
+      >
+        <History />
+      </Button>
+      <Button
         variant="ghost"
         size="lg"
-        class="w-full relative flex items-center justify-between px-2"
+        class="w-full relative hidden lg:flex items-center justify-between px-2"
         @click="open = true"
       >
         <span class="flex gap-1.5 items-center"
