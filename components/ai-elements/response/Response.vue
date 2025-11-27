@@ -37,5 +37,5 @@ watch(
 </script>
 
 <template>
-  <span :class="responseClasses" v-html="content" />
+  <span v-hydrate-citations :class="responseClasses" v-html="content" />
 </template>

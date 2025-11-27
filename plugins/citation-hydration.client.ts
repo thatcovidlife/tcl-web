@@ -1,15 +1,36 @@
-// import { defineNuxtPlugin } from '#app'
-import { defineCustomElement } from 'vue'
-import TclCitationVue from '@/components/TclCitation.vue'
+import { createApp, h } from 'vue'
+import TclCitation from '@/components/TclCitation.vue'
 
-export default defineNuxtPlugin(() => {
-  // Define TclCitation as a custom element with styles option
-  const CitationElement = defineCustomElement(TclCitationVue, {
-    shadowRoot: false, // Disable shadow DOM to allow Tailwind classes
+export default defineNuxtPlugin((nuxtApp) => {
+  if (typeof window === 'undefined') return
+
+  // Add a global directive to hydrate citations
+  nuxtApp.vueApp.directive('hydrate-citations', {
+    mounted(el: HTMLElement) {
+      hydrateCitations(el)
+    },
+    updated(el: HTMLElement) {
+      hydrateCitations(el)
+    },
   })
 
-  // Register the custom element
-  if (typeof window !== 'undefined' && !customElements.get('tcl-citation')) {
-    customElements.define('tcl-citation', CitationElement)
+  function hydrateCitations(container: HTMLElement) {
+    const citations = container.querySelectorAll('tcl-citation')
+    citations.forEach((citation) => {
+      if (citation.getAttribute('data-hydrated')) return
+
+      const id = citation.getAttribute('id') || ''
+      citation.setAttribute('data-hydrated', 'true')
+
+      // Create a Vue app for this citation
+      const app = createApp({
+        render: () => h(TclCitation, { id }),
+      })
+
+      // Mount it, replacing the element's content
+      const wrapper = document.createElement('span')
+      citation.appendChild(wrapper)
+      app.mount(wrapper)
+    })
   }
 })

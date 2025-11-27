@@ -24,6 +24,6 @@ export const citationExtension = {
     }
   },
   renderer(token: any) {
-    return `<tcl-citation :id="${token.id}"></tcl-citation>`
+    return `<tcl-citation id="${token.id}"></tcl-citation>`
   },
 }
