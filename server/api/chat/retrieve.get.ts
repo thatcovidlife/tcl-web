@@ -1,7 +1,7 @@
 import { consola } from 'consola'
 import { db } from '@/lib/db'
-import { chats, messages, users } from '@/lib/db/schema'
-import { eq, asc } from 'drizzle-orm'
+import { chats, messages, users, likes } from '@/lib/db/schema'
+import { eq, asc, and, inArray } from 'drizzle-orm'
 import * as Sentry from '@sentry/nuxt'
 
 export default defineEventHandler(async (event) => {
@@ -101,11 +101,42 @@ export default defineEventHandler(async (event) => {
       },
     )
 
+    // Fetch user's likes for all messages in this chat
+    const userLikes = await Sentry.startSpan(
+      {
+        name: 'get user likes for chat messages',
+        op: 'database.query',
+      },
+      async () => {
+        const messageIds = chatMessages.map((msg) => msg.id)
+        if (messageIds.length === 0) return []
+
+        return await db
+          .select({
+            messageId: likes.messageId,
+            like: likes.like,
+          })
+          .from(likes)
+          .where(
+            and(
+              eq(likes.userId, dbUser.id),
+              inArray(likes.messageId, messageIds),
+            ),
+          )
+      },
+    )
+
+    // Create a map for quick lookup of likes by message ID
+    const likesMap = new Map<string, boolean>()
+    userLikes.forEach((like) => {
+      likesMap.set(like.messageId, like.like)
+    })
+
     consola.success(
       `Retrieved chat ${chatId} with ${chatMessages.length} messages`,
     )
 
-    // Return chat details with messages array
+    // Return chat details with messages array including like status
     return {
       chat: {
         id: chat.id,
@@ -118,6 +149,7 @@ export default defineEventHandler(async (event) => {
         role: msg.role,
         content: msg.content,
         parts: msg.parts,
+        liked: likesMap.get(msg.id) ?? null,
       })),
     }
   } catch (error) {

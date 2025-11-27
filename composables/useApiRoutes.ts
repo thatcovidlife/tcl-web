@@ -188,16 +188,58 @@ export const useApiRoutes = () => {
     })
   }
 
+  const likeMessage = async (messageId: string, like: boolean) => {
+    try {
+      const res = await $fetch('/api/chat/like', {
+        method: 'POST',
+        body: { messageId, like },
+      })
+
+      return res || null
+    } catch (e) {
+      consola.error(e)
+      return null
+    }
+  }
+
+  const getUserLikes = async () => {
+    try {
+      const res = await $fetch('/api/chat/likes')
+
+      return res || null
+    } catch (e) {
+      consola.error(e)
+      return null
+    }
+  }
+
+  const deleteLike = async (messageId: string) => {
+    try {
+      const res = await $fetch('/api/chat/like', {
+        method: 'DELETE' as any,
+        body: { messageId },
+      })
+
+      return res || null
+    } catch (e) {
+      consola.error(e)
+      return null
+    }
+  }
+
   return {
     createChat,
     createUser,
+    deleteLike,
     findUsername,
     getOrCreateUser,
     getUser,
     getUserById,
     getUserChats,
+    getUserLikes,
     getUsername,
     getUserRole,
+    likeMessage,
     retrieveChat,
     saveMessages,
     searchChats,
