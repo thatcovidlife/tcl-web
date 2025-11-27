@@ -1,13 +1,17 @@
 import { marked } from 'marked'
 
 const citationRegex =
-  /^\[([0-9a-fA-F]{8}[-‑][0-9a-fA-F]{4}[-‑][0-9a-fA-F]{4}[-‑][0-9a-fA-F]{4}[-‑][0-9a-fA-F]{12}|[0-9a-fA-F]{6,})\]/
+  /^[\[【]([0-9a-fA-F]{8}[-‑][0-9a-fA-F]{4}[-‑][0-9a-fA-F]{4}[-‑][0-9a-fA-F]{4}[-‑][0-9a-fA-F]{12}|[0-9a-fA-F]{6,})[\]】]/
 
 export const citationExtension = {
   name: 'citation',
   level: 'inline',
   start(src: string) {
-    return src.indexOf('[')
+    const regular = src.indexOf('[')
+    const fullwidth = src.indexOf('【')
+    if (regular === -1) return fullwidth
+    if (fullwidth === -1) return regular
+    return Math.min(regular, fullwidth)
   },
   tokenizer(src: string) {
     const match = citationRegex.exec(src)
