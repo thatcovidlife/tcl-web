@@ -24,12 +24,12 @@ const props = defineProps<{
   models: { id: modelID; name: string }[]
   model: modelID | null
   submitStatus: PromptInputStatus
-  // updateModel: (model: string) => void
 }>()
 
 const emit = defineEmits<{
   (e: 'submit', value: PromptInputMessage): void
   (e: 'update-model', value: modelID): void
+  (e: 'stop'): void
 }>()
 
 const { t } = useI18n()
@@ -114,6 +114,7 @@ const onPressEnter = () => {
             (!text.trim().length && props.submitStatus === 'ready') ||
             props.submitStatus === 'error'
           "
+          @click="submitStatus === 'streaming' ? emit('stop') : undefined"
         />
       </PromptInputToolbar>
     </PromptInput>

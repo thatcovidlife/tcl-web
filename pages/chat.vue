@@ -236,6 +236,7 @@ onMounted(async () => {
         :submit-status="chat.status"
         @submit="onSubmit"
         @update-model="setSelectedModel"
+        @stop="chat.stop()"
       />
       <TclSuggestedPrompts
         v-if="chat.messages.length === 0"
