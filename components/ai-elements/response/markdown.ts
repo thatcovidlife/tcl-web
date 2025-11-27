@@ -1,4 +1,8 @@
 import { marked } from 'marked'
+import { citationExtension } from '@/assets/utils/marked-citations'
+
+// Use citation extension
+marked.use({ extensions: [citationExtension] })
 // import DOMPurify from 'isomorphic-dompurify'
 
 // Optional: Configure Marked

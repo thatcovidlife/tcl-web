@@ -148,7 +148,6 @@ watch(
   () => props.messages,
   (msgs) => {
     msgs.forEach((message) => {
-      console.log('Processing message for likes:', message)
       if (message.role === 'assistant') {
         // Initialize like state from message data if available
         if (
