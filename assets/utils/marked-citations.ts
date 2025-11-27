@@ -1,7 +1,7 @@
 import { marked } from 'marked'
 
 const citationRegex =
-  /^[\[【]([0-9a-fA-F]{8}[-‑][0-9a-fA-F]{4}[-‑][0-9a-fA-F]{4}[-‑][0-9a-fA-F]{4}[-‑][0-9a-fA-F]{12}|[0-9a-fA-F]{6,})[\]】]/
+  /^[\[【]([0-9a-fA-F]{8}[-‑][0-9a-fA-F]{4}[-‑][0-9a-fA-F]{4}[-‑][0-9a-fA-F]{4}[-‑][0-9a-fA-F]{12}|[0-9a-fA-F]{8}[-‑]…|[0-9a-fA-F]{6,})[\]】]/
 
 export const citationExtension = {
   name: 'citation',
