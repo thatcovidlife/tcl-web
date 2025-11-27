@@ -27,8 +27,6 @@ import { getGravatarUrl } from '@/assets/utils/gravatar'
 import type { TextUIPart, UIMessage } from 'ai'
 import type { ChatStatus } from 'ai'
 
-const { likeMessage, deleteLike } = useApiRoutes()
-
 const props = defineProps<{
   chatId: string
   messages: (UIMessage & { liked?: boolean | null })[]
@@ -132,29 +130,10 @@ const getChainOfThought = (parts: UIMessage['parts']) => {
     .map(mapStep)
 }
 
-const handleLike = async (chatId: string, messageId: string) => {
-  const result = await likeMessage(messageId, true)
-  if (result) {
-    messageLikes.value[messageId] = true
-    console.log('Like successful:', result)
-  }
-}
-
-const handleDislike = async (chatId: string, messageId: string) => {
-  const result = await likeMessage(messageId, false)
-  if (result) {
-    messageLikes.value[messageId] = false
-    console.log('Dislike successful:', result)
-  }
-}
-
-const handleUnlike = async (chatId: string, messageId: string) => {
-  const result = await deleteLike(messageId)
-  if (result) {
-    messageLikes.value[messageId] = null
-    console.log('Unlike successful:', result)
-  }
-}
+const { handleLike, handleDislike, handleUnlike, handleCopy } = useChatActions(
+  toRef(props, 'messages'),
+  messageLikes,
+)
 
 watch(
   () => userStore?.info?.email,
@@ -261,10 +240,7 @@ watch(
                   @like="handleLike"
                   @dislike="handleDislike"
                   @unlike="handleUnlike"
-                  @copy="
-                    (chatId, messageId) =>
-                      console.log('copy', chatId, messageId)
-                  "
+                  @copy="handleCopy"
                   @export="
                     (chatId, messageId) =>
                       console.log('export', chatId, messageId)
