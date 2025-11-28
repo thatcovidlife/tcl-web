@@ -4,7 +4,7 @@ export const exportPDF = async (
   filename: string,
 ) => {
   try {
-    const res = await fetch('/api/chat/export', {
+    const res = await fetch('https://tcl-pdf-export.vercel.app/api/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
