@@ -862,9 +862,11 @@ export default {
         copyError: 'Échec de la copie du message',
         dislike:
           "Merci pour vos commentaires. Nous allons travailler à l'amélioration !",
+        exporting: 'Préparation de votre PDF...',
         feedbackError: "Échec de l'enregistrement des commentaires",
         feedbackRecorded: 'Commentaires enregistrés',
         like: 'Merci de nous avoir fait savoir que cela a été utile !',
+        pdfExport: 'Votre PDF est en cours de téléchargement',
         unlike: 'Commentaires supprimés',
       },
     },

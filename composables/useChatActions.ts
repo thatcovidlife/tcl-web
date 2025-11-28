@@ -15,7 +15,9 @@ export const useChatActions = (
     title: string,
     filename: string,
   ) => {
-    // Implementation for exporting chat as PDF can be added here
+    toast.success(t('chatbot.actions.toasts.pdfExport'), {
+      description: t('chatbot.actions.toasts.exporting'),
+    })
     await exportPDF(content, title, filename)
   }
 
