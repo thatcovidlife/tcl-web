@@ -247,6 +247,7 @@ watch(
                           props.messages[props.messages.indexOf(message) - 1]
                             ?.parts[0] as TextUIPart
                         )?.text || 'export',
+                        `chat-message-${message.id}`,
                       )
                   "
                 />

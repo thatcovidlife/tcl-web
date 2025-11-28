@@ -1,4 +1,8 @@
-export const exportPDF = async (content: string, title: string) => {
+export const exportPDF = async (
+  content: string,
+  title: string,
+  filename: string,
+) => {
   try {
     const res = await fetch('/api/chat/export', {
       method: 'POST',
@@ -15,7 +19,7 @@ export const exportPDF = async (content: string, title: string) => {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `${title}.pdf`
+    a.download = `${filename}.pdf`
     a.click()
   } catch (error) {
     console.error('Error exporting PDF:', error)

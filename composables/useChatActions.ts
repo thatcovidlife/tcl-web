@@ -10,9 +10,13 @@ export const useChatActions = (
   const { t } = useI18n()
   const { likeMessage, deleteLike } = useApiRoutes()
 
-  const handleExport = async (content: string, title: string) => {
+  const handleExport = async (
+    content: string,
+    title: string,
+    filename: string,
+  ) => {
     // Implementation for exporting chat as PDF can be added here
-    await exportPDF(content, title)
+    await exportPDF(content, title, filename)
   }
 
   const handleLike = async (chatId: string, messageId: string) => {
