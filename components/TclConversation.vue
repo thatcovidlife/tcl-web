@@ -23,6 +23,7 @@ import { Response } from '@/components/ai-elements/response'
 
 import { useUserStore } from '@/store/user'
 import { getGravatarUrl } from '@/assets/utils/gravatar'
+import { useChatActions } from '@/composables/useChatActions'
 
 import type { TextUIPart, UIMessage } from 'ai'
 import type { ChatStatus } from 'ai'
@@ -130,10 +131,8 @@ const getChainOfThought = (parts: UIMessage['parts']) => {
     .map(mapStep)
 }
 
-const { handleLike, handleDislike, handleUnlike, handleCopy } = useChatActions(
-  toRef(props, 'messages'),
-  messageLikes,
-)
+const { handleLike, handleDislike, handleUnlike, handleCopy, handleExport } =
+  useChatActions(toRef(props, 'messages'), messageLikes)
 
 watch(
   () => userStore?.info?.email,
@@ -241,8 +240,14 @@ watch(
                   @unlike="handleUnlike"
                   @copy="handleCopy"
                   @export="
-                    (chatId, messageId) =>
-                      console.log('export', chatId, messageId)
+                    () =>
+                      handleExport(
+                        part.text,
+                        (
+                          props.messages[props.messages.indexOf(message) - 1]
+                            ?.parts[0] as TextUIPart
+                        )?.text || 'export',
+                      )
                   "
                 />
               </template>

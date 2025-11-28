@@ -1,6 +1,7 @@
 import type { TextUIPart, UIMessage } from 'ai'
 import { toast } from 'vue-sonner'
 import { copyMessage } from '@/assets/utils/copy-message'
+import { exportPDF } from '@/assets/utils/export-pdf'
 
 export const useChatActions = (
   messages: Ref<(UIMessage & { liked?: boolean | null })[]>,
@@ -8,6 +9,11 @@ export const useChatActions = (
 ) => {
   const { t } = useI18n()
   const { likeMessage, deleteLike } = useApiRoutes()
+
+  const handleExport = async (content: string, title: string) => {
+    // Implementation for exporting chat as PDF can be added here
+    await exportPDF(content, title)
+  }
 
   const handleLike = async (chatId: string, messageId: string) => {
     const result = await likeMessage(messageId, true)
@@ -62,9 +68,10 @@ export const useChatActions = (
   }
 
   return {
-    handleLike,
-    handleDislike,
-    handleUnlike,
     handleCopy,
+    handleDislike,
+    handleExport,
+    handleLike,
+    handleUnlike,
   }
 }
