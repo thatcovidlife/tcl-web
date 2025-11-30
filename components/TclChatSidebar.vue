@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import {
-  CircleQuestionMark,
-  InfoIcon,
-  PenLine,
-  SquarePen,
-} from 'lucide-vue-next'
+import { CircleQuestionMark, PenLine, SquarePen } from 'lucide-vue-next'
 const localePath = useLocalePath()
 const { t } = useI18n()
 
@@ -16,22 +11,7 @@ const emit = defineEmits(['new-chat'])
   >
     <div>
       <TclChatSearch />
-      <Button
-        size="icon"
-        variant="outline"
-        class="w-full flex justify-start px-2 gap-1.5 items-center lg:hidden rounded-full mb-2"
-      >
-        <InfoIcon />
-      </Button>
-      <Button
-        extra="hidden lg:flex"
-        size="lg"
-        variant="ghost"
-        class="w-full justify-start px-2 gap-1.5 items-center hidden lg:flex"
-      >
-        <InfoIcon />
-        {{ t('chatbot.menu.about') }}
-      </Button>
+      <TclChatAbout />
       <Button
         size="icon"
         variant="outline"
