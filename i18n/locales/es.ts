@@ -182,7 +182,7 @@ export default {
     events: 'Próximos eventos',
     latestNews: 'Últimas noticias',
     library: 'Biblioteca científica',
-    phw: 'Public Health Watch',
+    phw: 'Atentos a la salud pública',
     seeAllEvents: 'Ver todos los eventos próximos y pasados',
     seeAllLibrary: 'Ver todos los artículos científicos',
     seeAllNews: 'Ver todas las últimas noticias',
@@ -204,7 +204,7 @@ export default {
     event: 'Próximos Eventos',
     events: 'Próximos Eventos',
     footerLegal: '© 2023 - {year} Reservados todos los derechos.',
-    health: 'Vigilancia de la Salud Pública',
+    health: 'Atentos a la salud pública',
     here: 'aquí',
     home: 'Página Principal',
     community: 'Comunidad',
@@ -242,7 +242,7 @@ export default {
     news: 'Noticias',
     privacyPolicy: 'Política de Privacidad',
     product: 'EPI',
-    'public-health': 'Vigilancia de la Salud Pública',
+    'public-health': 'Atentos a la salud pública',
     resource: 'Recursos',
     rights: 'Reservados todos los derechos',
     rss: 'RSS Feed',
@@ -649,7 +649,7 @@ export default {
         phw: {
           description:
             'Las últimas noticias sobre pandemias emergentes, como Mpox y H5N1.',
-          title: 'Public Health Watch',
+          title: 'Atentos a la salud pública',
         },
         videos: {
           description: 'Los últimos videos sobre la COVID-19.',

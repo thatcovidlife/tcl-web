@@ -182,7 +182,7 @@ export default {
     events: 'Próximos eventos',
     latestNews: 'Últimas notícias',
     library: 'Biblioteca científica',
-    phw: 'Vigilância da saúde pública',
+    phw: 'De olho na sáude pública',
     seeAllEvents: 'Veja todos os eventos futuros e passados',
     seeAllLibrary: 'Veja todos os artigos científicos',
     seeAllNews: 'Veja todas as últimas notícias',
@@ -204,7 +204,7 @@ export default {
     event: 'Próximos Eventos',
     events: 'Próximos Eventos',
     footerLegal: '© 2023 - {year} Todos os direitos reservados.',
-    health: 'Vigilância da Saúde Pública',
+    health: 'De olho na sáude pública',
     here: 'aqui',
     home: 'Pagina Inicial',
     community: 'Comunidade',
@@ -242,7 +242,7 @@ export default {
     news: 'Notícias',
     privacyPolicy: 'Política de Privacidade',
     product: 'EPI',
-    'public-health': 'Vigilância da Saúde Pública',
+    'public-health': 'De olho na sáude pública',
     rss: 'Feed RSS',
     resource: 'Recursos',
     rights: 'Todos os direitos reservados',
@@ -644,7 +644,7 @@ export default {
         phw: {
           description:
             'As últimas notícias sobre pandemias emergentes, como Mpox e H5N1.',
-          title: 'Vigilância da saúde pública',
+          title: 'De olho na sáude pública',
         },
         videos: {
           description: 'Os últimos vídeos sobre a COVID-19.',
