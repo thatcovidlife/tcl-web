@@ -829,6 +829,7 @@ export default {
       message: 'Escriba su mensaje aquí...',
     },
     products: {
+      chatbot: 'Chatbot',
       mobile: 'Aplicación móvil',
       website: 'Sitio web',
     },

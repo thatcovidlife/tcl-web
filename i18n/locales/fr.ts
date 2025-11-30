@@ -833,6 +833,7 @@ export default {
       message: 'Tapez votre message ici...',
     },
     products: {
+      chatbot: 'Chatbot',
       mobile: 'Application mobile',
       website: 'Site web',
     },

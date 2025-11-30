@@ -823,6 +823,7 @@ export default {
       message: 'Digite sua mensagem aqui...',
     },
     products: {
+      chatbot: 'Chatbot',
       mobile: 'Aplicativo móvel',
       website: 'Site',
     },

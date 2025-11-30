@@ -810,6 +810,7 @@ export default {
       message: 'Type your message here...',
     },
     products: {
+      chatbot: 'Chatbot',
       mobile: 'Mobile App',
       website: 'Website',
     },
