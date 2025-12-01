@@ -109,7 +109,7 @@ export default defineEventHandler(async (event) => {
             if (firstAssistantMessage?.content) {
               const rawContent = firstAssistantMessage.content.substring(0, 300)
               preview = sanitizeMarkdown(rawContent)
-              if (firstAssistantMessage.content.length > 300) {
+              if (preview.length > 300) {
                 preview = preview.substring(0, 300) + '...'
               }
             }
