@@ -122,7 +122,7 @@ export default defineEventHandler(async (event): Promise<PaginatedResponse> => {
           if (firstAssistantMessage?.content) {
             const rawContent = firstAssistantMessage.content.substring(0, 300)
             preview = sanitizeMarkdown(rawContent)
-            if (firstAssistantMessage.content.length > 300) {
+            if (preview.length > 300) {
               preview = preview.substring(0, 300) + '...'
             }
           }
@@ -217,7 +217,7 @@ export default defineEventHandler(async (event): Promise<PaginatedResponse> => {
         if (firstAssistantMessage?.content) {
           const rawContent = firstAssistantMessage.content.substring(0, 300)
           preview = sanitizeMarkdown(rawContent)
-          if (firstAssistantMessage.content.length > 300) {
+          if (preview.length > 300) {
             preview = preview.substring(0, 300) + '...'
           }
         }

@@ -6,9 +6,6 @@ import * as Sentry from '@sentry/nuxt'
 import { sanitizeChatMessage } from '@/lib/utils'
 
 export default defineEventHandler(async (event) => {
-  // Bypass XSS validator for this endpoint since chat messages may contain markdown/HTML
-  event.node.req.headers['x-skip-xss-validator'] = 'true'
-
   const { user: sessionUser } = await getUserSession(event)
 
   const body = await readBody(event)
