@@ -188,6 +188,27 @@ describe('sanitizeUserInput', () => {
     expect(result.sanitized).toContain('👋')
     expect(result.sanitized).toContain('🌍')
   })
+
+  it('should skip HTML encoding when skipHtmlEncoding is true', () => {
+    const input = "What's the best way? Here's a link: https://example.com/path"
+    const result = sanitizeUserInput(input, { skipHtmlEncoding: true })
+    expect(result.isValid).toBe(true)
+    // Apostrophes should NOT be encoded
+    expect(result.sanitized).not.toContain('&#x27;')
+    expect(result.sanitized).toContain("What's")
+    // Forward slashes should NOT be encoded
+    expect(result.sanitized).not.toContain('&#x2F;')
+    expect(result.sanitized).toContain('https://example.com/path')
+  })
+
+  it('should still encode HTML when skipHtmlEncoding is false (default)', () => {
+    const input = "What's the best way?"
+    const result = sanitizeUserInput(input)
+    expect(result.isValid).toBe(true)
+    // Apostrophes should be encoded by default
+    expect(result.sanitized).toContain('&#x27;')
+    expect(result.sanitized).not.toContain("'")
+  })
 })
 
 describe('sanitizeChatTitle', () => {
@@ -243,6 +264,32 @@ describe('sanitizeChatMessage', () => {
     const longMessage = 'a'.repeat(15000)
     const result = sanitizeChatMessage(longMessage)
     expect(result.sanitized.length).toBeLessThanOrEqual(10000)
+  })
+
+  it('should preserve Unicode characters without HTML encoding', () => {
+    const message =
+      "What's the best way to prevent COVID? Here's info: 日本語 العربية"
+    const result = sanitizeChatMessage(message)
+    expect(result.isValid).toBe(true)
+    // Apostrophes should NOT be encoded to &#x27;
+    expect(result.sanitized).not.toContain('&#x27;')
+    expect(result.sanitized).toContain("What's")
+    expect(result.sanitized).toContain("Here's")
+    // Unicode should be preserved
+    expect(result.sanitized).toContain('日本語')
+    expect(result.sanitized).toContain('العربية')
+  })
+
+  it('should preserve special characters for markdown rendering', () => {
+    const message = 'Check this: https://example.com/path?q=test&foo=bar'
+    const result = sanitizeChatMessage(message)
+    expect(result.isValid).toBe(true)
+    // Forward slashes and ampersands should NOT be encoded
+    expect(result.sanitized).not.toContain('&#x2F;')
+    expect(result.sanitized).not.toContain('&amp;')
+    expect(result.sanitized).toContain(
+      'https://example.com/path?q=test&foo=bar',
+    )
   })
 })
 

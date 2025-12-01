@@ -84,12 +84,19 @@ export function sanitizeUserInput(
     maxLength?: number
     allowHtml?: boolean
     strictMode?: boolean
+    /**
+     * Skip HTML entity encoding. Use this when the output will be processed
+     * by a markdown renderer or other system that handles its own escaping.
+     * Default: false (will encode HTML entities)
+     */
+    skipHtmlEncoding?: boolean
   } = {},
 ): SanitizationResult {
   const {
     maxLength = MAX_INPUT_LENGTH,
     allowHtml = false,
     strictMode = true,
+    skipHtmlEncoding = false,
   } = options
 
   const errors: string[] = []
@@ -166,7 +173,7 @@ export function sanitizeUserInput(
   sanitized = sanitized.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, ' ')
 
   // Remove or escape HTML if not allowed
-  if (!allowHtml) {
+  if (!allowHtml && !skipHtmlEncoding) {
     // Escape HTML special characters
     sanitized = sanitized
       .replace(/&/g, '&amp;')
@@ -220,6 +227,9 @@ export function sanitizeChatMessage(
     maxLength: MAX_INPUT_LENGTH,
     allowHtml: false,
     strictMode: true,
+    // Skip HTML encoding since chat messages are rendered through
+    // the markdown renderer which handles its own escaping
+    skipHtmlEncoding: true,
   })
 }
 
