@@ -23,5 +23,6 @@ export {
   sanitizeChatTitle,
   sanitizeChatMessage,
   sanitizeForDatabase,
+  decodeHtmlEntities,
   type SanitizationResult,
 } from './utils/sanitize'

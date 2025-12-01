@@ -227,9 +227,6 @@ export function sanitizeChatMessage(
     maxLength: MAX_INPUT_LENGTH,
     allowHtml: false,
     strictMode: true,
-    // Skip HTML encoding since chat messages are rendered through
-    // the markdown renderer which handles its own escaping
-    skipHtmlEncoding: true,
   })
 }
 
@@ -271,4 +268,35 @@ export function sanitizeForDatabase(input: string | null | undefined): string {
   )
 
   return sanitized.trim()
+}
+
+/**
+ * Decode HTML entities back to their original characters.
+ * Use this to display text that was previously HTML-encoded (legacy data).
+ * Handles double-encoded entities by running multiple passes.
+ * @param input - Text with HTML entities
+ * @returns Decoded text with original characters
+ */
+export function decodeHtmlEntities(input: string | null | undefined): string {
+  if (!input) return ''
+
+  let result = String(input)
+  let previousResult = ''
+
+  // Run multiple passes to handle double-encoded entities (e.g., &amp;#x27; -> &#x27; -> ')
+  // Maximum 3 passes to prevent infinite loops
+  for (let i = 0; i < 3 && result !== previousResult; i++) {
+    previousResult = result
+    result = result
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#x27;/g, "'")
+      .replace(/&#x2F;/g, '/')
+      .replace(/&#39;/g, "'")
+      .replace(/&#47;/g, '/')
+  }
+
+  return result
 }

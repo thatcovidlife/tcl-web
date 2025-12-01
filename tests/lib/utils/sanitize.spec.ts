@@ -4,6 +4,7 @@ import {
   sanitizeChatTitle,
   sanitizeChatMessage,
   sanitizeForDatabase,
+  decodeHtmlEntities,
 } from '@/lib/utils/sanitize'
 
 describe('sanitizeUserInput', () => {
@@ -224,11 +225,12 @@ describe('sanitizeChatTitle', () => {
     expect(sanitizeChatTitle(undefined)).toBe('New chat')
   })
 
-  it('should escape HTML in titles', () => {
-    const title = '<script>alert("xss")</script>'
+  it('should HTML-encode special characters for safe storage', () => {
+    const title = "What's the best way to prevent COVID?"
     const result = sanitizeChatTitle(title)
-    expect(result).not.toContain('<script>')
-    expect(result).toContain('&lt;')
+    // Apostrophes should be encoded for safe storage
+    expect(result).toContain('&#x27;')
+    expect(result).not.toContain("'")
   })
 
   it('should handle normal titles', () => {
@@ -266,30 +268,25 @@ describe('sanitizeChatMessage', () => {
     expect(result.sanitized.length).toBeLessThanOrEqual(10000)
   })
 
-  it('should preserve Unicode characters without HTML encoding', () => {
+  it('should HTML-encode special characters for safe storage', () => {
     const message =
       "What's the best way to prevent COVID? Here's info: 日本語 العربية"
     const result = sanitizeChatMessage(message)
     expect(result.isValid).toBe(true)
-    // Apostrophes should NOT be encoded to &#x27;
-    expect(result.sanitized).not.toContain('&#x27;')
-    expect(result.sanitized).toContain("What's")
-    expect(result.sanitized).toContain("Here's")
-    // Unicode should be preserved
+    // Apostrophes should be encoded for safe storage
+    expect(result.sanitized).toContain('&#x27;')
+    // Unicode should be preserved (not affected by HTML encoding)
     expect(result.sanitized).toContain('日本語')
     expect(result.sanitized).toContain('العربية')
   })
 
-  it('should preserve special characters for markdown rendering', () => {
+  it('should HTML-encode URLs for safe storage', () => {
     const message = 'Check this: https://example.com/path?q=test&foo=bar'
     const result = sanitizeChatMessage(message)
     expect(result.isValid).toBe(true)
-    // Forward slashes and ampersands should NOT be encoded
-    expect(result.sanitized).not.toContain('&#x2F;')
-    expect(result.sanitized).not.toContain('&amp;')
-    expect(result.sanitized).toContain(
-      'https://example.com/path?q=test&foo=bar',
-    )
+    // Forward slashes and ampersands should be encoded for safe storage
+    expect(result.sanitized).toContain('&#x2F;')
+    expect(result.sanitized).toContain('&amp;')
   })
 })
 
@@ -358,5 +355,50 @@ describe('security edge cases', () => {
     const result = sanitizeUserInput(input)
     // Control characters are replaced with spaces and normalized
     expect(result.sanitized).toBe('test string')
+  })
+})
+
+describe('decodeHtmlEntities', () => {
+  it('should handle null and undefined', () => {
+    expect(decodeHtmlEntities(null)).toBe('')
+    expect(decodeHtmlEntities(undefined)).toBe('')
+    expect(decodeHtmlEntities('')).toBe('')
+  })
+
+  it('should decode common HTML entities', () => {
+    expect(decodeHtmlEntities('&amp;')).toBe('&')
+    expect(decodeHtmlEntities('&lt;')).toBe('<')
+    expect(decodeHtmlEntities('&gt;')).toBe('>')
+    expect(decodeHtmlEntities('&quot;')).toBe('"')
+    expect(decodeHtmlEntities('&#x27;')).toBe("'")
+    expect(decodeHtmlEntities('&#x2F;')).toBe('/')
+  })
+
+  it('should decode legacy numeric entities', () => {
+    expect(decodeHtmlEntities('&#39;')).toBe("'")
+    expect(decodeHtmlEntities('&#47;')).toBe('/')
+  })
+
+  it('should decode mixed content correctly', () => {
+    const encoded = 'why won&#x27;t governments take covid-19 seriously?'
+    const decoded = decodeHtmlEntities(encoded)
+    expect(decoded).toBe("why won't governments take covid-19 seriously?")
+  })
+
+  it('should handle double-encoded entities', () => {
+    // This is the case we saw: &amp;#x27; should become ' after multiple passes
+    const doubleEncoded = 'why won&amp;#x27;t governments'
+    const decoded = decodeHtmlEntities(doubleEncoded)
+    expect(decoded).toBe("why won't governments")
+  })
+
+  it('should preserve text without entities', () => {
+    const text = 'Hello world! This is normal text.'
+    expect(decodeHtmlEntities(text)).toBe(text)
+  })
+
+  it('should preserve Unicode characters', () => {
+    const text = '日本語 العربية 한국어 emoji: 👋🌍'
+    expect(decodeHtmlEntities(text)).toBe(text)
   })
 })

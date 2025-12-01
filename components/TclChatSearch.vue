@@ -6,7 +6,7 @@ import {
   History,
   MessageSquare,
 } from 'lucide-vue-next'
-import { cn } from '@/lib/utils'
+import { cn, decodeHtmlEntities } from '@/lib/utils'
 import { useApiRoutes } from '@/composables/useApiRoutes'
 
 import Button from '@/components/ui/button/Button.vue'
@@ -320,7 +320,9 @@ onUnmounted(() => {
             >
               <MessageSquare class="size-4 flex-shrink-0" />
               <div class="flex flex-col flex-1 min-w-0">
-                <span class="font-medium truncate">{{ chat.title }}</span>
+                <span class="font-medium truncate">{{
+                  decodeHtmlEntities(chat.title)
+                }}</span>
                 <span
                   v-if="chat.createdAt"
                   class="text-muted-foreground text-xs"
@@ -331,7 +333,7 @@ onUnmounted(() => {
                   v-if="chat.preview"
                   class="text-muted-foreground mt-1 line-clamp-2 text-xs"
                 >
-                  {{ chat.preview }}
+                  {{ decodeHtmlEntities(chat.preview) }}
                 </p>
                 <span v-if="chat.searchKeywords" class="sr-only">
                   {{ chat.searchKeywords }}

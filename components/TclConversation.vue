@@ -24,6 +24,7 @@ import { Response } from '@/components/ai-elements/response'
 import { useUserStore } from '@/store/user'
 import { getGravatarUrl } from '@/assets/utils/gravatar'
 import { useChatActions } from '@/composables/useChatActions'
+import { decodeHtmlEntities } from '@/lib/utils'
 
 import type { TextUIPart, UIMessage } from 'ai'
 import type { ChatStatus } from 'ai'
@@ -178,7 +179,7 @@ watch(
         <template v-for="message in props.messages" :key="message.id">
           <Message v-if="message.role === 'user'" from="user">
             <MessageContent class="rounded-br-none">{{
-              (message.parts[0] as TextUIPart).text
+              decodeHtmlEntities((message.parts[0] as TextUIPart).text)
             }}</MessageContent>
             <MessageAvatar
               v-if="avatarUrl"
