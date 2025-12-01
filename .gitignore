@@ -28,6 +28,7 @@ dist
 _ca
 coverage
 old.yarn.lock
+.yarn/install-state.gz
 
 # Sentry Config File
 .env.sentry-build-plugin
