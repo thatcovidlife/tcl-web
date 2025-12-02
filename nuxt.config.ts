@@ -36,6 +36,14 @@ export default defineNuxtConfig({
     classSuffix: '',
   },
 
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false,
+      ignore: ['**/ai-elements/**/index.ts', '**/ai-elements/**/types.ts'],
+    },
+  ],
+
   compatibilityDate: '2024-11-01',
   devtools: { enabled: false },
 
@@ -229,9 +237,23 @@ export default defineNuxtConfig({
           'gravatar.com',
           '*.ytimg.com',
           'prodregistryv2.org',
+          'www.google.com',
+          '*.gstatic.com',
         ],
       },
       crossOriginEmbedderPolicy: 'unsafe-none',
+      permissionsPolicy: {
+        microphone: ['self'],
+      },
+    },
+  },
+
+  routeRules: {
+    '/api/chat': {
+      security: { xssValidator: false },
+    },
+    '/api/chat/save': {
+      security: { xssValidator: false },
     },
   },
 

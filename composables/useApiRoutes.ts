@@ -1,6 +1,20 @@
 import consola from 'consola'
 
 export const useApiRoutes = () => {
+  const createChat = async (userId: string, title: string) => {
+    try {
+      const res = await $fetch('/api/chat/create', {
+        method: 'POST',
+        body: { user_id: userId, title },
+      })
+
+      return res || null
+    } catch (e) {
+      consola.error(e)
+      return null
+    }
+  }
+
   const createUser = async (email: string) => {
     try {
       return await $fetch('/api/user/create-user', {
@@ -67,6 +81,20 @@ export const useApiRoutes = () => {
     }
   }
 
+  const getUserChats = async (limit: number = 5, offset: number = 0) => {
+    try {
+      const res = await $fetch('/api/chat/list', {
+        method: 'GET',
+        query: { limit, offset },
+      })
+
+      return res || null
+    } catch (e) {
+      consola.error(e)
+      return null
+    }
+  }
+
   const getUsername = async (email: string) => {
     try {
       const res = await $fetch('/api/user/get-username', {
@@ -99,6 +127,60 @@ export const useApiRoutes = () => {
     }
   }
 
+  const retrieveChat = async (chatId: string) => {
+    try {
+      const res = await $fetch('/api/chat/retrieve', {
+        method: 'GET',
+        query: { id: chatId },
+      })
+
+      return res || null
+    } catch (e) {
+      consola.error(e)
+      return null
+    }
+  }
+
+  const saveMessages = async (
+    chatId: string,
+    messages: Array<{
+      id?: string
+      role: string
+      content: string
+      parts?: any
+    }>,
+  ) => {
+    try {
+      const res = await $fetch('/api/chat/save', {
+        method: 'POST',
+        body: { chat_id: chatId, messages },
+      })
+
+      return res || null
+    } catch (e) {
+      consola.error(e)
+      return null
+    }
+  }
+
+  const searchChats = async (
+    search: string,
+    page: number = 1,
+    pageSize: number = 10,
+  ) => {
+    try {
+      const res = await $fetch('/api/chat/search', {
+        method: 'POST',
+        body: { search, page, pageSize },
+      })
+
+      return res || null
+    } catch (e) {
+      consola.error(e)
+      return null
+    }
+  }
+
   const updateUserProfile = async (body: { data: any; profileId: number }) => {
     return await $fetch('/api/user/update-profile', {
       method: 'POST',
@@ -106,14 +188,61 @@ export const useApiRoutes = () => {
     })
   }
 
+  const likeMessage = async (messageId: string, like: boolean) => {
+    try {
+      const res = await $fetch('/api/chat/like', {
+        method: 'POST',
+        body: { messageId, like },
+      })
+
+      return res || null
+    } catch (e) {
+      consola.error(e)
+      return null
+    }
+  }
+
+  const getUserLikes = async () => {
+    try {
+      const res = await $fetch('/api/chat/likes')
+
+      return res || null
+    } catch (e) {
+      consola.error(e)
+      return null
+    }
+  }
+
+  const deleteLike = async (messageId: string) => {
+    try {
+      const res = await $fetch('/api/chat/like', {
+        method: 'DELETE' as any,
+        body: { messageId },
+      })
+
+      return res || null
+    } catch (e) {
+      consola.error(e)
+      return null
+    }
+  }
+
   return {
+    createChat,
     createUser,
+    deleteLike,
     findUsername,
     getOrCreateUser,
     getUser,
     getUserById,
+    getUserChats,
+    getUserLikes,
     getUsername,
     getUserRole,
+    likeMessage,
+    retrieveChat,
+    saveMessages,
+    searchChats,
     updateUserProfile,
   }
 }

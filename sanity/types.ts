@@ -13,54 +13,6 @@
  */
 
 // Source: schema.json
-export type SanityImagePaletteSwatch = {
-  _type: 'sanity.imagePaletteSwatch'
-  background?: string
-  foreground?: string
-  population?: number
-  title?: string
-}
-
-export type SanityImagePalette = {
-  _type: 'sanity.imagePalette'
-  darkMuted?: SanityImagePaletteSwatch
-  lightVibrant?: SanityImagePaletteSwatch
-  darkVibrant?: SanityImagePaletteSwatch
-  vibrant?: SanityImagePaletteSwatch
-  dominant?: SanityImagePaletteSwatch
-  lightMuted?: SanityImagePaletteSwatch
-  muted?: SanityImagePaletteSwatch
-}
-
-export type SanityImageDimensions = {
-  _type: 'sanity.imageDimensions'
-  height?: number
-  width?: number
-  aspectRatio?: number
-}
-
-export type SanityFileAsset = {
-  _id: string
-  _type: 'sanity.fileAsset'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  originalFilename?: string
-  label?: string
-  title?: string
-  description?: string
-  altText?: string
-  sha1hash?: string
-  extension?: string
-  mimeType?: string
-  size?: number
-  assetId?: string
-  uploadId?: string
-  path?: string
-  url?: string
-  source?: SanityAssetSourceData
-}
-
 export type Video = {
   _id: string
   _type: 'video'
@@ -92,6 +44,7 @@ export type Video = {
       _weak?: boolean
       [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
     }
+    media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     _type: 'image'
@@ -141,6 +94,7 @@ export type ScientificLibrary = {
       _weak?: boolean
       [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
     }
+    media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     _type: 'image'
@@ -176,6 +130,7 @@ export type Resource = {
       _weak?: boolean
       [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
     }
+    media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     _type: 'image'
@@ -202,6 +157,7 @@ export type PublicHealth = {
   publicationDate?: string
   limitedAccess?: boolean
   premiumAccess?: boolean
+  excludeFromRSS?: boolean
   visual?: {
     asset?: {
       _ref: string
@@ -209,6 +165,7 @@ export type PublicHealth = {
       _weak?: boolean
       [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
     }
+    media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     _type: 'image'
@@ -233,6 +190,7 @@ export type Promo = {
       _weak?: boolean
       [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
     }
+    media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     _type: 'image'
@@ -278,6 +236,7 @@ export type Product = {
       _weak?: boolean
       [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
     }
+    media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     _type: 'image'
@@ -322,6 +281,7 @@ export type News = {
   publicationDate?: string
   limitedAccess?: boolean
   premiumAccess?: boolean
+  excludeFromRSS?: boolean
   visual?: {
     asset?: {
       _ref: string
@@ -329,6 +289,7 @@ export type News = {
       _weak?: boolean
       [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
     }
+    media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     _type: 'image'
@@ -354,6 +315,7 @@ export type FeedSettings = {
       _weak?: boolean
       [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
     }
+    media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     _type: 'image'
@@ -365,6 +327,26 @@ export type FeedAuthor = {
   _type: 'feedAuthor'
   name?: string
   email?: string
+}
+
+export type Faq = {
+  _id: string
+  _type: 'faq'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  question?: Array<
+    {
+      _key: string
+    } & InternationalizedArrayStringValue
+  >
+  uri?: Slug
+  answer?: Array<
+    {
+      _key: string
+    } & InternationalizedArrayRichTextValue
+  >
+  category?: 'general' | 'chatbot'
 }
 
 export type Event = {
@@ -399,6 +381,7 @@ export type Event = {
       _weak?: boolean
       [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
     }
+    media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     _type: 'image'
@@ -442,6 +425,7 @@ export type Education = {
       _weak?: boolean
       [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
     }
+    media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     _type: 'image'
@@ -479,17 +463,11 @@ export type Directory = {
       _weak?: boolean
       [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
     }
+    media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     _type: 'image'
   }
-}
-
-export type Geopoint = {
-  _type: 'geopoint'
-  lat?: number
-  lng?: number
-  alt?: number
 }
 
 export type Covidnet = {
@@ -528,6 +506,7 @@ export type Covidnet = {
       _weak?: boolean
       [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
     }
+    media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     _type: 'image'
@@ -556,6 +535,7 @@ export type Author = {
       _weak?: boolean
       [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
     }
+    media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     _type: 'image'
@@ -614,6 +594,7 @@ export type LocaleBlock = {
           _weak?: boolean
           [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
         }
+        media?: unknown
         hotspot?: SanityImageHotspot
         crop?: SanityImageCrop
         _type: 'image'
@@ -654,6 +635,7 @@ export type LocaleBlock = {
           _weak?: boolean
           [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
         }
+        media?: unknown
         hotspot?: SanityImageHotspot
         crop?: SanityImageCrop
         _type: 'image'
@@ -694,6 +676,7 @@ export type LocaleBlock = {
           _weak?: boolean
           [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
         }
+        media?: unknown
         hotspot?: SanityImageHotspot
         crop?: SanityImageCrop
         _type: 'image'
@@ -734,6 +717,7 @@ export type LocaleBlock = {
           _weak?: boolean
           [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
         }
+        media?: unknown
         hotspot?: SanityImageHotspot
         crop?: SanityImageCrop
         _type: 'image'
@@ -795,6 +779,7 @@ export type Brand = {
       _weak?: boolean
       [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
     }
+    media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     _type: 'image'
@@ -846,67 +831,11 @@ export type Blog = {
       _weak?: boolean
       [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
     }
+    media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     _type: 'image'
   }
-}
-
-export type SanityImageCrop = {
-  _type: 'sanity.imageCrop'
-  top?: number
-  bottom?: number
-  left?: number
-  right?: number
-}
-
-export type SanityImageHotspot = {
-  _type: 'sanity.imageHotspot'
-  x?: number
-  y?: number
-  height?: number
-  width?: number
-}
-
-export type SanityImageAsset = {
-  _id: string
-  _type: 'sanity.imageAsset'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  originalFilename?: string
-  label?: string
-  title?: string
-  description?: string
-  altText?: string
-  sha1hash?: string
-  extension?: string
-  mimeType?: string
-  size?: number
-  assetId?: string
-  uploadId?: string
-  path?: string
-  url?: string
-  metadata?: SanityImageMetadata
-  source?: SanityAssetSourceData
-}
-
-export type SanityAssetSourceData = {
-  _type: 'sanity.assetSourceData'
-  name?: string
-  id?: string
-  url?: string
-}
-
-export type SanityImageMetadata = {
-  _type: 'sanity.imageMetadata'
-  location?: Geopoint
-  dimensions?: SanityImageDimensions
-  palette?: SanityImagePalette
-  lqip?: string
-  blurHash?: string
-  hasAlpha?: boolean
-  isOpaque?: boolean
 }
 
 export type AppSettings = {
@@ -921,6 +850,14 @@ export type AppSettings = {
   valueBoolean?: boolean
   valueNumber?: number
   description?: string
+}
+
+export type GeopointRadius = {
+  _type: 'geopointRadius'
+  lat?: number
+  lng?: number
+  alt?: number
+  radius?: number
 }
 
 export type InternationalizedArrayRichTextValue = {
@@ -982,17 +919,125 @@ export type MediaTag = {
   name?: Slug
 }
 
+export type SanityImagePaletteSwatch = {
+  _type: 'sanity.imagePaletteSwatch'
+  background?: string
+  foreground?: string
+  population?: number
+  title?: string
+}
+
+export type SanityImagePalette = {
+  _type: 'sanity.imagePalette'
+  darkMuted?: SanityImagePaletteSwatch
+  lightVibrant?: SanityImagePaletteSwatch
+  darkVibrant?: SanityImagePaletteSwatch
+  vibrant?: SanityImagePaletteSwatch
+  dominant?: SanityImagePaletteSwatch
+  lightMuted?: SanityImagePaletteSwatch
+  muted?: SanityImagePaletteSwatch
+}
+
+export type SanityImageDimensions = {
+  _type: 'sanity.imageDimensions'
+  height?: number
+  width?: number
+  aspectRatio?: number
+}
+
+export type SanityImageHotspot = {
+  _type: 'sanity.imageHotspot'
+  x?: number
+  y?: number
+  height?: number
+  width?: number
+}
+
+export type SanityImageCrop = {
+  _type: 'sanity.imageCrop'
+  top?: number
+  bottom?: number
+  left?: number
+  right?: number
+}
+
+export type SanityFileAsset = {
+  _id: string
+  _type: 'sanity.fileAsset'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  originalFilename?: string
+  label?: string
+  title?: string
+  description?: string
+  altText?: string
+  sha1hash?: string
+  extension?: string
+  mimeType?: string
+  size?: number
+  assetId?: string
+  uploadId?: string
+  path?: string
+  url?: string
+  source?: SanityAssetSourceData
+}
+
+export type SanityImageAsset = {
+  _id: string
+  _type: 'sanity.imageAsset'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  originalFilename?: string
+  label?: string
+  title?: string
+  description?: string
+  altText?: string
+  sha1hash?: string
+  extension?: string
+  mimeType?: string
+  size?: number
+  assetId?: string
+  uploadId?: string
+  path?: string
+  url?: string
+  metadata?: SanityImageMetadata
+  source?: SanityAssetSourceData
+}
+
+export type SanityImageMetadata = {
+  _type: 'sanity.imageMetadata'
+  location?: Geopoint
+  dimensions?: SanityImageDimensions
+  palette?: SanityImagePalette
+  lqip?: string
+  blurHash?: string
+  hasAlpha?: boolean
+  isOpaque?: boolean
+}
+
+export type Geopoint = {
+  _type: 'geopoint'
+  lat?: number
+  lng?: number
+  alt?: number
+}
+
 export type Slug = {
   _type: 'slug'
   current?: string
   source?: string
 }
 
+export type SanityAssetSourceData = {
+  _type: 'sanity.assetSourceData'
+  name?: string
+  id?: string
+  url?: string
+}
+
 export type AllSanitySchemaTypes =
-  | SanityImagePaletteSwatch
-  | SanityImagePalette
-  | SanityImageDimensions
-  | SanityFileAsset
   | Video
   | Tag
   | ScientificLibrary
@@ -1004,10 +1049,10 @@ export type AllSanitySchemaTypes =
   | News
   | FeedSettings
   | FeedAuthor
+  | Faq
   | Event
   | Education
   | Directory
-  | Geopoint
   | Covidnet
   | Author
   | LocaleText
@@ -1018,12 +1063,8 @@ export type AllSanitySchemaTypes =
   | Brand
   | Country
   | Blog
-  | SanityImageCrop
-  | SanityImageHotspot
-  | SanityImageAsset
-  | SanityAssetSourceData
-  | SanityImageMetadata
   | AppSettings
+  | GeopointRadius
   | InternationalizedArrayRichTextValue
   | InternationalizedArrayTextValue
   | InternationalizedArrayStringValue
@@ -1031,8 +1072,54 @@ export type AllSanitySchemaTypes =
   | InternationalizedArrayText
   | InternationalizedArrayString
   | MediaTag
+  | SanityImagePaletteSwatch
+  | SanityImagePalette
+  | SanityImageDimensions
+  | SanityImageHotspot
+  | SanityImageCrop
+  | SanityFileAsset
+  | SanityImageAsset
+  | SanityImageMetadata
+  | Geopoint
   | Slug
+  | SanityAssetSourceData
 export declare const internalGroqTypeReferenceTo: unique symbol
+// Source: ./sanity/queries/faq.sanity.ts
+// Variable: FAQ_QUERY
+// Query: *[_type == 'faq' && !(_id in path('drafts.**')) && category == $category] | order(_createdAt, "asc") {  "id": uri.current,  "title": coalesce(question[_key == $locale][0].value, question[_key == 'en'][0].value, ''),  "contents": coalesce(answer[_key == $locale][0].value, answer[_key == 'en'][0].value, []),}
+export type FAQ_QUERYResult = Array<{
+  id: string | null
+  title: string | ''
+  contents:
+    | Array<{
+        children?: Array<{
+          marks?: Array<string>
+          text?: string
+          _type: 'span'
+          _key: string
+        }>
+        style?:
+          | 'blockquote'
+          | 'h1'
+          | 'h2'
+          | 'h3'
+          | 'h4'
+          | 'h5'
+          | 'h6'
+          | 'normal'
+        listItem?: 'bullet' | 'number'
+        markDefs?: Array<{
+          href?: string
+          _type: 'link'
+          _key: string
+        }>
+        level?: number
+        _type: 'block'
+        _key: string
+      }>
+    | Array<never>
+}>
+
 // Source: ./sanity/queries/filterOptions.sanity.ts
 // Variable: FILTER_OPTIONS_QUERY
 // Query: {  "brands": array::compact(array::unique(*[_type == $type && !(_id in path('drafts.**'))] {    "brand": brand->uri.current  }.brand)),  "isEventFree": array::compact(array::unique(*[_type == $type && language == $locale && !(_id in path('drafts.**'))] {    isEventFree  }.isEventFree)),  "languages": array::compact(array::unique(*[_type == $type && !(_id in path('drafts.**'))] {    language  }.language)),  "onlineOnly": array::compact(array::unique(*[_type == $type && language == $locale && !(_id in path('drafts.**'))] {    onlineOnly  }.onlineOnly)),  "sources": array::compact(array::unique(*[_type == $type && language == $locale && !(_id in path('drafts.**'))] {    source  }.source)),      "tags": array::compact(array::unique(*[_type == $type && language == $locale && !(_id in path('drafts.**'))] {    "tags": tags[]->uri.current,  }.tags[])),  "types": array::compact(array::unique(*[    defined($tag)    && _type in ["blog", "covidnet", "directory", "event", "public-health", "scientific-library", "news", "product", "resource", "tag", "video"]    && !(_id in path('drafts.**'))    && language == $locale    && references(*[_type == "tag" && uri.current == $tag]._id)  ] {    "type": _type   }.type)),} | {  "brands": *[_type == 'brand' && uri.current in ^.brands] | order(name[$locale], "desc") {    "value": uri.current,    "label": name  },  isEventFree,  languages,  onlineOnly,  sources,  "tags": *[_type == 'tag' && uri.current in ^.tags] | order(name[$locale], "desc") {    "value": uri.current,    "label": coalesce(name[$locale], name['en'])  },  types,}
@@ -3243,6 +3330,31 @@ export type PUBLICATION_BY_TAG_QUERYResult = {
         link: null
         path: null
         source: null
+        thumbnail: null
+        type: 'faq'
+        contentType: null
+        uri: string | null
+        countryCode: null
+        countryName: null
+        city: null
+        language: unknown | null
+        tags: null
+        locked: false
+        limited: false
+      }
+    | {
+        title: ''
+        name: null
+        author: null
+        date: null
+        end: null
+        published: string
+        category: null
+        categoryUri: null
+        shortDescription: string
+        link: null
+        path: null
+        source: null
         thumbnail: string | null
         type: 'author'
         contentType: null
@@ -4302,6 +4414,27 @@ export type PUBLICATION_BY_TYPE_QUERYResult = {
         source: null
         tags: null
         title: null
+        type: 'faq'
+        url: null
+        visual: null
+      }
+    | {
+        attributes: {
+          free: false
+          limited: false
+          onlineOnly: false
+          premium: false
+        }
+        date: string
+        description: string
+        end: null
+        id: string
+        language: null
+        link: null
+        metadata: null
+        source: null
+        tags: null
+        title: null
         type: 'media.tag'
         url: null
         visual: null
@@ -5129,6 +5262,27 @@ export type SEARCH_QUERYResult = {
       }
     | {
         id: string
+        title: null
+        name: null
+        author: null
+        date: null
+        end: null
+        published: string
+        category: null
+        categoryUri: null
+        shortDescription: string
+        link: null
+        path: null
+        source: null
+        thumbnail: null
+        type: 'faq'
+        contentType: null
+        uri: string | null
+        language: unknown | null
+        tags: null
+      }
+    | {
+        id: string
         title:
           | Array<
               {
@@ -5911,6 +6065,7 @@ export type YT_FEED_QUERYResult = Array<{
 import '@sanity/client'
 declare module '@sanity/client' {
   interface SanityQueries {
+    "\n*[_type == 'faq' && !(_id in path('drafts.**')) && category == $category] | order(_createdAt, \"asc\") {\n  \"id\": uri.current,\n  \"title\": coalesce(question[_key == $locale][0].value, question[_key == 'en'][0].value, ''),\n  \"contents\": coalesce(answer[_key == $locale][0].value, answer[_key == 'en'][0].value, []),\n}\n": FAQ_QUERYResult
     '\n{\n  "brands": array::compact(array::unique(*[_type == $type && !(_id in path(\'drafts.**\'))] {\n    "brand": brand->uri.current\n  }.brand)),\n\n  "isEventFree": array::compact(array::unique(*[_type == $type && language == $locale && !(_id in path(\'drafts.**\'))] {\n    isEventFree\n  }.isEventFree)),\n\n  "languages": array::compact(array::unique(*[_type == $type && !(_id in path(\'drafts.**\'))] {\n    language\n  }.language)),\n\n  "onlineOnly": array::compact(array::unique(*[_type == $type && language == $locale && !(_id in path(\'drafts.**\'))] {\n    onlineOnly\n  }.onlineOnly)),\n\n  "sources": array::compact(array::unique(*[_type == $type && language == $locale && !(_id in path(\'drafts.**\'))] {\n    source\n  }.source)),\n    \n  "tags": array::compact(array::unique(*[_type == $type && language == $locale && !(_id in path(\'drafts.**\'))] {\n    "tags": tags[]->uri.current,\n  }.tags[])),\n\n  "types": array::compact(array::unique(*[\n    defined($tag)\n    && _type in ["blog", "covidnet", "directory", "event", "public-health", "scientific-library", "news", "product", "resource", "tag", "video"]\n    && !(_id in path(\'drafts.**\'))\n    && language == $locale\n    && references(*[_type == "tag" && uri.current == $tag]._id)\n  ] {\n    "type": _type \n  }.type)),\n} | {\n  "brands": *[_type == \'brand\' && uri.current in ^.brands] | order(name[$locale], "desc") {\n    "value": uri.current,\n    "label": name\n  },\n  isEventFree,\n  languages,\n  onlineOnly,\n  sources,\n  "tags": *[_type == \'tag\' && uri.current in ^.tags] | order(name[$locale], "desc") {\n    "value": uri.current,\n    "label": coalesce(name[$locale], name[\'en\'])\n  },\n  types,\n}\n': FILTER_OPTIONS_QUERYResult
     '\n  {\n    // "blog": *[(_type == "blog") && !(_id in path(\'drafts.**\'))] | order(_createdAt asc)[0..2] {\n    //   "id": _id,\n    //   "date": _createdAt,\n    //   "link": "/" + _type + "/" + tags[0]->uri.current + "/" + uri.current,\n    //   "description": array::join(string::split(pt::text(coalesce(description[_key == $locale][0].value, description[_key == \'en\'][0].value, description[_key == ^.language][0].value)), "")[0..127], "") + "...",\n    //   "metadata": visual.asset->metadata.dimensions { aspectRatio, height, width },\n    //   "tags": tags[]-> { \'label\': coalesce(name[$locale], name[\'en\'], \'\'), \'slug\': uri.current },\n    //   "title": coalesce(title[_key == $locale][0].value, title[_key == \'en\'][0].value, \'\'),\n    //   "type": _type,\n    //   "visual": visual.asset._ref,\n    // },\n    "events": *[_type == \'event\' && !(_id in path(\'drafts.**\')) && (string(eventDate) >= string::split(string(now()), \'T\')[0] || string(endDate) >= string::split(string(now()), \'T\')[0])] | order(eventDate asc) {\n      "id": _id,\n      "date": eventDate,\n      "description": array::join(string::split(pt::text(coalesce(description[_key == $locale][0].value, description[_key == ^.language][0].value, description[_key == \'en\'][0].value)), \'\')[0..255], \'\') + \'...\',\n      "end": endDate,\n      "free": coalesce(isEventFree, false),\n      "link": \'/\' + _type + \'/\' + tags[0]->uri.current + \'/\' + uri.current,\n      "metadata": visual.asset->metadata.dimensions { aspectRatio, height, width },\n      "tags": tags[]-> { \'label\': coalesce(name[$locale], name[\'en\'], \'\'), \'slug\': uri.current },\n      "title": title,\n      "visual": visual.asset._ref,\n    },\n    "library": *[(_type == "scientific-library") && !(_id in path(\'drafts.**\')) && (language == $locale)] | order(publicationDate desc)[0..4]{\n      "id": _id,\n      "date": publicationDate,\n      "description": array::join(string::split(pt::text(coalesce(description[_key == $locale][0].value, description[_key == ^.language][0].value, description[_key == \'en\'][0].value, [])), "")[0..255], "") + "...",\n      "limited": coalesce(limitedAccess, false),\n      "link": "/" + _type + "/" + tags[0]->uri.current + "/" + uri.current,\n      "metadata": visual.asset->metadata.dimensions { aspectRatio, height, width },\n      "premium": coalesce(premiumAccess, false),\n      "source": coalesce(source, null),\n      "tags": tags[]-> { \'label\': coalesce(name[$locale], name[\'en\'], \'\'), \'slug\': uri.current },\n      "title": title,\n      "visual": visual.asset._ref,\n    },\n    "news": *[_type == \'news\' && !(_id in path(\'drafts.**\')) && language == $locale] | order(publicationDate desc)[0..5] {\n      "id": _id,\n      "date": publicationDate,\n      "limited": coalesce(limitedAccess, false),\n      "link": url,\n      "metadata": visual.asset->metadata.dimensions { aspectRatio, height, width },\n      "premium": coalesce(premiumAccess, false),\n      "source": coalesce(source, null),\n      "tags": tags[]-> { \'label\': coalesce(name[$locale], name[\'en\'], \'\'), \'slug\': uri.current },\n      "title": title,\n      "visual": visual.asset._ref,\n    },\n    "phw": *[_type == \'public-health\' && !(_id in path(\'drafts.**\')) && language == $locale] | order(publicationDate desc)[0..4] {\n      "id": _id,\n      "date": publicationDate,\n      "description": null,\n      "limited": coalesce(limitedAccess, false),\n      "link": url,\n      "metadata": visual.asset->metadata.dimensions { aspectRatio, height, width },\n      "premium": coalesce(premiumAccess, false),\n      "source": coalesce(source, null),\n      "tags": tags[]-> { \'label\': coalesce(name[$locale], name[\'en\'], \'\'), \'slug\': uri.current },\n      "title": title,\n      "visual": visual.asset._ref,\n    },\n    "showcase": *[_type in [\'news\', \'scientific-library\', \'public-health\', \'video\'] && !(_id in path(\'drafts.**\')) && language == $locale] | order(_createdAt desc)[0..4] {\n      "id": _id,\n      "link": url,\n      "title": title,\n      "visual": visual.asset->url,\n    },\n    "videos": *[_type == \'video\' && !(_id in path(\'drafts.**\')) && (language == $locale) ] | order(publicationDate desc)[0..5]{\n      "id": _id,\n      "date": publicationDate,\n      "description": array::join(string::split(pt::text(coalesce(description[_key == $locale][0].value, description[_key == ^.language][0].value, description[_key == \'en\'][0].value)), \'\')[0..255], \'\') + \'...\',\n      "link": "/" + _type + "/" + tags[0]->uri.current + "/" + uri.current,\n      "metadata": visual.asset->metadata.dimensions { aspectRatio, height, width },\n      "tags": tags[]-> { \'label\': coalesce(name[$locale], name[\'en\'], \'\'), \'slug\': uri.current },\n      "title": title,\n      "visual": visual.asset._ref,\n    },\n  }\n': LATEST_PUBLICATIONS_QUERYResult
     '\n*[_type == $type && tags[0]->uri.current == $category && uri.current == $slug][0] {\n  "title": coalesce(title[_key == $locale][0].value, title[_key == \'en\'][0].value, title[_key == ^.language][0].value, title[$locale], title[\'en\'], title, \'\'),\n  "description": array::join(string::split((pt::text(coalesce(description[_key == $locale][0].value, description[_key == \'en\'][0].value, null))), "")[0..252], "") + \'...\',\n  "image": visual.asset->url,\n  "name": coalesce(name, null),\n}\n': METADATA_QUERYResult

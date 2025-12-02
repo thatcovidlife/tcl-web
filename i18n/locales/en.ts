@@ -810,6 +810,7 @@ export default {
       message: 'Type your message here...',
     },
     products: {
+      chatbot: 'Chatbot',
       mobile: 'Mobile App',
       website: 'Website',
     },
@@ -822,6 +823,70 @@ export default {
       success: {
         title: 'Submitted!',
         message: 'We received your request, and will get back to you soon.',
+      },
+    },
+  },
+  chatbot: {
+    actions: {
+      labels: {
+        copy: 'Copy',
+        dislike: 'Dislike',
+        export: 'Export',
+        like: 'Like',
+      },
+      toasts: {
+        copy: 'Copied to clipboard',
+        copyError: 'Failed to copy message',
+        dislike: "Thanks for your feedback. We'll work to improve!",
+        exporting: 'Preparing your PDF...',
+        feedbackError: 'Failed to record feedback',
+        feedbackRecorded: 'Feedback recorded',
+        like: 'Thanks for letting us know this was helpful!',
+        pdfExport: 'Your PDF is being downloaded',
+        unlike: 'Feedback removed',
+      },
+    },
+    input: {
+      placeholder: 'Ask me anything about COVID-19...',
+      selectModel: 'Select a model',
+    },
+    menu: {
+      about: 'About',
+      support: 'Support',
+      faq: 'FAQ',
+      history: 'History',
+      new: 'New Chat',
+    },
+    models: {
+      'openai/gpt-oss-20b': 'Basic',
+      'openai/gpt-oss-120b': 'Pro',
+    },
+    overview: 'Your AI companion for navigating the COVID-19 pandemic.',
+    search: {
+      description: 'Search your recent conversations or browse chat history',
+      loading: 'Loading...',
+      noResults: {
+        search: 'No chats found matching your search.',
+        empty: 'No chat history yet. Start a conversation!',
+      },
+      openChat: 'Open Chat',
+      placeholder: 'Search chat history...',
+      results: {
+        results: 'Search Results',
+        recentChats: 'Recent Chats',
+      },
+      title: 'Search chat history',
+    },
+    suggestedPrompts: {
+      prompt1: {
+        title: 'How effective is masking',
+        label: 'against airborne pathogens?',
+        action: 'How effective is masking against airborne pathogens?',
+      },
+      prompt2: {
+        title: 'Where did the virus',
+        label: 'that causes COVID-19 come from?',
+        action: 'Where did the virus that causes COVID-19 come from?',
       },
     },
   },

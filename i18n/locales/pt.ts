@@ -182,7 +182,7 @@ export default {
     events: 'Próximos eventos',
     latestNews: 'Últimas notícias',
     library: 'Biblioteca científica',
-    phw: 'Vigilância da saúde pública',
+    phw: 'De olho na sáude pública',
     seeAllEvents: 'Veja todos os eventos futuros e passados',
     seeAllLibrary: 'Veja todos os artigos científicos',
     seeAllNews: 'Veja todas as últimas notícias',
@@ -204,7 +204,7 @@ export default {
     event: 'Próximos Eventos',
     events: 'Próximos Eventos',
     footerLegal: '© 2023 - {year} Todos os direitos reservados.',
-    health: 'Vigilância da Saúde Pública',
+    health: 'De olho na sáude pública',
     here: 'aqui',
     home: 'Pagina Inicial',
     community: 'Comunidade',
@@ -242,7 +242,7 @@ export default {
     news: 'Notícias',
     privacyPolicy: 'Política de Privacidade',
     product: 'EPI',
-    'public-health': 'Vigilância da Saúde Pública',
+    'public-health': 'De olho na sáude pública',
     rss: 'Feed RSS',
     resource: 'Recursos',
     rights: 'Todos os direitos reservados',
@@ -644,7 +644,7 @@ export default {
         phw: {
           description:
             'As últimas notícias sobre pandemias emergentes, como Mpox e H5N1.',
-          title: 'Vigilância da saúde pública',
+          title: 'De olho na sáude pública',
         },
         videos: {
           description: 'Os últimos vídeos sobre a COVID-19.',
@@ -823,6 +823,7 @@ export default {
       message: 'Digite sua mensagem aqui...',
     },
     products: {
+      chatbot: 'Chatbot',
       mobile: 'Aplicativo móvel',
       website: 'Site',
     },
@@ -835,6 +836,72 @@ export default {
       success: {
         title: 'Enviado!',
         message: 'Recebemos sua solicitação e entraremos em contato em breve.',
+      },
+    },
+  },
+  chatbot: {
+    actions: {
+      labels: {
+        copy: 'Copiar',
+        dislike: 'Não Gostei',
+        export: 'Exportar',
+        like: 'Gostei',
+      },
+      toasts: {
+        copy: 'Copiado para a área de transferência',
+        copyError: 'Falha ao copiar a mensagem',
+        dislike: 'Obrigado pelo seu feedback. Vamos trabalhar para melhorar!',
+        exporting: 'Preparando seu PDF...',
+        feedbackError: 'Falha ao registrar o feedback',
+        feedbackRecorded: 'Feedback registrado',
+        like: 'Obrigado por nos informar que isso foi útil!',
+        pdfExport: 'Seu PDF está sendo baixado',
+        unlike: 'Feedback removido',
+      },
+    },
+    input: {
+      placeholder: 'Pergunte-me qualquer coisa sobre a COVID-19...',
+      selectModel: 'Selecione um modelo',
+    },
+    menu: {
+      about: 'Sobre',
+      support: 'Suporte',
+      faq: 'FAQ',
+      history: 'Histórico',
+      new: 'Nova Conversa',
+    },
+    models: {
+      'openai/gpt-oss-20b': 'Básico',
+      'openai/gpt-oss-120b': 'Pro',
+    },
+    overview: 'Seu companheiro de IA para navegar a pandemia de COVID-19.',
+    search: {
+      description:
+        'Pesquise suas conversas recentes ou navegue pelo histórico de bate-papo',
+      loading: 'Carregando...',
+      noResults: {
+        search: 'Nenhuma conversa encontrada correspondente à sua pesquisa.',
+        empty: 'Ainda não há histórico de bate-papo. Comece uma conversa!',
+      },
+      openChat: 'Abrir Chat',
+      placeholder: 'Pesquisar no histórico de bate-papo...',
+      results: {
+        results: 'Resultados da Pesquisa',
+        recentChats: 'Conversas Recentes',
+      },
+      title: 'Pesquisar no histórico de bate-papo',
+    },
+    suggestedPrompts: {
+      prompt1: {
+        title: 'Quão eficaz é o uso de máscaras',
+        label: 'contra patógenos transmitidos pelo ar?',
+        action:
+          'Quão eficaz é o uso de máscaras contra patógenos transmitidos pelo ar?',
+      },
+      prompt2: {
+        title: 'De onde veio o vírus',
+        label: 'que causa a COVID-19?',
+        action: 'De onde veio o vírus que causa a COVID-19?',
       },
     },
   },

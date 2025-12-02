@@ -1,0 +1,85 @@
+.markdown-body {
+  position: relative;
+}
+
+.markdown-body * {
+  line-height: theme('lineHeight.relaxed');
+}
+
+.markdown-body h3 {
+  font-size: 1.25rem;
+  margin-bottom: theme('spacing.2');
+}
+
+.markdown-body hr {
+  display: none;
+}
+
+.markdown-body p {
+  font-size: theme('fontSize.base');
+  margin-bottom: theme('spacing.4');
+}
+
+.markdown-body p strong {
+  font-weight: bold;
+  /* font-size: 1rem; */
+}
+
+.markdown-body ol,
+.markdown-body ul {
+  margin-left: theme('spacing.8');
+  margin-bottom: theme('spacing.4');
+  list-style-position: inside;
+}
+
+.markdown-body ol {
+  list-style-type: decimal;
+}
+
+.markdown-body ul {
+  list-style-type: disc;
+}
+
+.markdown-body > ol,
+.markdown-body > ul {
+  margin-left: theme('spacing.2');
+}
+
+.markdown-body ol > li,
+.markdown-body ul > li {
+  margin-bottom: theme('spacing.2');
+}
+
+.markdown-body li > p {
+  display: inline;
+}
+
+.markdown-body a:hover {
+  text-decoration: underline;
+}
+
+.markdown-body table {
+  border: 1px solid theme('colors.foreground');
+  margin-bottom: 1.5rem;
+}
+
+.markdown-body table thead {
+  /* background-color: theme('colors.muted.foreground'); */
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-align: left;
+  vertical-align: top;
+  /* white-space: nowrap; */
+}
+
+.markdown-body table tbody {
+  text-align: left;
+  font-size: 0.8rem;
+  vertical-align: top;
+}
+
+.markdown-body table thead th,
+.markdown-body table tbody td {
+  border: 1px solid theme('colors.foreground');
+  padding: 0.5rem;
+}

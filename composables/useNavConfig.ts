@@ -3,8 +3,11 @@ import type { MobileNavItem, NavConfig } from '@/lib/types'
 
 export const useNavConfig = () => {
   const { t } = useI18n()
+  const { loggedIn } = useUserSession()
   const { statsig } = useStatsig()
-  const chatEnabled = computed(() => statsig.checkGate('chat_enabled'))
+  const chatEnabled = computed(
+    () => statsig.checkGate('chat_enabled') && loggedIn.value,
+  )
 
   const config = computed(
     () =>
@@ -196,7 +199,7 @@ export const useNavConfig = () => {
           title: 'Chat',
           link: '/chat',
           premium: true,
-          enabled: chatEnabled.value,
+          enabled: chatEnabled.value && loggedIn.value,
         },
       ] as MobileNavItem[],
   )

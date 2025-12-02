@@ -145,6 +145,9 @@ const token = ref()
                 <SelectItem value="website">{{
                   t('support.products.website')
                 }}</SelectItem>
+                <SelectItem value="chatbot">{{
+                  t('support.products.chatbot')
+                }}</SelectItem>
                 <SelectItem value="mobile app">{{
                   t('support.products.mobile')
                 }}</SelectItem>

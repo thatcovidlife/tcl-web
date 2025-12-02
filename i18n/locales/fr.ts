@@ -833,6 +833,7 @@ export default {
       message: 'Tapez votre message ici...',
     },
     products: {
+      chatbot: 'Chatbot',
       mobile: 'Application mobile',
       website: 'Site web',
     },
@@ -846,6 +847,74 @@ export default {
         title: 'Envoyé !',
         message:
           'Nous avons bien reçu votre demande et nous vous répondrons bientôt.',
+      },
+    },
+  },
+  chatbot: {
+    actions: {
+      labels: {
+        copy: 'Copier',
+        dislike: "Je n'aime pas",
+        export: 'Exporter',
+        like: "J'aime",
+      },
+      toasts: {
+        copy: 'Copié dans le presse-papiers',
+        copyError: 'Échec de la copie du message',
+        dislike:
+          "Merci pour vos commentaires. Nous allons travailler à l'amélioration !",
+        exporting: 'Préparation de votre PDF...',
+        feedbackError: "Échec de l'enregistrement des commentaires",
+        feedbackRecorded: 'Commentaires enregistrés',
+        like: 'Merci de nous avoir fait savoir que cela a été utile !',
+        pdfExport: 'Votre PDF est en cours de téléchargement',
+        unlike: 'Commentaires supprimés',
+      },
+    },
+    input: {
+      placeholder: 'Demandez-moi ce que vous souhaitez sur la COVID-19...',
+      selectModel: 'Sélectionnez un modèle',
+    },
+    menu: {
+      about: 'À propos',
+      support: 'Support',
+      faq: 'FAQ',
+      history: 'Historique',
+      new: 'Nouveau Chat',
+    },
+    models: {
+      'openai/gpt-oss-20b': 'Basique',
+      'openai/gpt-oss-120b': 'Pro',
+    },
+    overview: 'Votre compagnon IA pour naviguer la pandémie de COVID-19.',
+    search: {
+      description:
+        "Recherchez vos conversations récentes ou parcourez l'historique des discussions",
+      loading: 'Chargement...',
+      noResults: {
+        search: 'Aucune conversation ne correspond à votre recherche.',
+        empty:
+          'Aucun historique de conversation pour le moment. Commencez une conversation !',
+      },
+      openChat: 'Ouvrir le chat',
+      placeholder: "Rechercher dans l'historique des discussions...",
+      results: {
+        results: 'Résultats de la recherche',
+        recentChats: 'Discussions récentes',
+      },
+      title: "Rechercher dans l'historique des discussions",
+    },
+    suggestedPrompts: {
+      prompt1: {
+        title: "Quelle est l'efficacité du port du masque",
+        label: 'contre les agents pathogènes aériens ?',
+        action:
+          "Quelle est l'efficacité du port du masque contre les agents pathogènes aériens ?",
+      },
+      prompt2: {
+        title: "D'où vient le virus",
+        label: 'responsable de la COVID-19 ?',
+        action: "D'où vient le virus responsable de la COVID-19 ?",
       },
     },
   },
