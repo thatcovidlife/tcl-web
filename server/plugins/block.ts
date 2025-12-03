@@ -46,6 +46,7 @@ export default defineNitroPlugin((nitro) => {
       res.statusCode = 403
       res.setHeader('Content-Type', 'application/json')
       res.end(JSON.stringify({ error: 'Access Denied' }))
+      return
     }
   })
 })
