@@ -174,6 +174,15 @@ export default defineNuxtConfig({
     '@sentry/nuxt/module',
   ],
 
+  nitro: {
+    routeRules: {
+      '/api/**': {
+        cors: false,
+        headers: { 'X-Robots-Tag': 'noindex' },
+      },
+    },
+  },
+
   ogImage: {
     enabled: false,
   },
