@@ -51,12 +51,5 @@ export default defineEventHandler((event) => {
       path: path_route,
       ua: ua.substring(0, 50),
     })
-    setResponseStatus(event, 403)
-    setHeader(event, 'Content-Type', 'application/json')
-    return {
-      error: 'Access Denied',
-      message: 'Suspicious request pattern detected',
-      code: 'SUSPICIOUS_REQUEST',
-    }
-  }
+  // Removed overly restrictive block that could cause false positives for legitimate users.
 })
