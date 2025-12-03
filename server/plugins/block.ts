@@ -1,6 +1,6 @@
 // Shared bot detection pattern consistent with client-side middleware
 const BOT_PATTERNS =
-  /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler/i
+  /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler|python-requests|httpclient|node-fetch|axios|postman/i
 const WHITELISTED_PATHS = ['/.well-known', '/robots.txt', '/sitemap.xml']
 
 export default defineNitroPlugin((nitro) => {
