@@ -26,10 +26,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
     }
 
     // Verify JavaScript is enabled and runtime is intact
-    if (typeof window === 'undefined' || typeof navigator === 'undefined') {
-      console.warn('[Security] Invalid runtime detected', { path: to.path })
-      return navigateTo('/blocked')
-    }
   } catch (error) {
     // Log error but don't block legitimate users on middleware failure
     console.error('[Middleware] Bot detection error:', error)
