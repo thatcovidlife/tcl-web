@@ -41,7 +41,12 @@
   height: 100% !important;
 }
 
-/* .floatingchat-container-wrap {
+.floatingchat-container-wrap,
+.floating-chat-kofi-popup-iframe {
   left: initial !important;
   right: 1rem !important;
-} */
+}
+
+.floatingchat-container-wrap {
+  max-width: 136px !important;
+}
