@@ -1,4 +1,4 @@
-// Shared bot detection pattern consistent with client-side middleware
+// Server-side bot detection pattern; differs from patterns in other middleware files.
 import { shouldBlockBotRequest } from '../utils/botDetection'
 
 export default defineNitroPlugin((nitro) => {
