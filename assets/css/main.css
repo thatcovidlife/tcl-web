@@ -40,3 +40,18 @@
   width: 100% !important;
   height: 100% !important;
 }
+
+.floatingchat-container-wrap,
+.floating-chat-kofi-popup-iframe {
+  left: initial !important;
+  right: 20px !important;
+}
+
+.floatingchat-container-wrap {
+  max-width: 136px !important;
+  bottom: 20px !important;
+}
+
+.floating-chat-kofi-popup-iframe {
+  bottom: 80px !important;
+}

@@ -239,6 +239,7 @@ export default defineNuxtConfig({
           'prodregistryv2.org',
           'www.google.com',
           '*.gstatic.com',
+          'storage.ko-fi.com',
         ],
       },
       crossOriginEmbedderPolicy: 'unsafe-none',
