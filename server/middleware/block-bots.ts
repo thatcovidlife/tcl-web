@@ -1,4 +1,5 @@
-// Consolidated bot detection pattern for consistency across all layers
+// Bot detection pattern and whitelisted paths for this middleware only.
+// Note: Other layers (e.g. server/plugins/block.ts, middleware/bots.global.ts) may use different patterns and allowed paths.
 const BOT_PATTERN =
   /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|python-requests|scrapy|httpclient|node-fetch|axios|postman|libwww|bot|crawler/i
 
