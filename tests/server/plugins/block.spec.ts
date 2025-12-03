@@ -1,5 +1,15 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
+// Constants from server/plugins/block.ts for testing consistency
+const BOT_PATTERNS =
+  /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler|python-requests|httpclient|node-fetch|axios|postman/i
+const WHITELISTED_PATHS = ['/.well-known', '/robots.txt', '/sitemap.xml', '/__sitemap__']
+const SUSPICIOUS_HEADERS = [
+  'x-requested-with',
+  'x-automation',
+  'x-scrapy-splash',
+]
+
 describe('Server Plugin: Bot Detection', () => {
   // Mock request and response objects
   let mockReq: any
@@ -30,10 +40,6 @@ describe('Server Plugin: Bot Detection', () => {
   describe('Bot pattern detection', () => {
     it('should detect HeadlessChrome user agent', () => {
       mockReq.headers['user-agent'] = 'HeadlessChrome/91.0.4472.124'
-      
-      // Import and execute the plugin logic
-      const BOT_PATTERNS =
-        /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler|python-requests|httpclient|node-fetch|axios|postman/i
       const ua = (mockReq.headers['user-agent'] || '').toLowerCase()
       
       expect(BOT_PATTERNS.test(ua)).toBe(true)
@@ -41,9 +47,6 @@ describe('Server Plugin: Bot Detection', () => {
 
     it('should detect PhantomJS user agent', () => {
       mockReq.headers['user-agent'] = 'Mozilla/5.0 (Unknown; Linux x86_64) PhantomJS/2.1.1'
-      
-      const BOT_PATTERNS =
-        /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler|python-requests|httpclient|node-fetch|axios|postman/i
       const ua = (mockReq.headers['user-agent'] || '').toLowerCase()
       
       expect(BOT_PATTERNS.test(ua)).toBe(true)
@@ -51,9 +54,6 @@ describe('Server Plugin: Bot Detection', () => {
 
     it('should detect puppeteer user agent', () => {
       mockReq.headers['user-agent'] = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Puppeteer'
-      
-      const BOT_PATTERNS =
-        /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler|python-requests|httpclient|node-fetch|axios|postman/i
       const ua = (mockReq.headers['user-agent'] || '').toLowerCase()
       
       expect(BOT_PATTERNS.test(ua)).toBe(true)
@@ -61,9 +61,6 @@ describe('Server Plugin: Bot Detection', () => {
 
     it('should detect selenium user agent', () => {
       mockReq.headers['user-agent'] = 'selenium/4.0.0 (python 3.9)'
-      
-      const BOT_PATTERNS =
-        /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler|python-requests|httpclient|node-fetch|axios|postman/i
       const ua = (mockReq.headers['user-agent'] || '').toLowerCase()
       
       expect(BOT_PATTERNS.test(ua)).toBe(true)
@@ -71,9 +68,6 @@ describe('Server Plugin: Bot Detection', () => {
 
     it('should detect curl user agent', () => {
       mockReq.headers['user-agent'] = 'curl/7.68.0'
-      
-      const BOT_PATTERNS =
-        /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler|python-requests|httpclient|node-fetch|axios|postman/i
       const ua = (mockReq.headers['user-agent'] || '').toLowerCase()
       
       expect(BOT_PATTERNS.test(ua)).toBe(true)
@@ -81,9 +75,6 @@ describe('Server Plugin: Bot Detection', () => {
 
     it('should detect wget user agent', () => {
       mockReq.headers['user-agent'] = 'Wget/1.20.3 (linux-gnu)'
-      
-      const BOT_PATTERNS =
-        /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler|python-requests|httpclient|node-fetch|axios|postman/i
       const ua = (mockReq.headers['user-agent'] || '').toLowerCase()
       
       expect(BOT_PATTERNS.test(ua)).toBe(true)
@@ -91,9 +82,6 @@ describe('Server Plugin: Bot Detection', () => {
 
     it('should detect scrapy user agent', () => {
       mockReq.headers['user-agent'] = 'Scrapy/2.5.0 (+https://scrapy.org)'
-      
-      const BOT_PATTERNS =
-        /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler|python-requests|httpclient|node-fetch|axios|postman/i
       const ua = (mockReq.headers['user-agent'] || '').toLowerCase()
       
       expect(BOT_PATTERNS.test(ua)).toBe(true)
@@ -101,9 +89,6 @@ describe('Server Plugin: Bot Detection', () => {
 
     it('should detect python-requests user agent', () => {
       mockReq.headers['user-agent'] = 'python-requests/2.25.1'
-      
-      const BOT_PATTERNS =
-        /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler|python-requests|httpclient|node-fetch|axios|postman/i
       const ua = (mockReq.headers['user-agent'] || '').toLowerCase()
       
       expect(BOT_PATTERNS.test(ua)).toBe(true)
@@ -111,9 +96,6 @@ describe('Server Plugin: Bot Detection', () => {
 
     it('should detect generic bot user agent', () => {
       mockReq.headers['user-agent'] = 'MyCustomBot/1.0'
-      
-      const BOT_PATTERNS =
-        /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler|python-requests|httpclient|node-fetch|axios|postman/i
       const ua = (mockReq.headers['user-agent'] || '').toLowerCase()
       
       expect(BOT_PATTERNS.test(ua)).toBe(true)
@@ -121,9 +103,6 @@ describe('Server Plugin: Bot Detection', () => {
 
     it('should detect generic crawler user agent', () => {
       mockReq.headers['user-agent'] = 'MyCrawler/2.0'
-      
-      const BOT_PATTERNS =
-        /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler|python-requests|httpclient|node-fetch|axios|postman/i
       const ua = (mockReq.headers['user-agent'] || '').toLowerCase()
       
       expect(BOT_PATTERNS.test(ua)).toBe(true)
@@ -132,9 +111,6 @@ describe('Server Plugin: Bot Detection', () => {
     it('should allow legitimate Chrome user agent', () => {
       mockReq.headers['user-agent'] =
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-      
-      const BOT_PATTERNS =
-        /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler|python-requests|httpclient|node-fetch|axios|postman/i
       const ua = (mockReq.headers['user-agent'] || '').toLowerCase()
       
       expect(BOT_PATTERNS.test(ua)).toBe(false)
@@ -143,9 +119,6 @@ describe('Server Plugin: Bot Detection', () => {
     it('should allow legitimate Firefox user agent', () => {
       mockReq.headers['user-agent'] =
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0'
-      
-      const BOT_PATTERNS =
-        /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler|python-requests|httpclient|node-fetch|axios|postman/i
       const ua = (mockReq.headers['user-agent'] || '').toLowerCase()
       
       expect(BOT_PATTERNS.test(ua)).toBe(false)
@@ -154,9 +127,6 @@ describe('Server Plugin: Bot Detection', () => {
     it('should allow legitimate Safari user agent', () => {
       mockReq.headers['user-agent'] =
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15'
-      
-      const BOT_PATTERNS =
-        /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler|python-requests|httpclient|node-fetch|axios|postman/i
       const ua = (mockReq.headers['user-agent'] || '').toLowerCase()
       
       expect(BOT_PATTERNS.test(ua)).toBe(false)
@@ -166,13 +136,7 @@ describe('Server Plugin: Bot Detection', () => {
   describe('Suspicious headers detection', () => {
     it('should detect x-requested-with header', () => {
       mockReq.headers['x-requested-with'] = 'XMLHttpRequest'
-      
-      const suspiciousHeaders = [
-        'x-requested-with',
-        'x-automation',
-        'x-scrapy-splash',
-      ]
-      const hasSuspiciousHeader = suspiciousHeaders.some(
+      const hasSuspiciousHeader = SUSPICIOUS_HEADERS.some(
         (header) => mockReq.headers[header],
       )
       
@@ -181,13 +145,7 @@ describe('Server Plugin: Bot Detection', () => {
 
     it('should detect x-automation header', () => {
       mockReq.headers['x-automation'] = 'true'
-      
-      const suspiciousHeaders = [
-        'x-requested-with',
-        'x-automation',
-        'x-scrapy-splash',
-      ]
-      const hasSuspiciousHeader = suspiciousHeaders.some(
+      const hasSuspiciousHeader = SUSPICIOUS_HEADERS.some(
         (header) => mockReq.headers[header],
       )
       
@@ -196,13 +154,7 @@ describe('Server Plugin: Bot Detection', () => {
 
     it('should detect x-scrapy-splash header', () => {
       mockReq.headers['x-scrapy-splash'] = 'true'
-      
-      const suspiciousHeaders = [
-        'x-requested-with',
-        'x-automation',
-        'x-scrapy-splash',
-      ]
-      const hasSuspiciousHeader = suspiciousHeaders.some(
+      const hasSuspiciousHeader = SUSPICIOUS_HEADERS.some(
         (header) => mockReq.headers[header],
       )
       
@@ -213,13 +165,7 @@ describe('Server Plugin: Bot Detection', () => {
       mockReq.headers['user-agent'] =
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
       mockReq.headers['accept'] = 'text/html,application/xhtml+xml'
-      
-      const suspiciousHeaders = [
-        'x-requested-with',
-        'x-automation',
-        'x-scrapy-splash',
-      ]
-      const hasSuspiciousHeader = suspiciousHeaders.some(
+      const hasSuspiciousHeader = SUSPICIOUS_HEADERS.some(
         (header) => mockReq.headers[header],
       )
       
@@ -231,8 +177,6 @@ describe('Server Plugin: Bot Detection', () => {
     it('should bypass detection for /.well-known path', () => {
       mockReq.url = '/.well-known/security.txt'
       mockReq.headers['user-agent'] = 'curl/7.68.0'
-      
-      const WHITELISTED_PATHS = ['/.well-known', '/robots.txt', '/sitemap.xml', '/__sitemap__']
       const path = mockReq.url || '/'
       const shouldBypass = WHITELISTED_PATHS.some((p) => path.startsWith(p))
       
@@ -242,8 +186,6 @@ describe('Server Plugin: Bot Detection', () => {
     it('should bypass detection for /robots.txt', () => {
       mockReq.url = '/robots.txt'
       mockReq.headers['user-agent'] = 'Googlebot'
-      
-      const WHITELISTED_PATHS = ['/.well-known', '/robots.txt', '/sitemap.xml', '/__sitemap__']
       const path = mockReq.url || '/'
       const shouldBypass = WHITELISTED_PATHS.some((p) => path.startsWith(p))
       
@@ -253,8 +195,6 @@ describe('Server Plugin: Bot Detection', () => {
     it('should bypass detection for /sitemap.xml', () => {
       mockReq.url = '/sitemap.xml'
       mockReq.headers['user-agent'] = 'Bingbot'
-      
-      const WHITELISTED_PATHS = ['/.well-known', '/robots.txt', '/sitemap.xml', '/__sitemap__']
       const path = mockReq.url || '/'
       const shouldBypass = WHITELISTED_PATHS.some((p) => path.startsWith(p))
       
@@ -264,8 +204,6 @@ describe('Server Plugin: Bot Detection', () => {
     it('should bypass detection for /__sitemap__ path', () => {
       mockReq.url = '/__sitemap__/urls'
       mockReq.headers['user-agent'] = 'crawler'
-      
-      const WHITELISTED_PATHS = ['/.well-known', '/robots.txt', '/sitemap.xml', '/__sitemap__']
       const path = mockReq.url || '/'
       const shouldBypass = WHITELISTED_PATHS.some((p) => path.startsWith(p))
       
@@ -275,8 +213,6 @@ describe('Server Plugin: Bot Detection', () => {
     it('should not bypass detection for regular paths', () => {
       mockReq.url = '/about'
       mockReq.headers['user-agent'] = 'curl/7.68.0'
-      
-      const WHITELISTED_PATHS = ['/.well-known', '/robots.txt', '/sitemap.xml', '/__sitemap__']
       const path = mockReq.url || '/'
       const shouldBypass = WHITELISTED_PATHS.some((p) => path.startsWith(p))
       
@@ -286,8 +222,6 @@ describe('Server Plugin: Bot Detection', () => {
     it('should not bypass detection for similar but non-matching paths', () => {
       mockReq.url = '/robot.txt' // Note: missing 's'
       mockReq.headers['user-agent'] = 'bot'
-      
-      const WHITELISTED_PATHS = ['/.well-known', '/robots.txt', '/sitemap.xml', '/__sitemap__']
       const path = mockReq.url || '/'
       const shouldBypass = WHITELISTED_PATHS.some((p) => path.startsWith(p))
       
@@ -299,10 +233,6 @@ describe('Server Plugin: Bot Detection', () => {
     it('should set 403 status code when bot is detected', () => {
       mockReq.headers['user-agent'] = 'HeadlessChrome/91.0.4472.124'
       mockReq.url = '/about'
-      
-      const BOT_PATTERNS =
-        /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler|python-requests|httpclient|node-fetch|axios|postman/i
-      const WHITELISTED_PATHS = ['/.well-known', '/robots.txt', '/sitemap.xml', '/__sitemap__']
       
       const ua = (mockReq.headers['user-agent'] || '').toLowerCase()
       const path = mockReq.url || '/'
@@ -329,10 +259,6 @@ describe('Server Plugin: Bot Detection', () => {
     it('should return JSON error response when bot is detected', () => {
       mockReq.headers['user-agent'] = 'puppeteer'
       mockReq.url = '/api/data'
-      
-      const BOT_PATTERNS =
-        /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler|python-requests|httpclient|node-fetch|axios|postman/i
-      const WHITELISTED_PATHS = ['/.well-known', '/robots.txt', '/sitemap.xml', '/__sitemap__']
       
       const ua = (mockReq.headers['user-agent'] || '').toLowerCase()
       const path = mockReq.url || '/'
@@ -361,12 +287,7 @@ describe('Server Plugin: Bot Detection', () => {
       mockReq.headers['x-automation'] = 'true'
       mockReq.url = '/about'
       
-      const suspiciousHeaders = [
-        'x-requested-with',
-        'x-automation',
-        'x-scrapy-splash',
-      ]
-      const hasSuspiciousHeader = suspiciousHeaders.some(
+      const hasSuspiciousHeader = SUSPICIOUS_HEADERS.some(
         (header) => mockReq.headers[header],
       )
       
@@ -434,9 +355,6 @@ describe('Server Plugin: Bot Detection', () => {
         'HeAdLeSsChRoMe',
       ]
       
-      const BOT_PATTERNS =
-        /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler|python-requests|httpclient|node-fetch|axios|postman/i
-      
       testCases.forEach((ua) => {
         expect(BOT_PATTERNS.test(ua.toLowerCase())).toBe(true)
       })
@@ -446,9 +364,6 @@ describe('Server Plugin: Bot Detection', () => {
   describe('Edge cases', () => {
     it('should handle empty user agent', () => {
       mockReq.headers['user-agent'] = ''
-      
-      const BOT_PATTERNS =
-        /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler|python-requests|httpclient|node-fetch|axios|postman/i
       const ua = (mockReq.headers['user-agent'] || '').toLowerCase()
       
       expect(BOT_PATTERNS.test(ua)).toBe(false)
@@ -456,9 +371,6 @@ describe('Server Plugin: Bot Detection', () => {
 
     it('should handle missing user agent header', () => {
       // Don't set user-agent header
-      
-      const BOT_PATTERNS =
-        /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler|python-requests|httpclient|node-fetch|axios|postman/i
       const ua = (mockReq.headers['user-agent'] || '').toLowerCase()
       
       expect(BOT_PATTERNS.test(ua)).toBe(false)
@@ -466,8 +378,6 @@ describe('Server Plugin: Bot Detection', () => {
 
     it('should handle missing URL', () => {
       mockReq.url = undefined
-      
-      const WHITELISTED_PATHS = ['/.well-known', '/robots.txt', '/sitemap.xml', '/__sitemap__']
       const path = mockReq.url || '/'
       
       // Should default to '/' and not bypass
@@ -478,10 +388,6 @@ describe('Server Plugin: Bot Detection', () => {
     it('should handle root path', () => {
       mockReq.url = '/'
       mockReq.headers['user-agent'] = 'curl/7.68.0'
-      
-      const WHITELISTED_PATHS = ['/.well-known', '/robots.txt', '/sitemap.xml', '/__sitemap__']
-      const BOT_PATTERNS =
-        /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler|python-requests|httpclient|node-fetch|axios|postman/i
       
       const path = mockReq.url || '/'
       const shouldBypass = WHITELISTED_PATHS.some((p) => path.startsWith(p))
