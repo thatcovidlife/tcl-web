@@ -18,7 +18,6 @@ export default defineEventHandler((event) => {
   }
 
   const ua = (getHeader(event, 'user-agent') || '').toLowerCase()
-  const path_route = event.path || '/'
 
   if (!ua) {
     return
@@ -27,7 +26,7 @@ export default defineEventHandler((event) => {
   // Check against consolidated bot pattern
   if (BOT_PATTERN.test(ua)) {
     console.warn('[Security] Middleware: Bot blocked', {
-      path: path_route,
+      path: path,
       ua: ua.substring(0, 50),
       timestamp: new Date().toISOString(),
     })
@@ -47,7 +46,7 @@ export default defineEventHandler((event) => {
   // Flag requests without proper headers (likely automated)
   if (!acceptLanguage && !referer && ua) {
     console.warn('[Security] Middleware: Suspicious request pattern', {
-      path: path_route,
+      path: path,
       ua: ua.substring(0, 50),
     })
     setResponseStatus(event, 403)
