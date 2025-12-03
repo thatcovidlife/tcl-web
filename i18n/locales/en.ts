@@ -83,6 +83,12 @@ export default {
     watchVideo: 'Watch Video',
     website: 'Go To Website',
   },
+  blocked: {
+    title: 'Access Blocked',
+    description:
+      'Your request has been blocked due to automated traffic detection. If you believe this is an error, please try again later or contact support.',
+    goHome: 'Return to Home',
+  },
   comingSoon: 'Coming soon...',
   contribute: {
     back: 'Go Home',

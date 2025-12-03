@@ -51,5 +51,6 @@ export default defineEventHandler((event) => {
       path: path_route,
       ua: ua.substring(0, 50),
     })
-  // Removed overly restrictive block that could cause false positives for legitimate users.
+    // Removed overly restrictive block that could cause false positives for legitimate users.
+  }
 })

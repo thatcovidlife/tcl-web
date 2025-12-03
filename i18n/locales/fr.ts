@@ -84,6 +84,12 @@ export default {
     watchVideo: 'Regarder la Vidéo',
     website: 'Site Web',
   },
+  blocked: {
+    title: 'Accès Bloqué',
+    description:
+      "Votre demande a été bloquée en raison de la détection de trafic automatisé. Si vous pensez qu'il s'agit d'une erreur, veuillez réessayer plus tard ou contacter le support.",
+    goHome: "Retour à l'Accueil",
+  },
   comingSoon: 'À venir...',
   contribute: {
     back: "Aller à la page d'accueil",

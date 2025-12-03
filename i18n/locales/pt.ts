@@ -84,6 +84,12 @@ export default {
     watchVideo: 'Assista Vídeo',
     website: 'Ir Para o Site',
   },
+  blocked: {
+    title: 'Acesso Bloqueado',
+    description:
+      'Sua solicitação foi bloqueada devido à detecção de tráfego automatizado. Se você acredita que isso é um erro, tente novamente mais tarde ou entre em contato com o suporte.',
+    goHome: 'Voltar ao Início',
+  },
   comingSoon: 'Em breve...',
   contribute: {
     back: 'Vá para a página inicial',
