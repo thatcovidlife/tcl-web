@@ -12,9 +12,7 @@ const ALLOWED_PATHS = [
 
 export default defineEventHandler((event) => {
   // Skip bot detection for allowed paths
-  const path = getHeader(event, 'x-forwarded-for')
-    ? event.node.req.url
-    : event.path || '/'
+  const path = event.path || event.node.req.url || '/'
   if (ALLOWED_PATHS.some((p) => path?.startsWith(p))) {
     return
   }
