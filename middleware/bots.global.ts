@@ -8,7 +8,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
     to.path.startsWith('/.well-known') ||
     to.path.startsWith('/robots') ||
     to.path.startsWith('/sitemap') ||
-    to.path.startsWith('/api/feed?lang=all')
+    to.path.startsWith('/api/feed?lang=all') ||
+    to.path.startsWith('/api/feed')
   ) {
     return
   }

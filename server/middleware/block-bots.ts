@@ -9,6 +9,7 @@ const ALLOWED_PATHS = [
   '/sitemap.xml',
   '/__sitemap__',
   '/api/feed?lang=all',
+  '/api/feed',
 ]
 
 export default defineEventHandler((event) => {
