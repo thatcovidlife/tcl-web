@@ -8,6 +8,7 @@ const WHITELISTED_PATHS = [
   '/__sitemap__',
   '/api/feed?lang=all',
   '/api/feed',
+  '/api/external/feeds/youtube/feed',
 ]
 
 export default defineNitroPlugin((nitro) => {
