@@ -176,7 +176,7 @@ export default defineNuxtConfig({
 
   nitro: {
     routeRules: {
-      '/api/**': {
+      '/api/chat': {
         cors: false,
         headers: { 'X-Robots-Tag': 'noindex' },
       },

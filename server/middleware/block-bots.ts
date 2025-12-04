@@ -8,6 +8,7 @@ const ALLOWED_PATHS = [
   '/robots.txt',
   '/sitemap.xml',
   '/__sitemap__',
+  '/api/feed?lang=all',
 ]
 
 export default defineEventHandler((event) => {

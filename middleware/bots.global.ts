@@ -4,7 +4,12 @@ const BOT_PATTERNS =
 
 export default defineNuxtRouteMiddleware(async (to) => {
   // Skip middleware for static/public routes that don't need protection
-  if (to.path.startsWith('/.well-known') || to.path.startsWith('/robots')) {
+  if (
+    to.path.startsWith('/.well-known') ||
+    to.path.startsWith('/robots') ||
+    to.path.startsWith('/sitemap') ||
+    to.path.startsWith('/api/feed?lang=all')
+  ) {
     return
   }
 
