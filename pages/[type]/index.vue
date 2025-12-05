@@ -37,9 +37,7 @@ const onUpdateFilters = (filters: Record<string, string>) =>
   updateQueryParams({ ...filters, offset: '0', limit: '5' })
 
 const hasDate = computed(() => showPublicationDate(<string>type.value))
-const hasLocale = computed(
-  () => !isBlog(<string>type.value) && !isProduct(<string>type.value),
-)
+const hasLocale = computed(() => !isProduct(<string>type.value))
 
 watch(
   () => filters.value,

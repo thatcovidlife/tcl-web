@@ -14,7 +14,7 @@ const PUBLICATION_BY_TYPE_QUERY = groq`
     "description": array::join(string::split(pt::text(coalesce(description[_key == $locale][0].value, description[_key == ^.language][0].value, description[_key == '${BASE_LANGUAGE}'][0].value, [])), "")[0..512], "") + "...",
     "end": endDate,
     "id": _id,
-    "language": language,
+    "language": coalesce(language, '${BASE_LANGUAGE}'),
     "link": "/" + _type + "/" + tags[0]->uri.current + "/" + uri.current,
     "metadata": visual.asset->metadata.dimensions { aspectRatio, height, width },
     "source": coalesce(source, null),
