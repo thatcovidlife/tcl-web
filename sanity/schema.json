@@ -4740,6 +4740,14 @@
         },
         "optional": true
       },
+      "language": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "inline",
+          "name": "language"
+        },
+        "optional": true
+      },
       "tags": {
         "type": "objectAttribute",
         "value": {

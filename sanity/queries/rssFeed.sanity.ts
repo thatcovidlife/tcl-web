@@ -7,7 +7,7 @@ const RSS_FEED_QUERY = groq`
       "id": _id,
       "type": _type,
       "title": coalesce(title[_key == $locale][0].value, title[_key == '${BASE_LANGUAGE}'][0].value, title[_key == ^.language][0].value, title[$locale], title['${BASE_LANGUAGE}'], title, null),
-      "description": array::join(string::split((pt::text(coalesce(description[_key == $locale][0].value, description[_key == '${BASE_LANGUAGE}'][0].value, null))), "")[0..252], ""),
+      "description": array::join(string::split((pt::text(coalesce(description[_key == $locale][0].value, description[_key == '${BASE_LANGUAGE}'][0].value, description[_key == ^.language][0].value, null))), "")[0..252], ""),
       "publishedAt": _createdAt,
       "updatedAt": _updatedAt,
       "link": url,
