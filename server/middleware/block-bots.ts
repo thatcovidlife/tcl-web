@@ -1,6 +1,12 @@
-// Consolidated bot detection pattern for consistency across all layers
-const BOT_PATTERN =
-  /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|python-requests|scrapy|httpclient|node-fetch|axios|postman|libwww|bot|crawler/i
+import {
+  isSocialCrawler,
+  isCrawlerAllowedPath,
+  getCrawlerName,
+} from '~/assets/constants/social-crawlers'
+
+// Malicious bot detection pattern (excludes legitimate social crawlers)
+const MALICIOUS_BOT_PATTERN =
+  /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|python-requests|scrapy|httpclient|node-fetch|axios(?!\/)|postman|libwww/i
 
 // Paths that should bypass bot detection
 const ALLOWED_PATHS = [
@@ -18,20 +24,35 @@ export default defineEventHandler((event) => {
   const path = getHeader(event, 'x-forwarded-for')
     ? event.node.req.url
     : event.path || '/'
-  if (ALLOWED_PATHS.some((p) => path?.startsWith(p))) {
+  if (
+    ALLOWED_PATHS.some((p) => path?.startsWith(p)) ||
+    isCrawlerAllowedPath(path || '/')
+  ) {
     return
   }
 
-  const ua = (getHeader(event, 'user-agent') || '').toLowerCase()
+  const ua = getHeader(event, 'user-agent') || ''
   const path_route = event.path || '/'
 
   if (!ua) {
     return
   }
 
-  // Check against consolidated bot pattern
-  if (BOT_PATTERN.test(ua)) {
-    console.warn('[Security] Middleware: Bot blocked', {
+  // Allow legitimate social media crawlers for OpenGraph metadata access
+  if (isSocialCrawler(ua)) {
+    console.log('[Security] Middleware: Social crawler allowed', {
+      crawler: getCrawlerName(ua),
+      path: path_route,
+      timestamp: new Date().toISOString(),
+    })
+    // Set cache headers for crawler responses
+    setHeader(event, 'Cache-Control', 'public, max-age=3600, s-maxage=7200')
+    return
+  }
+
+  // Check against malicious bot pattern
+  if (MALICIOUS_BOT_PATTERN.test(ua)) {
+    console.warn('[Security] Middleware: Malicious bot blocked', {
       path: path_route,
       ua: ua.substring(0, 50),
       timestamp: new Date().toISOString(),

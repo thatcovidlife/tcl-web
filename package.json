@@ -18,6 +18,8 @@
     "sanity:gen": "sanity typegen generate",
     "test": "vitest --watch",
     "test:ci": "vitest run",
+    "test:crawlers": "./scripts/test-social-crawlers.sh",
+    "test:crawlers:prod": "./scripts/test-social-crawlers.sh https://thatcovid.life",
     "prepare": "husky"
   },
   "dependencies": {

@@ -1,17 +1,16 @@
-// Memoized bot detection pattern for performance
-const BOT_PATTERNS =
-  /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler/i
+import {
+  isSocialCrawler,
+  isCrawlerAllowedPath,
+  getCrawlerName,
+} from '@/assets/constants/social-crawlers'
+
+// Malicious bot detection pattern (excludes legitimate social crawlers)
+const MALICIOUS_BOT_PATTERNS =
+  /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|python-requests|scrapy|httpclient|node-fetch|axios(?!\/)|postman|libwww/i
 
 export default defineNuxtRouteMiddleware(async (to) => {
-  // Skip middleware for static/public routes that don't need protection
-  if (
-    to.path.startsWith('/.well-known') ||
-    to.path.startsWith('/robots') ||
-    to.path.startsWith('/sitemap') ||
-    to.path.startsWith('/api/feed?lang=all') ||
-    to.path.startsWith('/api/feed') ||
-    to.path.startsWith('/api/external/feeds/youtube/feed')
-  ) {
+  // Skip middleware for crawler-allowed paths
+  if (isCrawlerAllowedPath(to.path)) {
     return
   }
 
@@ -23,9 +22,18 @@ export default defineNuxtRouteMiddleware(async (to) => {
       return
     }
 
-    // Detect headless browsers and scrapers with expanded patterns
-    if (BOT_PATTERNS.test(ua)) {
-      console.warn('[Security] Bot/scraper detected', {
+    // Allow legitimate social media crawlers for OpenGraph access
+    if (isSocialCrawler(ua)) {
+      console.log('[Security] Social crawler allowed:', {
+        crawler: getCrawlerName(ua),
+        path: to.path,
+      })
+      return
+    }
+
+    // Detect malicious bots and scrapers
+    if (MALICIOUS_BOT_PATTERNS.test(ua)) {
+      console.warn('[Security] Malicious bot/scraper blocked', {
         path: to.path,
         ua: ua.substring(0, 50),
       })
