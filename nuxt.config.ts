@@ -220,6 +220,9 @@ export default defineNuxtConfig({
       globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
     },
     devOptions: {
+      // [NOTE] Enabling PWA in development mode will register a service worker locally.
+      // This may cause service worker-related console messages and caching behavior during local development.
+      // Developers unfamiliar with PWA may find this confusing; see https://vite-pwa-org.netlify.app/guide/dev.html for details.
       enabled: true, // enables PWA in dev mode
     },
   },
