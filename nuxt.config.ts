@@ -165,6 +165,7 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@nuxtjs/turnstile',
     '@pinia/nuxt',
+    '@vite-pwa/nuxt',
     '@vueuse/nuxt',
     'motion-v/nuxt',
     'nuxt-auth-utils',
@@ -189,6 +190,41 @@ export default defineNuxtConfig({
 
   pinia: {
     storesDirs: ['./store/**'],
+  },
+
+  pwa: {
+    manifest: {
+      name: 'That Covid Life',
+      short_name: 'TCL',
+      start_url: '/',
+      description:
+        'That Covid Life serves as an educational tool that gathers links to news, research, and other resources relative to COVID-19.',
+      theme_color: '#ffffff',
+      background_color: '#ffffff',
+      lang: 'en',
+      icons: [
+        {
+          src: '/pwa/tcl-icon-192.png',
+          sizes: '192x192',
+          type: 'image/png',
+        },
+        {
+          src: '/pwa/tcl-icon-512.png',
+          sizes: '512x512',
+          type: 'image/png',
+        },
+      ],
+    },
+    workbox: {
+      navigateFallback: '/',
+      globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
+    },
+    devOptions: {
+      // [NOTE] Enabling PWA in development mode will register a service worker locally.
+      // This may cause service worker-related console messages and caching behavior during local development.
+      // Developers unfamiliar with PWA may find this confusing; see https://vite-pwa-org.netlify.app/guide/dev.html for details.
+      enabled: true, // enables PWA in dev mode
+    },
   },
 
   robots: {
