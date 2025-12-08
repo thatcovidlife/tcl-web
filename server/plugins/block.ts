@@ -1,6 +1,13 @@
-// Shared bot detection pattern consistent with client-side middleware
-const BOT_PATTERNS =
-  /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|scrapy|bot|crawler/i
+import {
+  isSocialCrawler,
+  isCrawlerAllowedPath,
+  getCrawlerName,
+} from '~/assets/constants/social-crawlers'
+
+// Malicious bot detection pattern (excludes legitimate social crawlers)
+const MALICIOUS_BOT_PATTERNS =
+  /HeadlessChrome|PhantomJS|puppeteer|selenium|headless|automated|curl|wget|python-requests|scrapy|httpclient|node-fetch|axios(?!\/)|postman|libwww/i
+
 const WHITELISTED_PATHS = [
   '/.well-known',
   '/robots.txt',
@@ -14,17 +21,32 @@ const WHITELISTED_PATHS = [
 export default defineNitroPlugin((nitro) => {
   nitro.hooks.hook('request', (event) => {
     const { req, res } = event.node
-    const ua = (req.headers['user-agent'] || '').toLowerCase()
+    const ua = req.headers['user-agent'] || ''
     const path = req.url || '/'
 
     // Skip detection for whitelisted paths
-    if (WHITELISTED_PATHS.some((p) => path.startsWith(p))) {
+    if (
+      WHITELISTED_PATHS.some((p) => path.startsWith(p)) ||
+      isCrawlerAllowedPath(path)
+    ) {
       return
     }
 
-    // Check for bot/scraper user agents using regex
-    if (BOT_PATTERNS.test(ua)) {
-      console.warn('[Security] Server: Bot detected', {
+    // Allow legitimate social media crawlers
+    if (isSocialCrawler(ua)) {
+      console.log('[Security] Server: Social crawler allowed', {
+        crawler: getCrawlerName(ua),
+        path,
+        timestamp: new Date().toISOString(),
+      })
+      // Set optimal cache headers for crawlers
+      res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=7200')
+      return
+    }
+
+    // Check for malicious bot/scraper user agents
+    if (MALICIOUS_BOT_PATTERNS.test(ua)) {
+      console.warn('[Security] Server: Malicious bot blocked', {
         path,
         ua: ua.substring(0, 50),
       })

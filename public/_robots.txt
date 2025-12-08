@@ -1,0 +1,50 @@
+# Robots.txt for That COVID Life
+# Last updated: 2025-12-07
+
+# Allow all legitimate crawlers and social media bots
+User-agent: *
+Allow: /
+
+# Specific rules for social media crawlers (OpenGraph access)
+User-agent: facebookexternalhit
+User-agent: Facebookbot
+User-agent: Twitterbot
+User-agent: LinkedInBot
+User-agent: Pinterestbot
+User-agent: Slackbot
+User-agent: Discordbot
+User-agent: WhatsApp
+User-agent: TelegramBot
+User-agent: Applebot
+Allow: /
+
+# Search engine crawlers
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: Slurp
+User-agent: DuckDuckBot
+User-agent: Baiduspider
+User-agent: YandexBot
+Allow: /
+
+# Disallow malicious bots
+User-agent: AhrefsBot
+User-agent: SemrushBot
+User-agent: MJ12bot
+User-agent: DotBot
+User-agent: BLEXBot
+Disallow: /
+
+# Protect sensitive areas (even from good bots)
+User-agent: *
+Disallow: /api/user/
+Disallow: /user/settings
+Disallow: /admin/
+
+# Sitemap location
+Sitemap: https://thatcovid.life/sitemap.xml
+Sitemap: https://thatcovid.life/__sitemap__/sitemap.xml
+
+# Crawl-delay for aggressive crawlers (seconds)
+User-agent: *
+Crawl-delay: 1
