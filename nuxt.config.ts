@@ -165,6 +165,7 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@nuxtjs/turnstile',
     '@pinia/nuxt',
+    '@vite-pwa/nuxt',
     '@vueuse/nuxt',
     'motion-v/nuxt',
     'nuxt-auth-utils',
@@ -189,6 +190,38 @@ export default defineNuxtConfig({
 
   pinia: {
     storesDirs: ['./store/**'],
+  },
+
+  pwa: {
+    manifest: {
+      name: 'That Covid Life',
+      short_name: 'TCL',
+      start_url: '/',
+      description:
+        'That Covid Life serves as an educational tool that gathers links to news, research, and other resources relative to COVID-19.',
+      theme_color: '#ffffff',
+      background_color: '#ffffff',
+      lang: 'en',
+      icons: [
+        {
+          src: '/pwa/tcl-icon-192.png',
+          sizes: '192x192',
+          type: 'image/png',
+        },
+        {
+          src: '/pwa/tcl-icon-512.png',
+          sizes: '512x512',
+          type: 'image/png',
+        },
+      ],
+    },
+    workbox: {
+      navigateFallback: '/',
+      globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
+    },
+    devOptions: {
+      enabled: true, // enables PWA in dev mode
+    },
   },
 
   robots: {

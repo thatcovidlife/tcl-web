@@ -11,5 +11,6 @@ import { Toaster } from '@/components/ui/sonner'
     <Separator />
     <TclFooter class="bg-muted" />
     <Toaster />
+    <NuxtPwaManifest />
   </div>
 </template>

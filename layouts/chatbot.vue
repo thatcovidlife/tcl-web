@@ -5,5 +5,6 @@
       <NuxtPage />
     </TclBody>
     <Toaster />
+    <NuxtPwaManifest />
   </div>
 </template>
