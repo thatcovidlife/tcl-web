@@ -66,6 +66,14 @@ export const SOCIAL_CRAWLER_PATTERNS = [
   // Mastodon
   'Mastodon',
 
+  // Bluesky
+  'Bluesky',
+  'bsky.app',
+
+  // Threads
+  'Threads',
+  'ThreadsBot',
+
   // Google Search (for rich snippets)
   'Googlebot',
   'Google-InspectionTool',
