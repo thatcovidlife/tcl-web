@@ -55,6 +55,7 @@ export default {
     },
   },
   article: {
+    alternateLink: 'Link Alternativo',
     call: 'Chamar',
     contactInfo: 'Informações de Contato',
     directions: 'Orientações',
