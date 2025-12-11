@@ -55,7 +55,7 @@ export default {
     },
   },
   article: {
-    alternateLink: 'Link Alternativo',
+    alternateLink: 'Está tendo problemas para acessar o material? Tente aqui.',
     call: 'Chamar',
     contactInfo: 'Informações de Contato',
     directions: 'Orientações',

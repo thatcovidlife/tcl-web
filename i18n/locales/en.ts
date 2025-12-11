@@ -55,7 +55,7 @@ export default {
     },
   },
   article: {
-    alternateLink: 'Alternate Link',
+    alternateLink: 'Having trouble accessing the material? Try here.',
     call: 'Call',
     contactInfo: 'Contact Info',
     directions: 'Directions',

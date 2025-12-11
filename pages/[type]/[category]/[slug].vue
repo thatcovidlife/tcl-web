@@ -194,14 +194,15 @@ const hasSplash = computed(
           :link="<string>article.brand?.url"
           target="_blank"
         />
-        <TclMoreButton
-          v-if="article?.alternate"
-          :label="t('article.alternateLink')"
-          :link="<string>article.alternate"
-          target="_blank"
-          variant="secondary"
-        />
       </section>
+      <p v-if="article?.alternate" class="mt-3">
+        <NuxtLink
+          :to="article.alternate"
+          class="text-sm text-primary hover:underline"
+          target="_blank"
+          >{{ t('article.alternateLink') }}</NuxtLink
+        >
+      </p>
       <section v-if="isCovidnet(type as string)" class="py-2 flex gap-4">
         <TclMoreButton
           v-if="article?.covidnet?.contentType === COVIDNET_TYPES.BLOG"

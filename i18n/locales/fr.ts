@@ -55,7 +55,8 @@ export default {
     },
   },
   article: {
-    alternateLink: 'Lien Alternatif',
+    alternateLink:
+      'Vous avez des difficultés à accéder au matériel ? Essayez ici.',
     call: 'Appeler',
     contactInfo: 'Coordonnées',
     email: 'E-mail',
