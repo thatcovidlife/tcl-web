@@ -55,6 +55,7 @@ export default {
     },
   },
   article: {
+    alternateLink: 'Lien Alternatif',
     call: 'Appeler',
     contactInfo: 'Coordonnées',
     email: 'E-mail',

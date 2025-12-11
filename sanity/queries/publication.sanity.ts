@@ -25,6 +25,7 @@ const PUBLICATION_QUERY = groq`
     website,
   },
   "link": url,
+  "alternate": coalesce(alternate, null),
   embedCode,
   language,
   location,

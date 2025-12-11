@@ -194,6 +194,13 @@ const hasSplash = computed(
           :link="<string>article.brand?.url"
           target="_blank"
         />
+        <TclMoreButton
+          v-if="article?.alternate"
+          :label="t('article.alternateLink')"
+          :link="<string>article.alternate"
+          target="_blank"
+          variant="secondary"
+        />
       </section>
       <section v-if="isCovidnet(type as string)" class="py-2 flex gap-4">
         <TclMoreButton

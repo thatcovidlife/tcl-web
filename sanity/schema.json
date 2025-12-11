@@ -408,6 +408,13 @@
         },
         "optional": true
       },
+      "alternate": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
       "source": {
         "type": "objectAttribute",
         "value": {
