@@ -112,7 +112,7 @@ watch(searchQuery, (newValue) => {
           <Input
             v-model="searchQuery"
             :placeholder="t('searchbox.placeholder')"
-            class="w-full h-10 pl-10"
+            class="w-full h-10 pl-10 text-base"
           />
           <SearchIcon
             class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
