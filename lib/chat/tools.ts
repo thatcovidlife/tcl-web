@@ -4,9 +4,9 @@ import { z } from 'zod'
 import { collectionName } from './collections'
 import { findRelevantContent } from './embedding'
 
-import { aiGuardCheck } from './guard'
+import { /* aiGuardCheck, */ aiGuardCheckLlm } from './guard'
 
-const PANGEA_ENABLED = process.env.PANGEA_ENABLED === 'true'
+// const PANGEA_ENABLED = process.env.PANGEA_ENABLED === 'true'
 
 export const searchTool = tool({
   description: `get information from your knowledge base to answer questions.`,
@@ -28,19 +28,19 @@ export const guardTool = tool({
     question: z.string().describe("the user's original question"),
   }),
   execute: async ({ question }) => {
-    if (PANGEA_ENABLED) {
-      console.log('guardTool checking question:', question)
-      try {
-        const result = await aiGuardCheck(question)
-        console.log('guardTool result:', result)
-        return result?.blocked
-      } catch (error) {
-        console.error('Error in guardTool:', error)
-        // On error, default to not blocked
-        return false
-      }
-    } else {
+    // if (PANGEA_ENABLED) {
+    console.log('guardTool checking question:', question)
+    try {
+      const result = await aiGuardCheckLlm(question)
+      console.log('guardTool result:', result)
+      return result?.blocked
+    } catch (error) {
+      console.error('Error in guardTool:', error)
+      // On error, default to not blocked
       return false
     }
+    // } else {
+    //   return false
+    // }
   },
 })
