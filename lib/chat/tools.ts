@@ -15,8 +15,6 @@ export const searchTool = tool({
     question: z.string().describe('the users question'),
   }),
   execute: async ({ question, selectedCollection }) => {
-    // console.log('question', question)
-    // console.log('selectedCollection', selectedCollection)
     return await findRelevantContent(
       question,
       collectionName(selectedCollection),
@@ -31,8 +29,15 @@ export const guardTool = tool({
   }),
   execute: async ({ question }) => {
     if (PANGEA_ENABLED) {
-      const result = await aiGuardCheck(question)
-      return result?.blocked
+      console.log('guardTool checking question:', question)
+      try {
+        const result = await aiGuardCheck(question)
+        console.log('guardTool result:', result)
+        return result?.blocked
+      } catch (error) {
+        console.error('Error in guardTool:', error)
+        return true
+      }
     } else {
       return false
     }

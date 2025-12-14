@@ -10,6 +10,10 @@ const aiGuard = new AIGuardService(token, config)
 export const aiGuardCheck = async (
   text: string,
 ): Promise<AIGuard.TextGuardResult> => {
-  const response = await aiGuard.guardText({ text })
-  return response.result
+  try {
+    const response = await aiGuard.guardText({ text })
+    return response.result
+  } catch (error) {
+    throw error
+  }
 }
