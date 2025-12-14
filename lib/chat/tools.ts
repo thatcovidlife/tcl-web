@@ -36,7 +36,8 @@ export const guardTool = tool({
         return result?.blocked
       } catch (error) {
         console.error('Error in guardTool:', error)
-        return true
+        // On error, default to not blocked
+        return false
       }
     } else {
       return false
