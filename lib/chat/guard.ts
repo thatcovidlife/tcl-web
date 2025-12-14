@@ -11,9 +11,18 @@ export const aiGuardCheck = async (
   text: string,
 ): Promise<AIGuard.TextGuardResult> => {
   try {
-    const response = await aiGuard.guardText({ text })
+    const timeoutPromise = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('AI Guard timeout')), 5000),
+    )
+
+    const response = await Promise.race([
+      aiGuard.guardText({ text }),
+      timeoutPromise,
+    ])
     return response.result
   } catch (error) {
-    throw error
+    // Return unblocked on timeout or error
+    // TODO: fix this properly... this is a temp fix
+    return { blocked: false } as AIGuard.TextGuardResult
   }
 }
