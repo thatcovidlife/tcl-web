@@ -772,7 +772,8 @@ export default {
   },
 
   bookmarks: {
-    tooltip: 'Ajouter aux favoris',
+    add: 'Ajouter aux favoris',
+    remove: 'Retirer des favoris',
   },
 
   share: {

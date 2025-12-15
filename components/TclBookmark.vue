@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { BookmarkPlus } from 'lucide-vue-next'
+import { BookmarkMinus, BookmarkPlus } from 'lucide-vue-next'
+
+defineProps<{
+  bookmarked?: boolean
+}>()
+
+const emit = defineEmits<{
+  (e: 'toggle'): void
+}>()
 
 const { t } = useI18n()
 </script>
@@ -8,12 +16,18 @@ const { t } = useI18n()
   <TooltipProvider>
     <Tooltip>
       <TooltipTrigger as-child>
-        <Button size="icon" variant="outline" class="rounded-full">
-          <BookmarkPlus />
+        <Button
+          size="icon"
+          variant="outline"
+          class="rounded-full"
+          @click="emit('toggle')"
+        >
+          <BookmarkMinus v-if="bookmarked" />
+          <BookmarkPlus v-else />
         </Button>
       </TooltipTrigger>
       <TooltipContent>
-        <p>{{ t('bookmarks.tooltip') }}</p>
+        <p>{{ bookmarked ? t('bookmarks.remove') : t('bookmarks.add') }}</p>
       </TooltipContent>
     </Tooltip>
   </TooltipProvider>

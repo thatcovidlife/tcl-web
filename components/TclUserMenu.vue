@@ -66,7 +66,7 @@ watch(
       </DropdownMenuLabel>
       <DropdownMenuSeparator />
       <template v-if="loggedIn">
-        <NuxtLink :to="localePath('/user/bookmarks')">
+        <NuxtLink :to="localePath('/user/bookmarks?offset=0&limit=5')">
           <DropdownMenuItem
             v-if="statsig?.checkGate('bookmarks_enabled')"
             class="hover:cursor-pointer"

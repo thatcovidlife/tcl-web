@@ -766,7 +766,8 @@ export default {
   },
 
   bookmarks: {
-    tooltip: 'Añadir a marcadores',
+    add: 'Añadir a marcadores',
+    remove: 'Eliminar de marcadores',
   },
 
   share: {

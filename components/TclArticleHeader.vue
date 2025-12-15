@@ -14,6 +14,7 @@ type Brand = {
 } | null
 
 defineProps<{
+  bookmarked?: boolean
   brand?: Brand
   date?: string | null
   end?: string | null
@@ -30,6 +31,8 @@ const localePath = useLocalePath()
 const url = computed(() => {
   return `${location?.origin}${useRoute().fullPath}`
 })
+
+const { loggedIn } = useUserSession()
 </script>
 <template>
   <div>
@@ -68,7 +71,11 @@ const url = computed(() => {
     <Separator class="my-4" />
     <div class="mb-2 flex gap-3">
       <TclShare :title="title" :url="url" />
-      <TclBookmark v-if="statsig?.checkGate('bookmarks_enabled')" />
+      <TclBookmark
+        v-if="statsig?.checkGate('bookmarks_enabled') && loggedIn"
+        :bookmarked="bookmarked"
+        @toggle="() => console.log('bookmark toggled')"
+      />
     </div>
   </div>
 </template>

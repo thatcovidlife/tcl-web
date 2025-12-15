@@ -749,7 +749,8 @@ export default {
   },
 
   bookmarks: {
-    tooltip: 'Add to bookmarks',
+    add: 'Add to bookmarks',
+    remove: 'Remove from bookmarks',
   },
 
   share: {

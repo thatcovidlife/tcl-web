@@ -47,6 +47,22 @@ const { data: metadata } = await Sentry.startSpan(
   },
 )
 
+const { data: isBookmarked } = useAsyncData(
+  <string>slug,
+  () =>
+    $fetch('/api/bookmarks/status', {
+      method: 'POST',
+      body: {
+        type,
+        identifier: `${category}/${slug}`,
+      },
+    }),
+  {
+    immediate: true,
+    watch: [() => slug],
+  },
+)
+
 const pageTitle = computed(
   () => metadata?.value?.title || metadata?.value?.name || '',
 )
@@ -144,6 +160,7 @@ const hasSplash = computed(
       <TclArticleHeader
         v-if="article"
         class="mb-4 md:mb-10"
+        :bookmarked="!!isBookmarked"
         :brand="article?.brand"
         :date="<string | null>article.date"
         :end="<string | null>article.end"
