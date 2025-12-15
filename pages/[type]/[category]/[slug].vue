@@ -4,6 +4,7 @@ import { SERIALIZERS } from '@/assets/constants/serializers'
 import PUBLICATION_QUERY from '@/sanity/queries/publication.sanity'
 import METADATA_QUERY from '@/sanity/queries/metadata.sanity'
 import {
+  isBlog,
   isBrand,
   isCovidnet,
   isDirectory,
@@ -47,7 +48,7 @@ const { data: metadata } = await Sentry.startSpan(
   },
 )
 
-const { data: isBookmarked } = useAsyncData(
+const { data: isBookmarked, refresh } = useAsyncData(
   <string>slug,
   () =>
     $fetch('/api/bookmarks/status', {
@@ -162,7 +163,11 @@ const hasSplash = computed(
         class="mb-4 md:mb-10"
         :bookmarked="!!isBookmarked"
         :brand="article?.brand"
-        :date="<string | null>article.date"
+        :date="
+          isBlog(type as string)
+            ? article?.published?.split('T')[0]
+            : <string | null>article.date
+        "
         :end="<string | null>article.end"
         :location="location"
         :source="<string | null>article.source"
