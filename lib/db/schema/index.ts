@@ -16,6 +16,17 @@ export const chatRoleEnum = pgEnum('chat_role', ['user', 'assistant'])
 export const languageEnum = pgEnum('language', ['en', 'es', 'fr', 'pt'])
 export const roleEnum = pgEnum('role', ['USER', 'ADMIN'])
 export const themeEnum = pgEnum('theme', ['light', 'dark', 'system'])
+export const bookmarkTypeEnum = pgEnum('bookmark_type', [
+  'blog',
+  'chat',
+  'covidnet',
+  'directory',
+  'event',
+  'product',
+  'resource',
+  'scientific-library',
+  'video',
+])
 
 // Tables
 export const users = pgTable('user', {
@@ -135,6 +146,31 @@ export const likes = pgTable(
       columns: [table.userId],
       foreignColumns: [users.id],
       name: 'like_user_fkey',
+    }).onDelete('cascade'),
+  ],
+)
+
+export const bookmarks = pgTable(
+  'bookmark',
+  {
+    id: uuid('id')
+      .notNull()
+      .default(sql`gen_random_uuid()`)
+      .primaryKey(),
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`now()`),
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    type: bookmarkTypeEnum('type').notNull(),
+    identifier: text('identifier').notNull(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.userId],
+      foreignColumns: [users.id],
+      name: 'bookmark_user_fkey',
     }).onDelete('cascade'),
   ],
 )
