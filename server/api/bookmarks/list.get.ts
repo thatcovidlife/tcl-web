@@ -33,7 +33,7 @@ type BookmarkType =
  * Query parameters for bookmark list endpoint
  */
 interface BookmarkListQuery {
-  page?: string
+  offset?: string
   limit?: string
   sortBy?: BookmarkSortField
   order?: SortOrder
@@ -51,7 +51,7 @@ interface PaginatedBookmarksResponse {
     identifier: string
   }>
   pagination: {
-    page: number
+    offset: number
     limit: number
     total: number
     totalPages: number
@@ -63,20 +63,20 @@ interface PaginatedBookmarksResponse {
 /**
  * Validates and parses pagination parameters
  *
- * @param page - Page number from query string
+ * @param offset - Offset from query string
  * @param limit - Page size from query string
  * @returns Validated pagination parameters
  * @throws Error if parameters are invalid
  */
-function validatePagination(page?: string, limit?: string) {
-  const parsedPage = page ? parseInt(page, 10) : 1
-  const parsedLimit = limit ? parseInt(limit, 10) : 20
+function validatePagination(offset?: string, limit?: string) {
+  const parsedOffset = offset ? parseInt(offset, 10) : 0
+  const parsedLimit = limit ? parseInt(limit, 10) : 5
 
-  if (isNaN(parsedPage) || parsedPage < 1) {
+  if (isNaN(parsedOffset) || parsedOffset < 0) {
     throw createError({
       status: 400,
       message: 'Bad request',
-      statusMessage: 'Page must be a positive integer',
+      statusMessage: 'Offset must be a non-negative integer',
     })
   }
 
@@ -88,7 +88,7 @@ function validatePagination(page?: string, limit?: string) {
     })
   }
 
-  return { page: parsedPage, limit: parsedLimit }
+  return { offset: parsedOffset, limit: parsedLimit }
 }
 
 /**
@@ -166,8 +166,8 @@ function validateType(type?: string) {
  * **Authentication:** Required
  *
  * **Query Parameters:**
- * - `page` (optional): Page number (default: 1, min: 1)
- * - `limit` (optional): Items per page (default: 20, min: 1, max: 100)
+ * - `offset` (optional): Number of items to skip (default: 0, min: 0)
+ * - `limit` (optional): Items per page (default: 5, min: 1, max: 100)
  * - `sortBy` (optional): Sort field - "createdAt" | "type" (default: "createdAt")
  * - `order` (optional): Sort order - "asc" | "desc" (default: "desc")
  * - `type` (optional): Filter by bookmark type - "blog" | "chat" | "covidnet" | "directory" | "event" | "product" | "resource" | "scientific-library" | "video"
@@ -201,12 +201,12 @@ function validateType(type?: string) {
  * - `500` Internal Server Error - Server error
  *
  * @example
- * // Fetch first page with default settings
+ * // Fetch first 5 items with default settings
  * GET /api/bookmarks/list
  *
  * @example
- * // Fetch second page, 10 items, sorted by type ascending
- * GET /api/bookmarks/list?page=2&limit=10&sortBy=type&order=asc
+ * // Skip first 10 items, fetch 10 items, sorted by type ascending
+ * GET /api/bookmarks/list?offset=10&limit=10&sortBy=type&order=asc
  *
  * @example
  * // Filter by blog bookmarks only
@@ -264,12 +264,12 @@ export default defineEventHandler(
 
       // 3. Parse and validate query parameters
       const query = getQuery<BookmarkListQuery>(event)
-      const { page, limit } = validatePagination(query.page, query.limit)
+      const { offset, limit } = validatePagination(query.offset, query.limit)
       const { sortBy, order } = validateSorting(query.sortBy, query.order)
       const typeFilter = validateType(query.type)
 
       consola.info(
-        `Fetching bookmarks for user: ${sessionUser.email}, page: ${page}, limit: ${limit}, sortBy: ${sortBy}, order: ${order}, type: ${typeFilter || 'all'}`,
+        `Fetching bookmarks for user: ${sessionUser.email}, offset: ${offset}, limit: ${limit}, sortBy: ${sortBy}, order: ${order}, type: ${typeFilter || 'all'}`,
       )
 
       // 4. Get user ID from email
@@ -334,7 +334,7 @@ export default defineEventHandler(
         return {
           bookmarks: [],
           pagination: {
-            page,
+            offset,
             limit,
             total: 0,
             totalPages: 0,
@@ -346,14 +346,14 @@ export default defineEventHandler(
 
       // 7. Calculate pagination metadata
       const totalPages = Math.ceil(total / limit)
-      const offset = (page - 1) * limit
+      const currentPage = Math.floor(offset / limit) + 1
 
-      // Validate page doesn't exceed total pages
-      if (page > totalPages) {
+      // Validate offset doesn't exceed total items
+      if (offset >= total) {
         throw createError({
           status: 400,
           message: 'Bad request',
-          statusMessage: `Page ${page} exceeds total pages (${totalPages})`,
+          statusMessage: `Offset ${offset} exceeds total items (${total})`,
         })
       }
 
@@ -369,7 +369,7 @@ export default defineEventHandler(
           op: 'database.query',
           attributes: {
             'db.user_id': user.id,
-            'db.page': page,
+            'db.offset': offset,
             'db.limit': limit,
             'db.sort_by': sortBy,
             'db.order': order,
@@ -407,12 +407,12 @@ export default defineEventHandler(
       return {
         bookmarks: userBookmarks,
         pagination: {
-          page,
+          offset,
           limit,
           total,
           totalPages,
-          hasNextPage: page < totalPages,
-          hasPrevPage: page > 1,
+          hasNextPage: offset + limit < total,
+          hasPrevPage: offset > 0,
         },
       }
     } catch (error) {
