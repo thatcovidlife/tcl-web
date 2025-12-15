@@ -1,6 +1,7 @@
 import { sql } from 'drizzle-orm'
 import {
   foreignKey,
+  index,
   json,
   pgTable,
   varchar,
@@ -172,5 +173,14 @@ export const bookmarks = pgTable(
       foreignColumns: [users.id],
       name: 'bookmark_user_fkey',
     }).onDelete('cascade'),
+    // Indexes for query performance optimization
+    index('idx_bookmark_user_id').on(table.userId),
+    index('idx_bookmark_user_created').on(table.userId, table.createdAt.desc()),
+    index('idx_bookmark_user_type').on(table.userId, table.type),
+    index('idx_bookmark_user_type_created').on(
+      table.userId,
+      table.type,
+      table.createdAt.desc(),
+    ),
   ],
 )
