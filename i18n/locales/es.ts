@@ -195,6 +195,7 @@ export default {
     about: 'Sobre Nosotros',
     blog: 'Blog',
     bluesky: 'Síguenos en Bluesky',
+    bookmarks: 'Marcadores',
     brand: 'Marcas',
     contents: 'Contenido',
     covidnet: 'Covidnet',
@@ -712,6 +713,7 @@ export default {
   },
   description: {
     blog: 'Las últimas novedades de la redacción.',
+    bookmarks: 'Tus marcadores guardados.',
     forum:
       'Un foro de usuarios para intercambiar consejos, experiencias y testimonios.',
     covidnet:

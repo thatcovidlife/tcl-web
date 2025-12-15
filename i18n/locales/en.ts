@@ -192,6 +192,7 @@ export default {
     about: 'About',
     blog: 'Blog',
     bluesky: 'Follow us on Bluesky',
+    bookmarks: 'Bookmarks',
     brand: 'Brands',
     contents: 'Contents',
     covidnet: 'Covidnet',
@@ -697,6 +698,7 @@ export default {
 
   description: {
     blog: 'The latest news from the editorial team.',
+    bookmarks: 'Your saved bookmarks.',
     forum: 'A user forum to exchange tips, experiences and testimonies.',
     covidnet: 'A curated list of blogs and youtube channels about COVID-19.',
     directory:
