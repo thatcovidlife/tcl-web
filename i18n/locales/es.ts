@@ -879,8 +879,8 @@ export default {
       new: 'Nuevo chat',
     },
     models: {
-      'openai/gpt-oss-20b': 'Básico',
-      'openai/gpt-oss-120b': 'Pro',
+      'openai/gpt-oss-120b': 'Básico',
+      'zai-org/GLM-4.7': 'Pro',
     },
     overview: 'Tu compañero de IA para navegar la pandemia de COVID-19.',
     search: {
