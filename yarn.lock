@@ -71,82 +71,76 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ai-sdk/deepinfra@npm:^1.0.24":
-  version: 1.0.24
-  resolution: "@ai-sdk/deepinfra@npm:1.0.24"
+"@ai-sdk/deepinfra@npm:^2.0.16":
+  version: 2.0.16
+  resolution: "@ai-sdk/deepinfra@npm:2.0.16"
   dependencies:
-    "@ai-sdk/openai-compatible": "npm:1.0.23"
-    "@ai-sdk/provider": "npm:2.0.0"
-    "@ai-sdk/provider-utils": "npm:3.0.13"
+    "@ai-sdk/openai-compatible": "npm:2.0.16"
+    "@ai-sdk/provider": "npm:3.0.4"
+    "@ai-sdk/provider-utils": "npm:4.0.8"
   peerDependencies:
     zod: ^3.25.76 || ^4.1.8
-  checksum: 10c0/a75bbe1266a4ce2b2a202e676351ac90015af62b73d90752c1e35b0d4cd983707ceb8b06a3918b06fd861a5c57f61b5693b1428abd082b0fd0889d8638ee8f37
+  checksum: 10c0/8eb173459c1dba0d88d97a5ba12e98133b454506a0b54cbbab2176d4e5a35c387f85f200339407b540c5c65477ca9907d7ccf2f60dd5fe65c742877694f257b3
   languageName: node
   linkType: hard
 
-"@ai-sdk/gateway@npm:2.0.2":
-  version: 2.0.2
-  resolution: "@ai-sdk/gateway@npm:2.0.2"
+"@ai-sdk/gateway@npm:3.0.18":
+  version: 3.0.18
+  resolution: "@ai-sdk/gateway@npm:3.0.18"
   dependencies:
-    "@ai-sdk/provider": "npm:2.0.0"
-    "@ai-sdk/provider-utils": "npm:3.0.13"
-    "@vercel/oidc": "npm:3.0.3"
+    "@ai-sdk/provider": "npm:3.0.4"
+    "@ai-sdk/provider-utils": "npm:4.0.8"
+    "@vercel/oidc": "npm:3.1.0"
   peerDependencies:
     zod: ^3.25.76 || ^4.1.8
-  checksum: 10c0/a803d5d84cd88e777dc15d58607c957f63ba27e933e3219d175eae5b9d38f5f1b021c6a556b72358578a6b3348d4dadd0c852d8622b25d0327f340490b8a95de
+  checksum: 10c0/4a24a26cfece926e47f21d9dd89f4be648fd7a5be80d708443f2ea2a9e8a4f99f16933d16194fbd179c59cecb5cdd50990f847163d4198ebb7708f467528a658
   languageName: node
   linkType: hard
 
-"@ai-sdk/openai-compatible@npm:1.0.23":
-  version: 1.0.23
-  resolution: "@ai-sdk/openai-compatible@npm:1.0.23"
+"@ai-sdk/openai-compatible@npm:2.0.16":
+  version: 2.0.16
+  resolution: "@ai-sdk/openai-compatible@npm:2.0.16"
   dependencies:
-    "@ai-sdk/provider": "npm:2.0.0"
-    "@ai-sdk/provider-utils": "npm:3.0.13"
+    "@ai-sdk/provider": "npm:3.0.4"
+    "@ai-sdk/provider-utils": "npm:4.0.8"
   peerDependencies:
     zod: ^3.25.76 || ^4.1.8
-  checksum: 10c0/c078f3251d4a09351802babbb3c6eda352340d8fcefef241d5c41634c8a66aaedf01e518fcd8ec7e2c60e664a241af40f1f49708491225b1c3104ed3b0fa63f3
+  checksum: 10c0/ce3e587bcbfbc6e429b1e1037ba76b6d2128c24d07a2c55dd7d151144a1948d024deee5a4ee5c231e3bc194f52109e718f437f478b97b785e238d21cd6e39d65
   languageName: node
   linkType: hard
 
-"@ai-sdk/provider-utils@npm:3.0.13":
-  version: 3.0.13
-  resolution: "@ai-sdk/provider-utils@npm:3.0.13"
+"@ai-sdk/provider-utils@npm:4.0.8":
+  version: 4.0.8
+  resolution: "@ai-sdk/provider-utils@npm:4.0.8"
   dependencies:
-    "@ai-sdk/provider": "npm:2.0.0"
-    "@standard-schema/spec": "npm:^1.0.0"
-    eventsource-parser: "npm:^3.0.5"
+    "@ai-sdk/provider": "npm:3.0.4"
+    "@standard-schema/spec": "npm:^1.1.0"
+    eventsource-parser: "npm:^3.0.6"
   peerDependencies:
     zod: ^3.25.76 || ^4.1.8
-  checksum: 10c0/881f65582fe3b456f9fccc51947c2d2330314a7b820f4c9d4f16676efc086b8585c808cb8eb63d3d8d72cf8e804bc0144f5b19078dbf5962e6bcc63e639c4642
+  checksum: 10c0/c818b7ef53652665929428addac0122bcadfbf4abc7c99b98b93373607dce54e28d3a88820bd6cba8a34bb9817e076719f1713af4ce28be9e9899a7a14cd105c
   languageName: node
   linkType: hard
 
-"@ai-sdk/provider@npm:2.0.0":
-  version: 2.0.0
-  resolution: "@ai-sdk/provider@npm:2.0.0"
+"@ai-sdk/provider@npm:3.0.4":
+  version: 3.0.4
+  resolution: "@ai-sdk/provider@npm:3.0.4"
   dependencies:
     json-schema: "npm:^0.4.0"
-  checksum: 10c0/e50e520016c9fc0a8b5009cadd47dae2f1c81ec05c1792b9e312d7d15479f024ca8039525813a33425c884e3449019fed21043b1bfabd6a2626152ca9a388199
+  checksum: 10c0/dca9cfd2f3380094a4891d91bdc94ec1b96872be709b519c3cf1c5ad5bc870f5281014c9201e17d00966f2f0bafd884ad116977bad60d0c913d29d218112cbc7
   languageName: node
   linkType: hard
 
-"@ai-sdk/vue@npm:^2.0.81":
-  version: 2.0.81
-  resolution: "@ai-sdk/vue@npm:2.0.81"
+"@ai-sdk/vue@npm:^3.0.44":
+  version: 3.0.44
+  resolution: "@ai-sdk/vue@npm:3.0.44"
   dependencies:
-    "@ai-sdk/provider-utils": "npm:3.0.13"
-    ai: "npm:5.0.81"
+    "@ai-sdk/provider-utils": "npm:4.0.8"
+    ai: "npm:6.0.44"
     swrv: "npm:^1.0.4"
   peerDependencies:
     vue: ^3.3.4
-    zod: ^3.25.76 || ^4.1.8
-  peerDependenciesMeta:
-    vue:
-      optional: true
-    zod:
-      optional: true
-  checksum: 10c0/afb9b982e9f6b1374791460dbbcbf8e8e4013cb7fde6ea3e05f6e710a69f0cc56afc992c4a93414e24740d59ed5b6578a157589d0814b0283a67d95ed73a090a
+  checksum: 10c0/546af77cce5a8f3cab8cbbf86eaff422e7ddf0fd08ee1a1cf3aa2dc450f3aec29be0c850f7e73c360b4758e8442eeea00f47372808863ac19c3d4a950ac5e50c
   languageName: node
   linkType: hard
 
@@ -4211,6 +4205,15 @@ __metadata:
   dependencies:
     "@iconify/types": "npm:*"
   checksum: 10c0/feca8627972b440a9a0ab1646aa75f2f110952e750b8f5fd520d41d64e2e532438b0fce0136364e115feb6a142d4da2eab4d190d86b8526ee00b07af466d5dd6
+  languageName: node
+  linkType: hard
+
+"@iconify-json/streamline@npm:^1.2.5":
+  version: 1.2.5
+  resolution: "@iconify-json/streamline@npm:1.2.5"
+  dependencies:
+    "@iconify/types": "npm:*"
+  checksum: 10c0/564f4cc23115f3f3499e0e9f09744ffecfefd6aa6fb2d5c017dec813038666f1ff2c4768141b6347170bec707d10a7e10ea8fb654f9e4abad685aebea6b73b28
   languageName: node
   linkType: hard
 
@@ -8656,10 +8659,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standard-schema/spec@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@standard-schema/spec@npm:1.0.0"
-  checksum: 10c0/a1ab9a8bdc09b5b47aa8365d0e0ec40cc2df6437be02853696a0e377321653b0d3ac6f079a8c67d5ddbe9821025584b1fb71d9cc041a6666a96f1fadf2ece15f
+"@standard-schema/spec@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@standard-schema/spec@npm:1.1.0"
+  checksum: 10c0/d90f55acde4b2deb983529c87e8025fa693de1a5e8b49ecc6eb84d1fd96328add0e03d7d551442156c7432fd78165b2c26ff561b970a9a881f046abb78d6a526
   languageName: node
   linkType: hard
 
@@ -9902,10 +9905,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vercel/oidc@npm:3.0.3":
-  version: 3.0.3
-  resolution: "@vercel/oidc@npm:3.0.3"
-  checksum: 10c0/c8eecb1324559435f4ab8a955f5ef44f74f546d11c2ddcf28151cb636d989bd4b34e0673fd8716cb21bb21afb34b3de663bacc30c9506036eeecbcbf2fd86241
+"@vercel/oidc@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@vercel/oidc@npm:3.1.0"
+  checksum: 10c0/f57278ed4b4c022c7ca85e8baa5f9bdb2623397abfa0e5dbfd75de283c8e5dc534d64dac1364b5ad8c96d00eb2d469886e6f7b640f6f195def5766950ad8ce71
   languageName: node
   linkType: hard
 
@@ -10875,17 +10878,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ai@npm:5.0.81, ai@npm:^5.0.81":
-  version: 5.0.81
-  resolution: "ai@npm:5.0.81"
+"ai@npm:6.0.44, ai@npm:^6.0.44":
+  version: 6.0.44
+  resolution: "ai@npm:6.0.44"
   dependencies:
-    "@ai-sdk/gateway": "npm:2.0.2"
-    "@ai-sdk/provider": "npm:2.0.0"
-    "@ai-sdk/provider-utils": "npm:3.0.13"
+    "@ai-sdk/gateway": "npm:3.0.18"
+    "@ai-sdk/provider": "npm:3.0.4"
+    "@ai-sdk/provider-utils": "npm:4.0.8"
     "@opentelemetry/api": "npm:1.9.0"
   peerDependencies:
     zod: ^3.25.76 || ^4.1.8
-  checksum: 10c0/69d34baa80a82a2a652349c7ac75732f17ef661d9626705f8c5e7808cfc9b4934e2feec062fccd861631a66bea7e6c49f2644843d29ce8ead58d6b4f6f8bedf1
+  checksum: 10c0/809af194ea06c3b50c9b0964401d58fc457de23f7cb93e3c7392bfcb4913f07cdd331ecf1f88ea9f726cc31c4a7051cb4b003525945348af9b6fe5a0b5b39da4
   languageName: node
   linkType: hard
 
@@ -14952,7 +14955,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eventsource-parser@npm:^3.0.5":
+"eventsource-parser@npm:^3.0.6":
   version: 3.0.6
   resolution: "eventsource-parser@npm:3.0.6"
   checksum: 10c0/70b8ccec7dac767ef2eca43f355e0979e70415701691382a042a2df8d6a68da6c2fca35363669821f3da876d29c02abe9b232964637c1b6635c940df05ada78a
@@ -23687,8 +23690,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "thatcovidlife@workspace:."
   dependencies:
-    "@ai-sdk/deepinfra": "npm:^1.0.24"
-    "@ai-sdk/vue": "npm:^2.0.81"
+    "@ai-sdk/deepinfra": "npm:^2.0.16"
+    "@ai-sdk/vue": "npm:^3.0.44"
     "@commitlint/cli": "npm:^19.8.1"
     "@commitlint/config-conventional": "npm:^19.8.1"
     "@formkit/auto-animate": "npm:^0.9.0"
@@ -23702,6 +23705,7 @@ __metadata:
     "@iconify-json/mynaui": "npm:^1.2.16"
     "@iconify-json/prime": "npm:^1.2.4"
     "@iconify-json/radix-icons": "npm:^1.2.5"
+    "@iconify-json/streamline": "npm:^1.2.5"
     "@iconify-json/tabler": "npm:^1.2.23"
     "@iconify/vue": "npm:^5.0.0"
     "@langchain/core": "npm:^1.0.1"
@@ -23740,7 +23744,7 @@ __metadata:
     "@vue/test-utils": "npm:^2.4.6"
     "@vueuse/core": "npm:^13.9.0"
     "@vueuse/nuxt": "npm:13.9.0"
-    ai: "npm:^5.0.81"
+    ai: "npm:^6.0.44"
     class-variance-authority: "npm:^0.7.1"
     clsx: "npm:^2.1.1"
     crypto-hash: "npm:^3.1.0"
