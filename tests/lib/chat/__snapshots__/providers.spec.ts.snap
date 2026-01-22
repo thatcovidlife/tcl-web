@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AI Chat Providers > Exported Constants > should export MODELS array with all model IDs 1`] = `
+[
+  "openai/gpt-oss-120b",
+  "zai-org/GLM-4.7",
+]
+`;
