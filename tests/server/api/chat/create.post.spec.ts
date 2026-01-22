@@ -7,7 +7,7 @@
  * @see server/api/chat/create.post.ts
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach, beforeAll } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { $fetch, setup } from '@nuxt/test-utils'
 
 // Set up mocks before importing Nuxt
@@ -35,11 +35,6 @@ vi.mock('consola', () => ({
 vi.mock('@/lib/utils', () => ({
   sanitizeChatTitle: vi.fn((title: string) => title.trim()),
 }))
-
-// Setup Nuxt test environment once
-beforeAll(async () => {
-  await setup({ server: true, dev: false })
-})
 
 describe('Chat Creation API (Integration Tests)', () => {
   beforeEach(() => {

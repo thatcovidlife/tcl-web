@@ -1,4 +1,5 @@
 import { vi } from 'vitest'
+import { setup } from '@nuxt/test-utils'
 
 /**
  * Global test configuration file
@@ -29,3 +30,21 @@ process.env.SANITY_TOKEN = 'test-token'
 process.env.PANGEA_TOKEN = 'test-pangea-token'
 process.env.PANGEA_DOMAIN = 'test.pangea.cloud'
 process.env.NUXT_PUBLIC_SITE_URL = 'http://localhost:3000'
+
+// Set up Nuxt ONCE for all API tests
+// This is expensive, so we do it globally rather than per test file
+let nuxtSetupDone = false
+
+export async function setupNuxtTests() {
+  if (nuxtSetupDone) return
+
+  await setup({
+    server: true,
+    dev: false,
+  })
+
+  nuxtSetupDone = true
+}
+
+// Automatically set up Nuxt for API tests
+setupNuxtTests()

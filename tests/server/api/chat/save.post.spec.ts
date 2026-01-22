@@ -7,7 +7,7 @@
  * @see server/api/chat/save.post.ts
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach, beforeAll } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { $fetch, setup } from '@nuxt/test-utils'
 
 // Set up mocks before importing Nuxt
@@ -43,11 +43,6 @@ vi.mock('@/lib/utils', () => ({
     warnings: [],
   })),
 }))
-
-// Setup Nuxt test environment once
-beforeAll(async () => {
-  await setup({ server: true, dev: false })
-})
 
 const mockChatId = 'chat-123'
 const mockUserId = 'user-123'
