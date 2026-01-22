@@ -872,8 +872,8 @@ export default {
       new: 'Nova Conversa',
     },
     models: {
-      'openai/gpt-oss-20b': 'Básico',
-      'openai/gpt-oss-120b': 'Pro',
+      'openai/gpt-oss-120b': 'Básico',
+      'zai-org/GLM-4.7': 'Pro',
     },
     overview: 'Seu companheiro de IA para navegar a pandemia de COVID-19.',
     search: {
