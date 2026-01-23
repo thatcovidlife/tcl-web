@@ -20,21 +20,45 @@ onMounted(() => {
   currentUrl.value = window.location.href
 })
 
+// Type for the transformed data
+interface SharedChatData {
+  chat: {
+    id: string
+    title: string
+    createdAt: string
+  }
+  messages: Array<{
+    id: string
+    role: 'user' | 'assistant'
+    content: string
+    parts: any
+  }>
+  shareInfo: {
+    slug: string
+    createdAt: string
+    expiresAt: string | null
+    viewCount: number
+  }
+}
+
 // Fetch shared chat data
-const { data, pending, error } = await useFetch(`/api/chat/share/${slug}`, {
-  transform: (response) => {
-    // Transform messages to match UIMessage format
-    return {
-      ...response,
-      messages: response.messages.map((msg: any) => ({
-        id: msg.messageId,
-        role: msg.role,
-        content: msg.content,
-        parts: msg.parts || [{ type: 'text', text: msg.content }],
-      })),
-    }
+const { data, pending, error } = await useFetch<SharedChatData>(
+  `/api/chat/share/${slug}`,
+  {
+    transform: (input: any) => {
+      // Transform messages to match UIMessage format
+      return {
+        ...input,
+        messages: input.messages.map((msg: any) => ({
+          id: msg.messageId,
+          role: msg.role,
+          content: msg.content,
+          parts: msg.parts || [{ type: 'text', text: msg.content }],
+        })),
+      }
+    },
   },
-})
+)
 
 // Set page metadata
 const pageTitle = computed(() =>
