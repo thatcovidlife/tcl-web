@@ -3,6 +3,8 @@ import { ExternalLinkIcon, CopyIcon } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import { Response } from '@/components/ai-elements/response'
 
+import { toast } from 'vue-sonner'
+
 definePageMeta({
   layout: 'default',
 })
