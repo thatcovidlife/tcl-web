@@ -140,25 +140,6 @@ export default defineEventHandler(async (event) => {
 
     consola.success(`Created share link for chat ${chatId}`)
 
-    // Statsig analytics event
-    // if (process.env.STATSIG_CLIENT_ID) {
-    //   try {
-    //     await $fetch('/api/analytics', {
-    //       method: 'POST',
-    //       body: {
-    //         event: 'share_link_created',
-    //         chatId,
-    //         slug,
-    //         expiresAt: expiresAtDate,
-    //         userId: dbUser.id,
-    //       },
-    //     })
-    //   } catch (analyticsError) {
-    //     // Don't fail the request if analytics fails
-    //     consola.warn('Failed to send analytics event:', analyticsError)
-    //   }
-    // }
-
     return {
       slug: createdSharedChat.slug,
       shareUrl: `/shared/${createdSharedChat.slug}`,
