@@ -1,6 +1,7 @@
 import { sql } from 'drizzle-orm'
 import {
   foreignKey,
+  integer,
   json,
   pgTable,
   varchar,
@@ -135,6 +136,40 @@ export const likes = pgTable(
       columns: [table.userId],
       foreignColumns: [users.id],
       name: 'like_user_fkey',
+    }).onDelete('cascade'),
+  ],
+)
+
+export const sharedChats = pgTable(
+  'shared_chat',
+  {
+    id: uuid('id')
+      .notNull()
+      .default(sql`gen_random_uuid()`)
+      .primaryKey(),
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`now()`),
+    chatId: uuid('chat_id')
+      .notNull()
+      .references(() => chats.id, { onDelete: 'cascade' }),
+    slug: varchar('slug', { length: 255 }).notNull().unique(),
+    expiresAt: timestamp('expires_at'),
+    viewCount: integer('view_count').default(0).notNull(),
+    createdBy: uuid('created_by')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.chatId],
+      foreignColumns: [chats.id],
+      name: 'shared_chat_chat_fkey',
+    }).onDelete('cascade'),
+    foreignKey({
+      columns: [table.createdBy],
+      foreignColumns: [users.id],
+      name: 'shared_chat_user_fkey',
     }).onDelete('cascade'),
   ],
 )
