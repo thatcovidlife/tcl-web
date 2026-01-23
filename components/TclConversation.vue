@@ -181,7 +181,7 @@ watch(
     <!-- Share button header -->
     <div
       v-if="props.messages.length > 0 && props.status === 'ready'"
-      class="flex justify-end mb-2"
+      class="flex justify-end my-2"
     >
       <TclShareDialog
         :chat-id="props.chatId"
