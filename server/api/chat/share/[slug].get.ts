@@ -99,6 +99,24 @@ export default defineEventHandler(async (event) => {
       `Retrieved shared chat ${slug} with ${chatMessages.length} messages`,
     )
 
+    // Statsig analytics event
+    // if (process.env.STATSIG_CLIENT_ID) {
+    //   try {
+    //     await $fetch('/api/analytics', {
+    //       method: 'POST',
+    //       body: {
+    //         event: 'shared_chat_viewed',
+    //         slug,
+    //         chatId: sharedChat.chat.id,
+    //         viewCount: sharedChat.viewCount + 1,
+    //       },
+    //     })
+    //   } catch (analyticsError) {
+    //     // Don't fail the request if analytics fails
+    //     consola.warn('Failed to send analytics event:', analyticsError)
+    //   }
+    // }
+
     return {
       chat: {
         id: sharedChat.chat.id,

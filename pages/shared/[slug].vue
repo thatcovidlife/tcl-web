@@ -70,12 +70,12 @@ const handleCopyLink = async () => {
     </div>
 
     <!-- Error state -->
-    <div v-else-if="error" class="text-center py-16">
+    <div v-else-if="error" class="text-center py-12 sm:py-16 px-4">
       <div
-        class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-destructive/10 mb-4"
+        class="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-destructive/10 mb-4"
       >
         <svg
-          class="w-8 h-8 text-destructive"
+          class="w-7 h-7 sm:w-8 sm:h-8 text-destructive"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -88,13 +88,13 @@ const handleCopyLink = async () => {
           />
         </svg>
       </div>
-      <h1 class="text-xl font-semibold text-destructive mb-2">
+      <h1 class="text-lg sm:text-xl font-semibold text-destructive mb-2">
         {{ t('chatbot.share.publicPage.notFound') }}
       </h1>
-      <p class="text-muted-foreground mb-6">
+      <p class="text-sm sm:text-base text-muted-foreground mb-6 px-4">
         This share link may have expired or been removed.
       </p>
-      <Button as-child variant="default">
+      <Button as-child variant="default" class="w-full sm:w-auto">
         <NuxtLink to="/chat">{{
           t('chatbot.share.publicPage.tryYourself')
         }}</NuxtLink>
@@ -105,9 +105,11 @@ const handleCopyLink = async () => {
     <div v-else-if="data" class="space-y-6">
       <!-- Header with metadata -->
       <div class="border-b pb-6">
-        <h1 class="text-2xl font-bold mb-4">{{ data.chat.title }}</h1>
+        <h1 class="text-xl sm:text-2xl font-bold mb-4">
+          {{ data.chat.title }}
+        </h1>
         <div
-          class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground"
+          class="flex flex-wrap items-center gap-3 sm:gap-4 text-sm text-muted-foreground"
         >
           <span>
             {{
@@ -133,26 +135,21 @@ const handleCopyLink = async () => {
           </span>
         </div>
 
-        <div class="flex flex-wrap gap-3 mt-6">
-          <Button as-child size="default">
+        <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-6">
+          <Button as-child size="default" class="w-full sm:w-auto">
             <NuxtLink to="/chat">{{
               t('chatbot.share.publicPage.tryYourself')
             }}</NuxtLink>
           </Button>
-          <Button variant="outline" size="default" @click="handleCopyLink">
+          <Button
+            variant="outline"
+            size="default"
+            @click="handleCopyLink"
+            class="w-full sm:w-auto"
+          >
             <CopyIcon :size="16" class="mr-2" />
             {{ t('chatbot.share.copyLink') }}
           </Button>
-          <!--<Button
-            variant="outline"
-            size="default"
-            :href="currentUrl"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <ExternalLinkIcon :size="16" class="mr-2" />
-            Open
-          </Button>-->
         </div>
       </div>
 
@@ -162,9 +159,9 @@ const handleCopyLink = async () => {
           <!-- User message -->
           <div v-if="message.role === 'user'" class="flex justify-end gap-3">
             <div
-              class="max-w-[80%] rounded-2xl bg-primary px-4 py-3 text-primary-foreground rounded-br-sm"
+              class="max-w-[85%] sm:max-w-[80%] rounded-2xl bg-primary px-3 py-2.5 sm:px-4 sm:py-3 text-primary-foreground rounded-br-sm"
             >
-              <p class="whitespace-pre-wrap break-words">
+              <p class="whitespace-pre-wrap break-words text-sm sm:text-base">
                 {{
                   message.parts?.find((p: any) => p.type === 'text')?.text ||
                   message.content
@@ -175,39 +172,7 @@ const handleCopyLink = async () => {
 
           <!-- Assistant message -->
           <div v-else-if="message.role === 'assistant'" class="flex gap-3">
-            <!-- <div
-              class="flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-md border bg-background shadow-sm"
-            >
-              <span class="text-sm font-bold">AI</span>
-            </div> -->
             <div class="flex-1 space-y-4">
-              <!-- Chain of Thought (if any) -->
-              <!-- <div
-                v-if="message.parts?.some((p: any) => p.type === 'reasoning')"
-                class="rounded-lg border bg-muted/50 px-4 py-3 text-sm"
-              >
-                <div class="flex items-center gap-2 text-muted-foreground mb-2">
-                  <svg
-                    class="w-4 h-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
-                    />
-                  </svg>
-                  <span>Thinking</span>
-                </div>
-                <p class="text-muted-foreground">
-                  This response was generated using AI reasoning and search
-                  capabilities.
-                </p>
-              </div> -->
-
               <!-- Text response -->
               <ClientOnly>
                 <Response

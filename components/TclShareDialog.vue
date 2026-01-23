@@ -109,7 +109,7 @@ watch(open, (isOpen) => {
       <div v-if="!shareUrl" class="space-y-4 py-4">
         <div class="space-y-2">
           <Label for="expiration">{{ t('chatbot.share.expires') }}</Label>
-          <div class="grid grid-cols-2 gap-2">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <Button
               v-for="opt in expirationOptions"
               :key="opt.label"
@@ -127,7 +127,7 @@ watch(open, (isOpen) => {
       <div v-else class="space-y-4 py-4">
         <div class="space-y-2">
           <Label for="share-url">{{ t('chatbot.share.copyLink') }}</Label>
-          <div class="flex gap-2">
+          <div class="flex flex-col sm:flex-row gap-2">
             <div class="relative flex-1 flex items-center rounded-md border border-input bg-muted px-3 py-1.5">
               <span class="font-mono text-sm text-foreground flex-1 truncate select-all">
                 {{ shareUrl }}
@@ -138,6 +138,7 @@ watch(open, (isOpen) => {
                 rel="noopener noreferrer"
                 class="text-muted-foreground hover:text-foreground transition-colors shrink-0 ml-2"
                 :title="'Open in new tab'"
+                :aria-label="t('chatbot.share.copyLink')"
               >
                 <ExternalLinkIcon :size="14" />
               </a>
@@ -147,6 +148,7 @@ watch(open, (isOpen) => {
               size="icon"
               @click="handleCopy"
               :disabled="copied"
+              class="sm:w-auto w-full"
             >
               <CheckIcon v-if="copied" :size="16" class="text-green-600" />
               <CopyIcon v-else :size="16" />

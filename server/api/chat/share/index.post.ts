@@ -4,6 +4,8 @@ import { db } from '@/lib/db'
 import { sharedChats, chats, users } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
 import * as Sentry from '@sentry/nuxt'
+import { ratelimit } from '@/lib/chat/rate-limit'
+import { captureMessage } from '@sentry/nuxt'
 
 export default defineEventHandler(async (event) => {
   // Validate user authentication
@@ -49,6 +51,23 @@ export default defineEventHandler(async (event) => {
         status: 404,
         message: 'Not found',
         statusMessage: 'User not found in database',
+      })
+    }
+
+    // Rate limiting: max 10 shares per hour per user
+    const { success } = await ratelimit.limit(`share:create:${dbUser.id}`)
+
+    if (!success && process.env.NODE_ENV !== 'development') {
+      const errorMessage =
+        'Too many share links created. Please try again later.'
+      captureMessage(errorMessage, {
+        level: 'warning',
+        extra: { userId: dbUser.id },
+      })
+      throw createError({
+        status: 429,
+        message: 'Too Many Requests',
+        statusMessage: errorMessage,
       })
     }
 
@@ -120,6 +139,25 @@ export default defineEventHandler(async (event) => {
     )
 
     consola.success(`Created share link for chat ${chatId}`)
+
+    // Statsig analytics event
+    // if (process.env.STATSIG_CLIENT_ID) {
+    //   try {
+    //     await $fetch('/api/analytics', {
+    //       method: 'POST',
+    //       body: {
+    //         event: 'share_link_created',
+    //         chatId,
+    //         slug,
+    //         expiresAt: expiresAtDate,
+    //         userId: dbUser.id,
+    //       },
+    //     })
+    //   } catch (analyticsError) {
+    //     // Don't fail the request if analytics fails
+    //     consola.warn('Failed to send analytics event:', analyticsError)
+    //   }
+    // }
 
     return {
       slug: createdSharedChat.slug,
