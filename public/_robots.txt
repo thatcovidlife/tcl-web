@@ -44,7 +44,3 @@ Disallow: /admin/
 # Sitemap location
 Sitemap: https://thatcovid.life/sitemap.xml
 Sitemap: https://thatcovid.life/__sitemap__/sitemap.xml
-
-# Crawl-delay for aggressive crawlers (seconds)
-User-agent: *
-Crawl-delay: 1
