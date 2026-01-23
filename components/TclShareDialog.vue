@@ -17,7 +17,6 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
 
 const props = defineProps<{
   chatId: string
@@ -129,17 +128,15 @@ watch(open, (isOpen) => {
         <div class="space-y-2">
           <Label for="share-url">{{ t('chatbot.share.copyLink') }}</Label>
           <div class="flex gap-2">
-            <div class="relative flex-1">
-              <Input
-                :value="shareUrl"
-                readonly
-                class="pr-10 font-mono text-sm"
-              />
+            <div class="relative flex-1 flex items-center rounded-md border border-input bg-muted px-3 py-1.5">
+              <span class="font-mono text-sm text-foreground flex-1 truncate select-all">
+                {{ shareUrl }}
+              </span>
               <a
                 :href="shareUrl"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                class="text-muted-foreground hover:text-foreground transition-colors shrink-0 ml-2"
                 :title="'Open in new tab'"
               >
                 <ExternalLinkIcon :size="14" />

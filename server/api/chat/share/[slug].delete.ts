@@ -16,8 +16,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const query = getQuery(event)
-  const slug = query.slug as string
+  const slug = getRouterParam(event, 'slug')
 
   if (!slug) {
     throw createError({

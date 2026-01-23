@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ExternalLinkIcon, CopyIcon } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
+import { Response } from '@/components/ai-elements/response'
 
 definePageMeta({
   layout: 'default',
@@ -10,24 +11,28 @@ const route = useRoute()
 const slug = route.params.slug as string
 const { t } = useI18n()
 
+// Client-side URL ref (avoid SSR issues)
+const currentUrl = ref('')
+
+onMounted(() => {
+  currentUrl.value = window.location.href
+})
+
 // Fetch shared chat data
-const { data, pending, error } = await useFetch(
-  `/api/chat/share/${slug}`,
-  {
-    transform: (response) => {
-      // Transform messages to match UIMessage format
-      return {
-        ...response,
-        messages: response.messages.map((msg: any) => ({
-          id: msg.messageId,
-          role: msg.role,
-          content: msg.content,
-          parts: msg.parts || [{ type: 'text', text: msg.content }],
-        })),
-      }
-    },
+const { data, pending, error } = await useFetch(`/api/chat/share/${slug}`, {
+  transform: (response) => {
+    // Transform messages to match UIMessage format
+    return {
+      ...response,
+      messages: response.messages.map((msg: any) => ({
+        id: msg.messageId,
+        role: msg.role,
+        content: msg.content,
+        parts: msg.parts || [{ type: 'text', text: msg.content }],
+      })),
+    }
   },
-)
+})
 
 // Set page metadata
 const pageTitle = computed(() =>
@@ -49,7 +54,7 @@ useHead({
 
 const handleCopyLink = async () => {
   try {
-    await navigator.clipboard.writeText(window.location.href)
+    await navigator.clipboard.writeText(currentUrl.value)
     toast.success(t('chatbot.share.linkCopied'))
   } catch {
     toast.error('Failed to copy link')
@@ -60,10 +65,7 @@ const handleCopyLink = async () => {
 <template>
   <div class="container max-w-3xl mx-auto py-8 px-4 min-h-screen">
     <!-- Loading state -->
-    <div
-      v-if="pending"
-      class="flex justify-center items-center min-h-[300px]"
-    >
+    <div v-if="pending" class="flex justify-center items-center min-h-[300px]">
       <div class="animate-pulse text-muted-foreground">Loading...</div>
     </div>
 
@@ -104,7 +106,9 @@ const handleCopyLink = async () => {
       <!-- Header with metadata -->
       <div class="border-b pb-6">
         <h1 class="text-2xl font-bold mb-4">{{ data.chat.title }}</h1>
-        <div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+        <div
+          class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground"
+        >
           <span>
             {{
               t('chatbot.share.publicPage.sharedOn', {
@@ -139,17 +143,16 @@ const handleCopyLink = async () => {
             <CopyIcon :size="16" class="mr-2" />
             {{ t('chatbot.share.copyLink') }}
           </Button>
-          <Button
+          <!--<Button
             variant="outline"
             size="default"
-            as-child
-            :href="window.location.href"
+            :href="currentUrl"
             target="_blank"
             rel="noopener noreferrer"
           >
             <ExternalLinkIcon :size="16" class="mr-2" />
             Open
-          </Button>
+          </Button>-->
         </div>
       </div>
 
@@ -157,17 +160,14 @@ const handleCopyLink = async () => {
       <div class="space-y-6">
         <template v-for="message in data.messages" :key="message.id">
           <!-- User message -->
-          <div
-            v-if="message.role === 'user'"
-            class="flex justify-end gap-3"
-          >
+          <div v-if="message.role === 'user'" class="flex justify-end gap-3">
             <div
               class="max-w-[80%] rounded-2xl bg-primary px-4 py-3 text-primary-foreground rounded-br-sm"
             >
               <p class="whitespace-pre-wrap break-words">
                 {{
-                  message.parts?.find((p: any) => p.type === 'text')
-                    ?.text || message.content
+                  message.parts?.find((p: any) => p.type === 'text')?.text ||
+                  message.content
                 }}
               </p>
             </div>
@@ -175,14 +175,14 @@ const handleCopyLink = async () => {
 
           <!-- Assistant message -->
           <div v-else-if="message.role === 'assistant'" class="flex gap-3">
-            <div
+            <!-- <div
               class="flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-md border bg-background shadow-sm"
             >
               <span class="text-sm font-bold">AI</span>
-            </div>
+            </div> -->
             <div class="flex-1 space-y-4">
               <!-- Chain of Thought (if any) -->
-              <div
+              <!-- <div
                 v-if="message.parts?.some((p: any) => p.type === 'reasoning')"
                 class="rounded-lg border bg-muted/50 px-4 py-3 text-sm"
               >
@@ -206,17 +206,19 @@ const handleCopyLink = async () => {
                   This response was generated using AI reasoning and search
                   capabilities.
                 </p>
-              </div>
+              </div> -->
 
               <!-- Text response -->
-              <div
-                v-for="(part, idx) in message.parts?.filter(
-                  (p: any) => p.type === 'text',
-                )"
-                :key="idx"
-                class="prose prose-sm max-w-none dark:prose-invert"
-                v-html="part.text"
-              />
+              <ClientOnly>
+                <Response
+                  v-for="(part, idx) in message.parts?.filter(
+                    (p: any) => p.type === 'text',
+                  )"
+                  :key="idx"
+                  class="mt-4 block"
+                  :value="part.text"
+                />
+              </ClientOnly>
             </div>
           </div>
         </template>

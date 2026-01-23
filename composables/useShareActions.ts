@@ -27,6 +27,11 @@ export const useShareActions = () => {
         body: { chatId, expiresAt },
       })
 
+      if (!response || !response.slug || !response.shareUrl) {
+        toast.error(t('chatbot.share.toasts.error'))
+        return null
+      }
+
       toast.success(t('chatbot.share.toasts.created'))
       return response
     } catch (error) {
