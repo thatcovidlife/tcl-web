@@ -5,10 +5,18 @@ import { collectionName } from './collections'
 import { findRelevantContent } from './embedding'
 import { /* aiGuardCheck, */ aiGuardCheckLlm } from './guard'
 import { rerankDocuments } from './rerank'
+import { config } from './config'
 
 // const PANGEA_ENABLED = process.env.PANGEA_ENABLED === 'true'
-const RERANK_ENABLED = process.env.RERANK_ENABLED === 'true'
-const RERANK_TOP_N = parseInt(process.env.RERANK_TOP_N || '5')
+const RERANK_ENABLED = Boolean(config.rerankEnabled)
+const RERANK_TOP_N = (() => {
+  const value = config.rerankTopN
+  const fallback = 5
+  if (typeof value !== 'number' || !Number.isInteger(value) || value <= 0) {
+    return fallback
+  }
+  return value
+})()
 
 export const searchTool = tool({
   description: `get information from your knowledge base to answer questions.`,
