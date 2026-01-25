@@ -90,7 +90,7 @@ watch(open, (isOpen) => {
   <Dialog v-model:open="open">
     <DialogTrigger as-child>
       <Button variant="ghost" size="sm">
-        <ShareIcon :size="16" class="mr-2" />
+        <ShareIcon :size="16" />
         {{ t('chatbot.actions.labels.share') }}
       </Button>
     </DialogTrigger>
@@ -128,8 +128,12 @@ watch(open, (isOpen) => {
         <div class="space-y-2">
           <Label for="share-url">{{ t('chatbot.share.copyLink') }}</Label>
           <div class="flex flex-col sm:flex-row gap-2">
-            <div class="relative flex-1 flex items-center rounded-md border border-input bg-muted px-3 py-1.5">
-              <span class="font-mono text-sm text-foreground flex-1 truncate select-all">
+            <div
+              class="relative flex-1 flex items-center rounded-md border border-input bg-muted px-3 py-1.5"
+            >
+              <span
+                class="font-mono text-sm text-foreground flex-1 truncate select-all"
+              >
                 {{ shareUrl }}
               </span>
               <a
