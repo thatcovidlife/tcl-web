@@ -925,7 +925,8 @@ export default {
       create: 'Crear Compartido',
       existingLinks: 'Enlaces Compartidos Existentes',
       revoke: 'Revocar',
-      revokeConfirm: '¿Estás seguro de que quieres revocar este enlace compartido?',
+      revokeConfirm:
+        '¿Estás seguro de que quieres revocar este enlace compartido?',
       toasts: {
         created: '¡Enlace compartido creado!',
         revoked: 'Enlace compartido revocado',

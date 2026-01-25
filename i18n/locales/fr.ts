@@ -932,8 +932,7 @@ export default {
       create: 'Créer un Partage',
       existingLinks: 'Liens de Partage Existant',
       revoke: 'Révoquer',
-      revokeConfirm:
-        'Êtes-vous sûr de vouloir révoquer ce lien de partage ?',
+      revokeConfirm: 'Êtes-vous sûr de vouloir révoquer ce lien de partage ?',
       toasts: {
         created: 'Lien de partage créé !',
         revoked: 'Lien de partage révoqué',

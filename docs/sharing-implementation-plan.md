@@ -9,6 +9,7 @@ This document provides a clear implementation plan for adding sharing functional
 ### Database Schema ([lib/db/schema/index.ts](lib/db/schema/index.ts))
 
 **Existing tables:**
+
 - `users` - User accounts (id, email, role, active)
 - `profiles` - User profiles (id, name, bio, website, userId, language, theme)
 - `chats` - Chat sessions (id, createdAt, userId, title)
@@ -21,11 +22,13 @@ This document provides a clear implementation plan for adding sharing functional
 ### API Patterns ([server/api/chat/retrieve.get.ts](server/api/chat/retrieve.get.ts))
 
 **Authentication:**
+
 ```typescript
 const { user: sessionUser } = await getUserSession(event)
 ```
 
 **Ownership verification:**
+
 ```typescript
 if (chat.userId !== dbUser.id) {
   throw createError({ status: 403, message: 'Forbidden' })
@@ -33,6 +36,7 @@ if (chat.userId !== dbUser.id) {
 ```
 
 **Error handling:**
+
 - Sentry spans for database queries
 - `consola` for logging
 - Proper error re-throwing for `createError` instances
@@ -761,23 +765,20 @@ const slug = route.params.slug as string
 const { t } = useI18n()
 
 // Fetch shared chat data
-const { data, pending, error } = await useFetch(
-  `/api/chat/share/${slug}`,
-  {
-    transform: (response) => {
-      // Transform messages to match UIMessage format
-      return {
-        ...response,
-        messages: response.messages.map((msg: any) => ({
-          id: msg.messageId,
-          role: msg.role,
-          content: msg.content,
-          parts: msg.parts || [{ type: 'text', text: msg.content }],
-        })),
-      }
-    },
+const { data, pending, error } = await useFetch(`/api/chat/share/${slug}`, {
+  transform: (response) => {
+    // Transform messages to match UIMessage format
+    return {
+      ...response,
+      messages: response.messages.map((msg: any) => ({
+        id: msg.messageId,
+        role: msg.role,
+        content: msg.content,
+        parts: msg.parts || [{ type: 'text', text: msg.content }],
+      })),
+    }
   },
-)
+})
 
 // Set page metadata
 const pageTitle = computed(() =>
@@ -790,7 +791,10 @@ useHead({
   title: pageTitle,
   meta: [
     { name: 'robots', content: 'noindex, nofollow' },
-    { name: 'description', content: `View this shared COVID-19 chat conversation` },
+    {
+      name: 'description',
+      content: `View this shared COVID-19 chat conversation`,
+    },
   ],
 })
 </script>
@@ -799,15 +803,30 @@ useHead({
   <LayoutPublic>
     <div class="container max-w-3xl mx-auto py-8 px-4">
       <!-- Loading state -->
-      <div v-if="pending" class="flex justify-center items-center min-h-[300px]">
+      <div
+        v-if="pending"
+        class="flex justify-center items-center min-h-[300px]"
+      >
         <div class="animate-pulse text-muted-foreground">Loading...</div>
       </div>
 
       <!-- Error state -->
       <div v-else-if="error" class="text-center py-16">
-        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-destructive/10 mb-4">
-          <svg class="w-8 h-8 text-destructive" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        <div
+          class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-destructive/10 mb-4"
+        >
+          <svg
+            class="w-8 h-8 text-destructive"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </div>
         <h1 class="text-xl font-semibold text-destructive mb-2">
@@ -817,7 +836,9 @@ useHead({
           This share link may have expired or been removed.
         </p>
         <Button as-child variant="default">
-          <NuxtLink to="/chat">{{ t('chatbot.share.publicPage.tryYourself') }}</NuxtLink>
+          <NuxtLink to="/chat">{{
+            t('chatbot.share.publicPage.tryYourself')
+          }}</NuxtLink>
         </Button>
       </div>
 
@@ -826,27 +847,38 @@ useHead({
         <!-- Header with metadata -->
         <div class="border-b pb-6">
           <h1 class="text-2xl font-bold mb-4">{{ data.chat.title }}</h1>
-          <div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+          <div
+            class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground"
+          >
             <span>
-              {{ t('chatbot.share.publicPage.sharedOn', {
-                date: new Date(data.shareInfo.createdAt).toLocaleDateString(undefined, {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
+              {{
+                t('chatbot.share.publicPage.sharedOn', {
+                  date: new Date(data.shareInfo.createdAt).toLocaleDateString(
+                    undefined,
+                    {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    },
+                  ),
                 })
-              }) }}
+              }}
             </span>
             <span>•</span>
             <span>
-              {{ t('chatbot.share.publicPage.viewCount', {
-                count: data.shareInfo.viewCount
-              }) }}
+              {{
+                t('chatbot.share.publicPage.viewCount', {
+                  count: data.shareInfo.viewCount,
+                })
+              }}
             </span>
           </div>
 
           <div class="flex gap-3 mt-6">
             <Button as-child size="default">
-              <NuxtLink to="/chat">{{ t('chatbot.share.publicPage.tryYourself') }}</NuxtLink>
+              <NuxtLink to="/chat">{{
+                t('chatbot.share.publicPage.tryYourself')
+              }}</NuxtLink>
             </Button>
             <Button
               variant="outline"
@@ -860,10 +892,7 @@ useHead({
         </div>
 
         <!-- Conversation display -->
-        <TclConversation
-          :messages="data.messages"
-          :readonly="true"
-        />
+        <TclConversation :messages="data.messages" :readonly="true" />
       </div>
     </div>
   </LayoutPublic>
@@ -881,7 +910,7 @@ If the component doesn't already support a readonly mode, add a prop:
 // Add to props
 const props = defineProps<{
   messages: (UIMessage & { liked?: boolean | null })[]
-  readonly?: boolean  // Add this
+  readonly?: boolean // Add this
 }>()
 </script>
 
@@ -893,7 +922,7 @@ const props = defineProps<{
       :key="message.id"
       :class="[
         'flex gap-4',
-        message.role === 'user' ? 'justify-end' : 'justify-start'
+        message.role === 'user' ? 'justify-end' : 'justify-start',
       ]"
     >
       <!-- ... existing message display ... -->
@@ -983,9 +1012,7 @@ export default defineEventHandler(async (event) => {
       },
     )
 
-    consola.success(
-      `Retrieved ${sharedChatsList.length} shared links for user`,
-    )
+    consola.success(`Retrieved ${sharedChatsList.length} shared links for user`)
 
     return { sharedChats: sharedChatsList }
   } catch (error) {
@@ -1102,9 +1129,7 @@ export default defineEventHandler(async (event) => {
         op: 'database.query',
       },
       async () => {
-        await db
-          .delete(sharedChats)
-          .where(eq(sharedChats.slug, slug))
+        await db.delete(sharedChats).where(eq(sharedChats.slug, slug))
       },
     )
 
@@ -1160,11 +1185,16 @@ const handleRevoke = async (slug: string) => {
 <template>
   <LayoutAccount>
     <div class="max-w-4xl mx-auto py-8">
-      <h1 class="text-2xl font-bold mb-6">{{ t('chatbot.share.existingLinks') }}</h1>
+      <h1 class="text-2xl font-bold mb-6">
+        {{ t('chatbot.share.existingLinks') }}
+      </h1>
 
       <div v-if="pending">Loading...</div>
 
-      <div v-else-if="data?.sharedChats.length === 0" class="text-center py-12 text-muted-foreground">
+      <div
+        v-else-if="data?.sharedChats.length === 0"
+        class="text-center py-12 text-muted-foreground"
+      >
         No shared links yet
       </div>
 
@@ -1177,7 +1207,8 @@ const handleRevoke = async (slug: string) => {
           <div>
             <h3 class="font-medium">{{ share.chatTitle }}</h3>
             <p class="text-sm text-muted-foreground">
-              {{ share.viewCount }} views • Created {{ new Date(share.createdAt).toLocaleDateString() }}
+              {{ share.viewCount }} views • Created
+              {{ new Date(share.createdAt).toLocaleDateString() }}
             </p>
           </div>
           <div class="flex gap-2">
@@ -1322,16 +1353,16 @@ i18n/locales/
 
 ## Edge Cases & Handling
 
-| Scenario | Handling |
-|----------|----------|
-| Original chat deleted | Share link returns 404 (cascade delete) |
-| Share link expires | Show expiration message with CTA to main chatbot |
-| User account deleted | Share links remain active (anonymous view) |
-| Slug collision | nanoid(12) collision probability is negligible |
-| Malicious content | Integrate with Guard Tool, add report button |
-| Bot enumeration | Rate limiting + 12-char random slugs (~72 bits entropy) |
-| Shared chat has no messages | Show empty state message |
-| Concurrent view count updates | Database handles atomic increments |
+| Scenario                      | Handling                                                |
+| ----------------------------- | ------------------------------------------------------- |
+| Original chat deleted         | Share link returns 404 (cascade delete)                 |
+| Share link expires            | Show expiration message with CTA to main chatbot        |
+| User account deleted          | Share links remain active (anonymous view)              |
+| Slug collision                | nanoid(12) collision probability is negligible          |
+| Malicious content             | Integrate with Guard Tool, add report button            |
+| Bot enumeration               | Rate limiting + 12-char random slugs (~72 bits entropy) |
+| Shared chat has no messages   | Show empty state message                                |
+| Concurrent view count updates | Database handles atomic increments                      |
 
 ---
 

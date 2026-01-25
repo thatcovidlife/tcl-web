@@ -64,9 +64,7 @@ export default defineEventHandler(async (event) => {
       },
     )
 
-    consola.success(
-      `Retrieved ${sharedChatsList.length} shared links for user`,
-    )
+    consola.success(`Retrieved ${sharedChatsList.length} shared links for user`)
 
     return { sharedChats: sharedChatsList }
   } catch (error) {
