@@ -2,6 +2,7 @@
 import { ExternalLinkIcon, CopyIcon } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import { Response } from '@/components/ai-elements/response'
+import { decodeHtmlEntities } from '@/lib/utils'
 
 import { toast } from 'vue-sonner'
 
@@ -189,8 +190,10 @@ const handleCopyLink = async () => {
             >
               <p class="whitespace-pre-wrap break-words text-sm sm:text-base">
                 {{
-                  message.parts?.find((p: any) => p.type === 'text')?.text ||
-                  message.content
+                  decodeHtmlEntities(
+                    message.parts?.find((p: any) => p.type === 'text')?.text ||
+                      message.content,
+                  )
                 }}
               </p>
             </div>
