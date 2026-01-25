@@ -133,7 +133,7 @@ const handleCopyLink = async () => {
       <!-- Header with metadata -->
       <div class="border-b pb-6">
         <h1 class="text-xl sm:text-2xl font-bold mb-4">
-          {{ data.chat.title }}
+          {{ decodeHtmlEntities(data.chat.title) }}
         </h1>
         <div
           class="flex flex-wrap items-center gap-3 sm:gap-4 text-sm text-muted-foreground"
