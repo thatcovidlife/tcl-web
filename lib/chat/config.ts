@@ -22,4 +22,8 @@ export const config = {
   rateMaxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS!),
   ratePrefix: process.env.RATE_LIMIT_PREFIX || '@upstash/ratelimit',
   rateWindow: process.env.RATE_LIMIT_WINDOW,
+  // Reranking
+  rerankEnabled: process.env.RERANK_ENABLED === 'true',
+  rerankModel: process.env.RERANK_MODEL || 'Qwen/Qwen3-Reranker-4B',
+  rerankTopN: parseInt(process.env.RERANK_TOP_N || '5'),
 }
