@@ -49,7 +49,12 @@ export async function rerankDocuments({
 
     const rerankUrl = `${config.baseUrl}/v1/inference/${config.rerankModel}`
 
-    const response = await fetch(rerankUrl, {
+    // Add timeout handling to prevent hanging on stalled requests
+    const timeoutPromise = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('Rerank API timeout')), 10000),
+    )
+
+    const fetchPromise = fetch(rerankUrl, {
       method: 'POST',
       headers: {
         Authorization: `bearer ${config.apiKey}`,
@@ -60,6 +65,8 @@ export async function rerankDocuments({
         documents: documents.map((d) => d.content),
       }),
     })
+
+    const response = await Promise.race([fetchPromise, timeoutPromise])
 
     if (!response.ok) {
       const errorText = await response.text()
