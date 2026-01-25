@@ -47,20 +47,19 @@ export async function rerankDocuments({
       topN,
     })
 
-    const response = await fetch(
-      'https://api.deepinfra.com/v1/inference/Qwen/Qwen3-Reranker-4B',
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `bearer ${config.apiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          queries: [query],
-          documents: documents.map((d) => d.content),
-        }),
+    const rerankUrl = `${config.baseUrl}/v1/inference/${config.rerankModel}`
+
+    const response = await fetch(rerankUrl, {
+      method: 'POST',
+      headers: {
+        Authorization: `bearer ${config.apiKey}`,
+        'Content-Type': 'application/json',
       },
-    )
+      body: JSON.stringify({
+        queries: [query],
+        documents: documents.map((d) => d.content),
+      }),
+    })
 
     if (!response.ok) {
       const errorText = await response.text()
