@@ -1,6 +1,5 @@
 import {
   convertToModelMessages,
-  createAgentUIStreamResponse,
   createUIMessageStream,
   createUIMessageStreamResponse,
   smoothStream,
@@ -13,7 +12,6 @@ import { ratelimit } from '@/lib/chat/rate-limit'
 import { config } from '@/lib/chat/config'
 import { guardTool, searchTool } from '@/lib/chat/tools'
 import { fetchPrompt } from '@/lib/chat/prompt'
-import { searchAgent } from '@/lib/chat/agent'
 
 import type { UIMessage } from 'ai'
 import type { modelID } from '@/lib/chat/providers'
@@ -45,31 +43,6 @@ export default defineLazyEventHandler(() => {
 
     const prompt = await fetchPrompt()
 
-    // Use agentic RAG if enabled, otherwise fall back to standard streamText
-    if (config.agenticEnabled) {
-      return createAgentUIStreamResponse({
-        agent: searchAgent,
-        uiMessages: messages,
-        options: {
-          selectedModel,
-          systemPrompt: prompt,
-          currentDate: new Date().toISOString(),
-        },
-        sendReasoning: true,
-        sendSources: true,
-        experimental_transform: smoothStream({
-          delayInMs: 20,
-        }),
-        onError: (error) => {
-          captureException(error, {
-            extra: { userId, selectedModel, messages },
-          })
-          return error instanceof Error ? error.message : String(error)
-        },
-      })
-    }
-
-    // Standard non-agentic mode
     const stream = createUIMessageStream({
       execute: async ({ writer }) => {
         const result = streamText({
@@ -93,6 +66,10 @@ export default defineLazyEventHandler(() => {
           experimental_transform: smoothStream({
             delayInMs: 20,
           }),
+          // onFinish: () => {},
+          // onStepFinish: ({ stepType }) => {
+          //   console.log('Step finished:', stepType)
+          // },
           onError: (error) => {
             captureException(error, {
               extra: { userId, selectedModel, messages },
