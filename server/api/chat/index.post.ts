@@ -51,7 +51,7 @@ export default defineLazyEventHandler(() => {
           maxOutputTokens: config.llmMaxTokens,
           system: prompt,
           messages: await convertToModelMessages(messages),
-          stopWhen: stepCountIs(10),
+          stopWhen: stepCountIs(20),
           tools: {
             checkContent: guardTool,
             getInformation: searchTool,
