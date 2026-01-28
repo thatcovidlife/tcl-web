@@ -121,7 +121,7 @@ IMPORTANT: Always evaluate the returned results:
       resultCount: finalResults.length,
       averageScore,
       maxScore: Math.max(...scores, 0),
-      minScore: Math.min(...scores, 0),
+      minScore: scores.length > 0 ? Math.min(...scores) : 0,
       message: `Found ${finalResults.length} results with average relevance score of ${averageScore.toFixed(2)}.`,
       iteration,
     } as const
