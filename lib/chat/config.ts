@@ -26,4 +26,10 @@ export const config = {
   rerankEnabled: process.env.RERANK_ENABLED === 'true',
   rerankModel: process.env.RERANK_MODEL || 'Qwen/Qwen3-Reranker-4B',
   rerankTopN: parseInt(process.env.RERANK_TOP_N || '5'),
+  // Agentic RAG
+  agenticEnabled: process.env.AGENTIC_ENABLED === 'true',
+  agenticMaxIterations: parseInt(process.env.AGENTIC_MAX_ITERATIONS || '3'),
+  agenticMinScoreThreshold: parseFloat(
+    process.env.AGENTIC_MIN_SCORE_THRESHOLD || '0.3',
+  ),
 }

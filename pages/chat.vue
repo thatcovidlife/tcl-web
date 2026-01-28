@@ -14,7 +14,6 @@ definePageMeta({
   layout: 'chatbot',
 })
 
-const { t } = useI18n()
 const user = useUserSession()
 const userStore = useUserStore()
 const { createChat, saveMessages, retrieveChat } = useApiRoutes()
@@ -44,8 +43,6 @@ const selectedModel = ref<modelID | null>(defaultModel)
 const setSelectedModel = (newModel: modelID) => {
   selectedModel.value = newModel
 }
-
-// const messages = ref<PromptInputMessage[]>([])
 
 const chat = new Chat({
   onFinish: async (message) => {
@@ -96,15 +93,12 @@ const chat = new Chat({
   },
 })
 
-// const isLoading = computed(
-//   () => chat.status === 'streaming' || chat.status === 'submitted',
-// )
-
 const onNewChat = () => {
   chat.stop()
   chat.messages = []
   selectedModel.value = defaultModel
   conversationId.value = ''
+  router.replace({ query: {} })
 }
 
 const onSubmit = async (data: PromptInputMessage) => {

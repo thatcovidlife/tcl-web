@@ -91,20 +91,36 @@ const mapStep = (step: UIMessage['parts'][number], index: number) => {
             ? 'Validated user question against content policy.'
             : 'Validating...',
       }
-    case 'tool-getInformation':
+    case 'tool-getInformation': {
       const label =
         // @ts-expect-error
         step.input?.selectedCollection === 'lancet'
           ? 'scientific papers'
           : 'general documents'
 
+      const output = step.output as any
+
+      // Extract results from new agentic format or fall back to old array format
+      let searchResults: any[] = []
+      if (output?.success && Array.isArray(output?.results)) {
+        searchResults = output.results
+      } else if (Array.isArray(output)) {
+        searchResults = output
+      }
+
+      // Filter results that have URLs and deduplicate
       const results = uniqBy(
-        (step.output as any[]) || [],
-        'payload.metadata.url',
-      ).map((result) => ({
-        domain: getHostname(result.payload.metadata.url),
-        favicon: getFavicon(result.payload.metadata.url),
-        url: result.payload.metadata.url,
+        searchResults
+          .map((r: any) => {
+            const url = r.url || r?.payload?.url || r?.payload?.metadata?.url
+            return url ? { ...r, url } : null
+          })
+          .filter((r: any) => r?.url),
+        'url',
+      ).map((result: any) => ({
+        domain: getHostname(result.url),
+        favicon: getFavicon(result.url),
+        url: result.url,
       }))
 
       return {
@@ -117,10 +133,11 @@ const mapStep = (step: UIMessage['parts'][number], index: number) => {
             : 'Searching...',
         content:
           step.state === 'output-available'
-            ? `Found ${results.length} results in ${label}.`
+            ? output?.message || `Found ${results.length} results in ${label}.`
             : 'Digging through the archives...',
         results,
       }
+    }
     default:
       return null
   }
