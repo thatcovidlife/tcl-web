@@ -44,14 +44,14 @@ export default defineLazyEventHandler(() => {
     const prompt = await fetchPrompt()
 
     const stream = createUIMessageStream({
-      execute: ({ writer }) => {
+      execute: async ({ writer }) => {
         const result = streamText({
           model: model.languageModel(selectedModel as modelID),
           temperature: config.llmTemperature,
           maxOutputTokens: config.llmMaxTokens,
           system: prompt,
-          messages: convertToModelMessages(messages),
-          stopWhen: stepCountIs(10),
+          messages: await convertToModelMessages(messages),
+          stopWhen: stepCountIs(20),
           tools: {
             checkContent: guardTool,
             getInformation: searchTool,

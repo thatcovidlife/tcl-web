@@ -1,82 +1,9 @@
 {
-  "id": "bd038f90-06ca-458e-8795-65c7f7583846",
+  "id": "44b5a5de-4a91-445f-ab41-737a33bb81cf",
   "prevId": "de29d117-569e-4361-8fdf-8fee3d642177",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.bookmark": {
-      "name": "bookmark",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "type": {
-          "name": "type",
-          "type": "bookmark_type",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "identifier": {
-          "name": "identifier",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "bookmark_user_id_user_id_fk": {
-          "name": "bookmark_user_id_user_id_fk",
-          "tableFrom": "bookmark",
-          "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "bookmark_user_fkey": {
-          "name": "bookmark_user_fkey",
-          "tableFrom": "bookmark",
-          "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
     "public.chat": {
       "name": "chat",
       "schema": "",
@@ -422,6 +349,125 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.shared_chat": {
+      "name": "shared_chat",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "chat_id": {
+          "name": "chat_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "slug": {
+          "name": "slug",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "view_count": {
+          "name": "view_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "shared_chat_chat_id_chat_id_fk": {
+          "name": "shared_chat_chat_id_chat_id_fk",
+          "tableFrom": "shared_chat",
+          "tableTo": "chat",
+          "columnsFrom": [
+            "chat_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "shared_chat_created_by_user_id_fk": {
+          "name": "shared_chat_created_by_user_id_fk",
+          "tableFrom": "shared_chat",
+          "tableTo": "user",
+          "columnsFrom": [
+            "created_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "shared_chat_chat_fkey": {
+          "name": "shared_chat_chat_fkey",
+          "tableFrom": "shared_chat",
+          "tableTo": "chat",
+          "columnsFrom": [
+            "chat_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "shared_chat_user_fkey": {
+          "name": "shared_chat_user_fkey",
+          "tableFrom": "shared_chat",
+          "tableTo": "user",
+          "columnsFrom": [
+            "created_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "shared_chat_slug_unique": {
+          "name": "shared_chat_slug_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "slug"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.user": {
       "name": "user",
       "schema": "",
@@ -473,21 +519,6 @@
     }
   },
   "enums": {
-    "public.bookmark_type": {
-      "name": "bookmark_type",
-      "schema": "public",
-      "values": [
-        "blog",
-        "chat",
-        "covidnet",
-        "directory",
-        "event",
-        "product",
-        "resource",
-        "scientific-library",
-        "video"
-      ]
-    },
     "public.chat_role": {
       "name": "chat_role",
       "schema": "public",

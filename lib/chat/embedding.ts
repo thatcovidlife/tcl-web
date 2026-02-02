@@ -4,7 +4,7 @@ import { QdrantClient } from '@qdrant/js-client-rest'
 
 import { config } from './config'
 
-export const embeddingModel = deepinfra.textEmbeddingModel(config.embedModel!)
+export const embeddingModel = deepinfra.embeddingModel(config.embedModel!)
 export const qdrant = new QdrantClient({
   url: config.qdrantUrl,
   apiKey: config.qdrantKey,

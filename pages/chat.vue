@@ -26,10 +26,16 @@ const conversationId = ref<string>(
   (route.query?.id as string) || crypto.randomUUID(),
 )
 
+// TODO: fix the i18n issue
+const modelNames = {
+  'openai/gpt-oss-120b': 'Basic',
+  'zai-org/GLM-4.7': 'Pro',
+}
+
 const models = computed(() => {
   return MODELS.map((model) => ({
     id: model as modelID,
-    name: t(`chatbot.models.${model}`),
+    name: modelNames[model as modelID] || model,
   }))
 })
 

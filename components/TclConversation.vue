@@ -35,6 +35,10 @@ const props = defineProps<{
   status: ChatStatus
 }>()
 
+const emit = defineEmits<{
+  (e: 'share'): void
+}>()
+
 // Store like states for messages
 const messageLikes = ref<Record<string, boolean | null>>({})
 
@@ -175,6 +179,16 @@ watch(
     class="flex-1 h-full w-full max-w-3xl space-y-4 overflow-y-auto transition-all duration-300"
   >
     <Conversation class="relative size-full">
+      <div
+        v-if="props.messages.length > 0 && props.status === 'ready'"
+        class="flex justify-end py-2 sticky top-0 z-10 bg-background/80 backdrop-blur-sm"
+      >
+        <TclShareDialog
+          :chat-id="props.chatId"
+          :chat-title="`Chat ${props.chatId.slice(0, 8)}...`"
+          @created="emit('share')"
+        />
+      </div>
       <ConversationContent>
         <template v-for="message in props.messages" :key="message.id">
           <Message v-if="message.role === 'user'" from="user">
