@@ -180,6 +180,10 @@ export default defineNuxtConfig({
       '/api/chat': {
         cors: false,
         headers: { 'X-Robots-Tag': 'noindex' },
+        security: { xssValidator: false },
+      },
+      '/api/chat/save': {
+        security: { xssValidator: false },
       },
     },
   },
@@ -291,15 +295,6 @@ export default defineNuxtConfig({
       permissionsPolicy: {
         microphone: ['self'],
       },
-    },
-  },
-
-  routeRules: {
-    '/api/chat': {
-      security: { xssValidator: false },
-    },
-    '/api/chat/save': {
-      security: { xssValidator: false },
     },
   },
 
