@@ -7118,15 +7118,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@qdrant/js-client-rest@npm:^1.16.2":
-  version: 1.16.2
-  resolution: "@qdrant/js-client-rest@npm:1.16.2"
+"@qdrant/js-client-rest@npm:1.15.1":
+  version: 1.15.1
+  resolution: "@qdrant/js-client-rest@npm:1.15.1"
   dependencies:
     "@qdrant/openapi-typescript-fetch": "npm:1.2.6"
+    "@sevinf/maybe": "npm:0.5.0"
     undici: "npm:^6.0.0"
   peerDependencies:
     typescript: ">=4.7"
-  checksum: 10c0/428a0274f864388ed2fecc914a8cfd930dfbb6a54d65462c3c47edfe2c891fd9f3f94b120e87411a0b0d53e0b3668fd5727151ec2c87c4648164a34954faff69
+  checksum: 10c0/734e6cd9a9779a0aeb4c41cb23efb4962559dcf13c844b5ff8b545314e430fbb47c6b4cc1e2183ee39c13053144d87b0d0ec5abb1c570ccbfef22e8bd51afc5b
   languageName: node
   linkType: hard
 
@@ -8615,6 +8616,13 @@ __metadata:
     pinia:
       optional: true
   checksum: 10c0/b2e6769a3643907249f9652d96942718f4592835361f2984a1df7e97fd5d396b210eba41bee5283362d301ce4f99d2a2887a98cc28447a5e538e005a34ae1fbf
+  languageName: node
+  linkType: hard
+
+"@sevinf/maybe@npm:0.5.0":
+  version: 0.5.0
+  resolution: "@sevinf/maybe@npm:0.5.0"
+  checksum: 10c0/42033a7c2ca07f4e17b11d69082b756b83c355170cedf7ef3e5202b5c5f531c12054745273364ca245b175eb862597ae0de2663f260c4a4ce652f8b30393131b
   languageName: node
   linkType: hard
 
@@ -24162,7 +24170,7 @@ __metadata:
     "@nuxtjs/tailwindcss": "npm:^6.14.0"
     "@nuxtjs/turnstile": "npm:^1.1.1"
     "@pinia/nuxt": "npm:0.11.3"
-    "@qdrant/js-client-rest": "npm:^1.16.2"
+    "@qdrant/js-client-rest": "npm:1.15.1"
     "@radix-icons/vue": "npm:^1.0.0"
     "@sanity/cli": "npm:^3.88.2"
     "@sanity/client": "npm:^6.29.1"
