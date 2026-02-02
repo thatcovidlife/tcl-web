@@ -4118,12 +4118,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@iconify-json/bi@npm:^1.2.6":
-  version: 1.2.6
-  resolution: "@iconify-json/bi@npm:1.2.6"
+"@iconify-json/bi@npm:^1.2.7":
+  version: 1.2.7
+  resolution: "@iconify-json/bi@npm:1.2.7"
   dependencies:
     "@iconify/types": "npm:*"
-  checksum: 10c0/c63819ee786b8a35c90c1665a9ab08daf6343a802970a6e907d60c755bc3449ebcdbdf844e8be10864aabe07c17fd0afda0431f01651cf00aa6dbe65fecd2e3a
+  checksum: 10c0/6bd52acb93ced3146413065dceaba13088ac9afabb6cb7cd9dc3646a8fe6c664167192c62391ec9574cdc563dcc673dea473a82cf3a15bfaf39564161db226c4
   languageName: node
   linkType: hard
 
@@ -4136,12 +4136,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@iconify-json/iconoir@npm:^1.2.9":
-  version: 1.2.9
-  resolution: "@iconify-json/iconoir@npm:1.2.9"
+"@iconify-json/iconoir@npm:^1.2.10":
+  version: 1.2.10
+  resolution: "@iconify-json/iconoir@npm:1.2.10"
   dependencies:
     "@iconify/types": "npm:*"
-  checksum: 10c0/e243863d5a42ba861682e3b0cf0b8df38b20499876c7e116457840297b7218606c1016ffdd8c0a984ba0035e724532acfebf3217383825049ac1187cc8306330
+  checksum: 10c0/620808900a2d5d51b6374e2b59a688605c11e812e6b4cf095096db26426399e1d34d01942a775e0e04bd06fde65971b484c8ae64e3007a880602232f4493cb62
   languageName: node
   linkType: hard
 
@@ -4154,21 +4154,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@iconify-json/lets-icons@npm:^1.2.1":
-  version: 1.2.1
-  resolution: "@iconify-json/lets-icons@npm:1.2.1"
+"@iconify-json/lets-icons@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "@iconify-json/lets-icons@npm:1.2.2"
   dependencies:
     "@iconify/types": "npm:*"
-  checksum: 10c0/a8fe1f905743f96d9805c50896058a3b7d9ad4ae8d1812258874defa6b32bc85901fed98cf5f4376a68576aced0e18f7d23f466be8211848b955e96ef5d48188
+  checksum: 10c0/73b45a3586d72f5439575bac97fcaf0682134d6ff3459bd66cbce54bef895b76c8566190fc7477a27c362a655e53a315ca67177ca5e48d5dc2dae04970bf4044
   languageName: node
   linkType: hard
 
-"@iconify-json/material-symbols@npm:^1.2.42":
-  version: 1.2.42
-  resolution: "@iconify-json/material-symbols@npm:1.2.42"
+"@iconify-json/material-symbols@npm:^1.2.53":
+  version: 1.2.53
+  resolution: "@iconify-json/material-symbols@npm:1.2.53"
   dependencies:
     "@iconify/types": "npm:*"
-  checksum: 10c0/f170c24772fed2b5f2faa70d493e8242c917c02177518a2c94841fa2bfef3c8e8329f99e39aa119146250c67d8d052e4cd9a2b544ba043aa18deb56171c33e7b
+  checksum: 10c0/5a4458dd500399906c7e167f4db472b5474daa4ff30b6109ed46bf8071caa2e2e60ad5161edc5c3225fecc5ae6d8f99c238db44ca860fe8223258e389622aec7
   languageName: node
   linkType: hard
 
@@ -4181,12 +4181,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@iconify-json/mynaui@npm:^1.2.16":
-  version: 1.2.16
-  resolution: "@iconify-json/mynaui@npm:1.2.16"
+"@iconify-json/mynaui@npm:^1.2.17":
+  version: 1.2.17
+  resolution: "@iconify-json/mynaui@npm:1.2.17"
   dependencies:
     "@iconify/types": "npm:*"
-  checksum: 10c0/551467171629eb4f00d016ea8ff34d6bb7142e95089812072b07c67522f368b41ee54d767deb26e65f1fb8e0653b7e1f76e3c2556561b9e19c70e5b7ed1ba802
+  checksum: 10c0/67e614732679f3448fc169e61da8959f850bd802eb5dd67198544f3565f51ac74d9a47f88a34643597b4deef43cc1b17083ebdb3cabb0829b183396765eab478
   languageName: node
   linkType: hard
 
@@ -4199,12 +4199,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@iconify-json/radix-icons@npm:^1.2.5":
-  version: 1.2.5
-  resolution: "@iconify-json/radix-icons@npm:1.2.5"
+"@iconify-json/radix-icons@npm:^1.2.6":
+  version: 1.2.6
+  resolution: "@iconify-json/radix-icons@npm:1.2.6"
   dependencies:
     "@iconify/types": "npm:*"
-  checksum: 10c0/feca8627972b440a9a0ab1646aa75f2f110952e750b8f5fd520d41d64e2e532438b0fce0136364e115feb6a142d4da2eab4d190d86b8526ee00b07af466d5dd6
+  checksum: 10c0/ebb4250f3dc40ad954b576bc4c076f8bfc37d80ac0d6a5e911de7cbfa5a9a9de48157e5673a549a58fe745c9a91d5c830be7297d09b42119f973d6ae83dbab5d
   languageName: node
   linkType: hard
 
@@ -4217,12 +4217,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@iconify-json/tabler@npm:^1.2.23":
-  version: 1.2.23
-  resolution: "@iconify-json/tabler@npm:1.2.23"
+"@iconify-json/tabler@npm:^1.2.26":
+  version: 1.2.26
+  resolution: "@iconify-json/tabler@npm:1.2.26"
   dependencies:
     "@iconify/types": "npm:*"
-  checksum: 10c0/1abf5aa54c381b7ff0b590d5ef513bec8b30029732118eef08cb8c8bddfce3ce65a1f8fffc266e94fcd02a6f802653b9282ced722e2c87f54ed6e4e25701cccb
+  checksum: 10c0/3fb5d0452800b77fb0f94b5d64f083c21df774723941672730be9845e4b570387bf016e0a22edd712376acb06e9348d0995d24f9d7713f9bc8f6c2b71f2a26d6
   languageName: node
   linkType: hard
 
@@ -23704,18 +23704,18 @@ __metadata:
     "@commitlint/cli": "npm:^19.8.1"
     "@commitlint/config-conventional": "npm:^19.8.1"
     "@formkit/auto-animate": "npm:^0.9.0"
-    "@iconify-json/bi": "npm:^1.2.6"
+    "@iconify-json/bi": "npm:^1.2.7"
     "@iconify-json/icon-park-outline": "npm:^1.2.4"
-    "@iconify-json/iconoir": "npm:^1.2.9"
+    "@iconify-json/iconoir": "npm:^1.2.10"
     "@iconify-json/ion": "npm:^1.2.6"
-    "@iconify-json/lets-icons": "npm:^1.2.1"
-    "@iconify-json/material-symbols": "npm:^1.2.42"
+    "@iconify-json/lets-icons": "npm:^1.2.2"
+    "@iconify-json/material-symbols": "npm:^1.2.53"
     "@iconify-json/mdi": "npm:^1.2.3"
-    "@iconify-json/mynaui": "npm:^1.2.16"
+    "@iconify-json/mynaui": "npm:^1.2.17"
     "@iconify-json/prime": "npm:^1.2.4"
-    "@iconify-json/radix-icons": "npm:^1.2.5"
+    "@iconify-json/radix-icons": "npm:^1.2.6"
     "@iconify-json/streamline": "npm:^1.2.5"
-    "@iconify-json/tabler": "npm:^1.2.23"
+    "@iconify-json/tabler": "npm:^1.2.26"
     "@iconify/vue": "npm:^5.0.0"
     "@langchain/core": "npm:^1.0.1"
     "@nuxt/icon": "npm:1.15.0"
