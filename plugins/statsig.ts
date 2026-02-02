@@ -2,7 +2,6 @@ import { StatsigClient } from '@statsig/js-client'
 import { StatsigSessionReplayPlugin } from '@statsig/session-replay'
 import { StatsigAutoCapturePlugin } from '@statsig/web-analytics'
 import consola from 'consola'
-import { state } from 'happy-dom/lib/PropertySymbol.js'
 
 export default defineNuxtPlugin(async () => {
   if (process.env.NODE_ENV === 'development') {
