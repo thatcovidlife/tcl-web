@@ -6928,14 +6928,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pinia/nuxt@npm:0.11.2":
-  version: 0.11.2
-  resolution: "@pinia/nuxt@npm:0.11.2"
+"@pinia/nuxt@npm:0.11.3":
+  version: 0.11.3
+  resolution: "@pinia/nuxt@npm:0.11.3"
   dependencies:
-    "@nuxt/kit": "npm:^3.9.0"
+    "@nuxt/kit": "npm:^4.2.0"
   peerDependencies:
-    pinia: ^3.0.3
-  checksum: 10c0/baf0c496ce81043f2881d5d00124517b14983638d1ee28061786d3a26d23a2f3b899a841b348ab8ebaaca65613640ddbaa560cefecda4f4f9ca0cf7a5815c750
+    pinia: ^3.0.4
+  checksum: 10c0/3aba259e997e0a332713c3a092339e5256f26325ec70640be438a225e7d3adc45443b03c4a36b37a5959d8610781fcd3a67d47dec3582aaef05e6579042240b7
   languageName: node
   linkType: hard
 
@@ -23951,7 +23951,7 @@ __metadata:
     "@nuxtjs/seo": "npm:^3.1.0"
     "@nuxtjs/tailwindcss": "npm:^6.14.0"
     "@nuxtjs/turnstile": "npm:^1.0.0"
-    "@pinia/nuxt": "npm:0.11.2"
+    "@pinia/nuxt": "npm:0.11.3"
     "@qdrant/js-client-rest": "npm:^1.15.1"
     "@radix-icons/vue": "npm:^1.0.0"
     "@sanity/cli": "npm:^3.88.2"
