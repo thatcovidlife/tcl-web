@@ -49,6 +49,7 @@ export default defineLazyEventHandler(() => {
           model: model.languageModel(selectedModel as modelID),
           temperature: config.llmTemperature,
           maxOutputTokens: config.llmMaxTokens,
+          maxRetries: 3,
           system: prompt,
           messages: await convertToModelMessages(messages),
           stopWhen: stepCountIs(20),
