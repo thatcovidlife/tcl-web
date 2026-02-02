@@ -5,7 +5,7 @@ import {
   sanitizeChatMessage,
   sanitizeForDatabase,
   decodeHtmlEntities,
-} from '@/lib/utils/sanitize'
+} from '@/app/utils/sanitize'
 
 describe('sanitizeUserInput', () => {
   it('should handle null and undefined input', () => {
