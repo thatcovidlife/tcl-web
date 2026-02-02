@@ -5660,17 +5660,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxtjs/turnstile@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@nuxtjs/turnstile@npm:1.0.0"
+"@nuxtjs/turnstile@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "@nuxtjs/turnstile@npm:1.1.1"
   dependencies:
     "@nuxt/kit": "npm:^3.16.0"
     "@types/cloudflare-turnstile": "npm:0.2.2"
     defu: "npm:^6.1.4"
     pathe: "npm:^2.0.3"
   peerDependencies:
-    "@nuxt/scripts": ^0.11.0
-  checksum: 10c0/9fc0798a879f3a76d01b0b25a8650814925c2eac272867740950907bc276da2f86ab46aa5d32a3e134f6fd99442261ab68fa3237b1d6f184672dd3a74437f01f
+    "@nuxt/scripts": ^0.11.0 || ^0.12.0
+  checksum: 10c0/e858d8ddf3513192a4b9d416c7675e7cf38d1b19152438d8c260bbd5aeeae2ee2f0d5cfec11a7b6134518ce57aa0c4753f3160872f5a591ff877cb2748e4cd50
   languageName: node
   linkType: hard
 
@@ -23942,7 +23942,7 @@ __metadata:
     "@nuxtjs/sanity": "npm:^1.13.3"
     "@nuxtjs/seo": "npm:^3.1.0"
     "@nuxtjs/tailwindcss": "npm:^6.14.0"
-    "@nuxtjs/turnstile": "npm:^1.0.0"
+    "@nuxtjs/turnstile": "npm:^1.1.1"
     "@pinia/nuxt": "npm:0.11.3"
     "@qdrant/js-client-rest": "npm:^1.16.2"
     "@radix-icons/vue": "npm:^1.0.0"
