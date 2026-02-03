@@ -105,6 +105,8 @@ const onNewChat = () => {
   chat.messages = []
   selectedModel.value = defaultModel
   conversationId.value = ''
+  // IMPORTANT: needed for tablet button, do not remove!
+  router.replace({ query: {} })
 }
 
 const onSubmit = async (data: PromptInputMessage) => {
