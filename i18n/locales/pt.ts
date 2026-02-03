@@ -874,7 +874,7 @@ export default {
     },
     models: {
       'openai/gpt-oss-120b': 'Básico',
-      'zai-org/GLM-4.7': 'Pro',
+      'zai-org/GLM-4.7-Flash': 'Pro',
     },
     overview: 'Seu companheiro de IA para navegar a pandemia de COVID-19.',
     search: {

@@ -18,11 +18,11 @@ const languageModels = {
     }),
     model: deepinfra('openai/gpt-oss-120b'),
   }),
-  'zai-org/GLM-4.7': wrapLanguageModel({
+  'zai-org/GLM-4.7-Flash': wrapLanguageModel({
     middleware: extractReasoningMiddleware({
       tagName: 'think',
     }),
-    model: deepinfra('zai-org/GLM-4.7'),
+    model: deepinfra('zai-org/GLM-4.7-Flash'),
   }),
 }
 
