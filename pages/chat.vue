@@ -29,7 +29,7 @@ const conversationId = ref<string>(
 // TODO: fix the i18n issue
 const modelNames = {
   'openai/gpt-oss-120b': 'Basic',
-  'zai-org/GLM-4.7': 'Pro',
+  'zai-org/GLM-4.7-Flash': 'Pro',
 }
 
 const models = computed(() => {
@@ -105,6 +105,8 @@ const onNewChat = () => {
   chat.messages = []
   selectedModel.value = defaultModel
   conversationId.value = ''
+  // IMPORTANT: needed for tablet button, do not remove!
+  router.replace({ query: {} })
 }
 
 const onSubmit = async (data: PromptInputMessage) => {

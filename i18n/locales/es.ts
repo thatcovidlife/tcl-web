@@ -884,7 +884,7 @@ export default {
     },
     models: {
       'openai/gpt-oss-120b': 'Básico',
-      'zai-org/GLM-4.7': 'Pro',
+      'zai-org/GLM-4.7-Flash': 'Pro',
     },
     overview: 'Tu compañero de IA para navegar la pandemia de COVID-19.',
     search: {
@@ -928,7 +928,8 @@ export default {
       create: 'Crear Compartido',
       existingLinks: 'Enlaces Compartidos Existentes',
       revoke: 'Revocar',
-      revokeConfirm: '¿Estás seguro de que quieres revocar este enlace compartido?',
+      revokeConfirm:
+        '¿Estás seguro de que quieres revocar este enlace compartido?',
       toasts: {
         created: '¡Enlace compartido creado!',
         revoked: 'Enlace compartido revocado',
