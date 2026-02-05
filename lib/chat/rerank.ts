@@ -50,8 +50,9 @@ export async function rerankDocuments({
     const rerankUrl = `${config.baseUrl}/v1/inference/${config.rerankModel}`
 
     // Add timeout handling to prevent hanging on stalled requests
+    // Increased to 30s since DeepInfra reranking can be slow with large documents
     const timeoutPromise = new Promise<never>((_, reject) =>
-      setTimeout(() => reject(new Error('Rerank API timeout')), 10000),
+      setTimeout(() => reject(new Error('Rerank API timeout')), 30000),
     )
 
     const fetchPromise = fetch(rerankUrl, {
