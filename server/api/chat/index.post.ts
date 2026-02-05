@@ -1,12 +1,10 @@
 import {
-  convertToModelMessages,
-  createUIMessageStream,
-  createUIMessageStreamResponse,
-  smoothStream,
-  streamText,
+  consumeStream,
+  createAgentUIStreamResponse,
   stepCountIs,
+  ToolLoopAgent,
 } from 'ai'
-import { captureMessage, captureException } from '@sentry/nuxt'
+import { captureMessage } from '@sentry/nuxt'
 import { model } from '@/lib/chat/providers'
 import { ratelimit } from '@/lib/chat/rate-limit'
 import { config } from '@/lib/chat/config'
@@ -15,6 +13,10 @@ import { fetchPrompt } from '@/lib/chat/prompt'
 
 import type { UIMessage } from 'ai'
 import type { modelID } from '@/lib/chat/providers'
+
+// Vercel function max duration (5 minutes)
+// Prevents responses from being cut off unexpectedly
+export const maxDuration = 300
 
 export default defineLazyEventHandler(() => {
   return defineEventHandler(async (event) => {
@@ -43,58 +45,61 @@ export default defineLazyEventHandler(() => {
 
     const prompt = await fetchPrompt()
 
-    const stream = createUIMessageStream({
-      execute: async ({ writer }) => {
-        const result = streamText({
-          model: model.languageModel(selectedModel as modelID),
-          temperature: config.llmTemperature,
-          maxOutputTokens: config.llmMaxTokens,
-          maxRetries: 3,
-          system: prompt,
-          messages: await convertToModelMessages(messages),
-          stopWhen: stepCountIs(20),
-          tools: {
-            checkContent: guardTool,
-            getInformation: searchTool,
-          },
-          toolChoice: 'required',
-          experimental_telemetry: {
-            isEnabled: true,
-            metadata: {
-              userId,
-            },
-          },
-          experimental_transform: smoothStream({
-            delayInMs: 20,
-          }),
-          // onFinish: () => {},
-          // onStepFinish: ({ stepType }) => {
-          //   console.log('Step finished:', stepType)
-          // },
-          onError: (error) => {
-            captureException(error, {
-              extra: { userId, selectedModel, messages },
-            })
-          },
-        })
+    // Set up abort controller for stream cancellation
+    // This allows proper cleanup when user clicks stop or navigates away
+    const controller = new AbortController()
+    const timeout = setTimeout(
+      () => controller.abort(),
+      290000, // 4:50 timeout (slightly less than maxDuration)
+    )
 
-        writer.merge(
-          result.toUIMessageStream({
-            sendReasoning: true,
-            sendSources: true,
-          }),
-        )
+    const startTime = Date.now()
+
+    // Use ToolLoopAgent to handle tool calling + text generation properly
+    // Agents automatically continue until text response is generated
+    const agent = new ToolLoopAgent({
+      model: model.languageModel(selectedModel as modelID),
+      temperature: config.llmTemperature,
+      maxOutputTokens: config.llmMaxTokens,
+      maxRetries: 3,
+      instructions: prompt,
+      tools: {
+        checkContent: guardTool,
+        getInformation: searchTool,
       },
-      onError: (error) => {
-        // Error messages are masked by default for security reasons.
-        // If you want to expose the error message to the client, you can do so here:
-        captureException(error, {
-          extra: { userId, selectedModel, messages },
+      stopWhen: stepCountIs(50),
+      experimental_telemetry: {
+        isEnabled: true,
+        metadata: {
+          userId,
+        },
+      },
+      onStepFinish: (stepResult) => {
+        console.log('Agent step finished:', {
+          finishReason: stepResult.finishReason,
+          toolCalls: stepResult.toolCalls?.length || 0,
+          textLength: stepResult.text?.length || 0,
         })
-        return error instanceof Error ? error.message : String(error)
       },
     })
 
-    return createUIMessageStreamResponse({ stream })
+    // createAgentUIStreamResponse handles streaming internally
+    // We provide onStepFinish for response-level logging
+    return createAgentUIStreamResponse({
+      agent,
+      uiMessages: messages,
+      abortSignal: controller.signal,
+      timeout: 290000,
+      consumeSseStream: consumeStream,
+      onStepFinish: (stepResult) => {
+        const duration = Date.now() - startTime
+        console.log('Response step:', {
+          duration,
+          finishReason: stepResult.finishReason,
+          toolCalls: stepResult.toolCalls?.length || 0,
+          textLength: stepResult.text?.length || 0,
+        })
+      },
+    })
   })
 })

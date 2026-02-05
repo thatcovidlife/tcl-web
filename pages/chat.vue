@@ -27,15 +27,16 @@ const conversationId = ref<string>(
 )
 
 // TODO: fix the i18n issue
-const modelNames = {
-  'openai/gpt-oss-120b': 'Basic',
-  'zai-org/GLM-4.7-Flash': 'Pro',
-}
+// const modelNames = {
+//   'openai/gpt-oss-120b': 'Basic',
+//   'zai-org/GLM-4.7-Flash': 'Pro',
+// }
 
 const models = computed(() => {
   return MODELS.map((model) => ({
     id: model as modelID,
-    name: modelNames[model as modelID] || model,
+    // name: modelNames[model as modelID] || model,
+    name: t(`chatbot.models.${model}`),
   }))
 })
 
@@ -48,7 +49,17 @@ const setSelectedModel = (newModel: modelID) => {
 // const messages = ref<PromptInputMessage[]>([])
 
 const chat = new Chat({
-  onFinish: async (message) => {
+  onFinish: async (result) => {
+    console.log('Chat finished:', {
+      isAbort: result.isAbort,
+      isDisconnect: result.isDisconnect,
+      isError: result.isError,
+      finishReason: result.finishReason,
+      messageId: result.message?.id,
+      role: result.message?.role,
+      partsCount: result.message?.parts?.length || 0,
+    })
+
     // Save the last two messages (user prompt + assistant response)
     const lastTwoMessages = chat.messages.slice(-2)
     const chatId =
@@ -84,15 +95,40 @@ const chat = new Chat({
     }
   },
   onData: (data) => {
-    console.log('Chat data:', data)
+    // Monitor stream health - log for debugging
+    console.log('Chat data:', {
+      type: data?.type,
+      hasData: !!data,
+    })
   },
-  onToolCall: (toolCall) => {
-    console.log('Tool call:', toolCall)
+  onToolCall: (toolCallResult) => {
+    console.log('Tool call:', {
+      toolCallType: toolCallResult?.toolCall?.toolName,
+      hasArgs: !!toolCallResult?.toolCall,
+    })
   },
   onError: (error) => {
     captureException(error)
-    console.log('Chat error:', error)
-    toast.error('An error occurred while processing your request.')
+    console.error('Chat error:', error)
+
+    // Detect specific error types for better user feedback
+    const errorMessage = error instanceof Error ? error.message : String(error)
+    const errorLower = errorMessage.toLowerCase()
+
+    if (errorLower.includes('timeout')) {
+      toast.error('Request timed out. Please try again.')
+    } else if (errorLower.includes('aborted')) {
+      toast.info('Request was cancelled.')
+    } else if (
+      errorLower.includes('rate limit') ||
+      errorLower.includes('too many')
+    ) {
+      toast.error('Too many requests. Please wait a moment and try again.')
+    } else if (errorLower.includes('network') || errorLower.includes('fetch')) {
+      toast.error('Network error. Please check your connection and try again.')
+    } else {
+      toast.error('An error occurred while processing your request.')
+    }
   },
 })
 

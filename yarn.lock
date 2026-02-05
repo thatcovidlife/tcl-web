@@ -71,41 +71,41 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ai-sdk/deepinfra@npm:^2.0.28":
-  version: 2.0.28
-  resolution: "@ai-sdk/deepinfra@npm:2.0.28"
+"@ai-sdk/deepinfra@npm:^2.0.31":
+  version: 2.0.31
+  resolution: "@ai-sdk/deepinfra@npm:2.0.31"
   dependencies:
-    "@ai-sdk/openai-compatible": "npm:2.0.26"
+    "@ai-sdk/openai-compatible": "npm:2.0.27"
     "@ai-sdk/provider": "npm:3.0.7"
     "@ai-sdk/provider-utils": "npm:4.0.13"
   peerDependencies:
     zod: ^3.25.76 || ^4.1.8
-  checksum: 10c0/6230ea921d9a2262b4cdd9a4d35d1114f12e3004f7e37e4ecc887766c5371b176353b78290226b628c20b9ca326259e8a40e47105a2021dc8e80bf264af17cae
+  checksum: 10c0/9eb965868e1f0ca7db592fea081067b73d7edb85fc8fb14d3a8914bf0e26b6bd905e3bfeb8121fca31f7c09003e549600c1f17d2984bf81c49e3a59b9fc1e391
   languageName: node
   linkType: hard
 
-"@ai-sdk/gateway@npm:3.0.32":
-  version: 3.0.32
-  resolution: "@ai-sdk/gateway@npm:3.0.32"
+"@ai-sdk/gateway@npm:3.0.33":
+  version: 3.0.33
+  resolution: "@ai-sdk/gateway@npm:3.0.33"
   dependencies:
     "@ai-sdk/provider": "npm:3.0.7"
     "@ai-sdk/provider-utils": "npm:4.0.13"
     "@vercel/oidc": "npm:3.1.0"
   peerDependencies:
     zod: ^3.25.76 || ^4.1.8
-  checksum: 10c0/ea9454f84832660ad2fcde664652b2af0d46069d7c181830930271f3d185c6489ae1c033ed29333e40c119b122d96b50d44b5020c3129f45adbd2e5036458611
+  checksum: 10c0/3c0c01330878c98fe70a34ed4699c5de80e431a35e8d78a1971b86488e669dd214007ba7ad4f444c0b0d1d3f3b41b76d07c2eb7b6f9162047fbe5639568e6d82
   languageName: node
   linkType: hard
 
-"@ai-sdk/openai-compatible@npm:2.0.26":
-  version: 2.0.26
-  resolution: "@ai-sdk/openai-compatible@npm:2.0.26"
+"@ai-sdk/openai-compatible@npm:2.0.27":
+  version: 2.0.27
+  resolution: "@ai-sdk/openai-compatible@npm:2.0.27"
   dependencies:
     "@ai-sdk/provider": "npm:3.0.7"
     "@ai-sdk/provider-utils": "npm:4.0.13"
   peerDependencies:
     zod: ^3.25.76 || ^4.1.8
-  checksum: 10c0/5f2596ad4f6c4a5884aaa10301f7f3c19578477897ba5e9228eea6ce9a6684807bc6bdde0f9f5a1745662d24914b855d9506f9cfcbb16493e3b7168c7a0c0c54
+  checksum: 10c0/6af0033ec444897b53eede6dcabc8f1fceb63704a07c335134a63bfaed8df1cb784b822fec22e9e589c4fa6c29dab2b7c05b23c892c84ce126079098ea28af6d
   languageName: node
   linkType: hard
 
@@ -131,16 +131,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ai-sdk/vue@npm:^3.0.69":
-  version: 3.0.69
-  resolution: "@ai-sdk/vue@npm:3.0.69"
+"@ai-sdk/vue@npm:^3.0.70":
+  version: 3.0.70
+  resolution: "@ai-sdk/vue@npm:3.0.70"
   dependencies:
     "@ai-sdk/provider-utils": "npm:4.0.13"
-    ai: "npm:6.0.69"
+    ai: "npm:6.0.70"
     swrv: "npm:^1.0.4"
   peerDependencies:
     vue: ^3.3.4
-  checksum: 10c0/acf8c3040d0302a98db63beb7aeda946eca8af7ef24dbea78d60d0fb93d40f7296f0609a0940883c37b04b2af07a2ec4594cbdcf814e5930067eb197e84a0546
+  checksum: 10c0/a92271961a02e19b2e96dbe22f29fa511d435b23bbfd374c805a6b1cf7467c29d59e0c63cc594c6cd9e411d1dc01a94b5a013b89ae1866b1a818e81cf54cf184
   languageName: node
   linkType: hard
 
@@ -11141,17 +11141,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ai@npm:6.0.69, ai@npm:^6.0.69":
-  version: 6.0.69
-  resolution: "ai@npm:6.0.69"
+"ai@npm:6.0.70, ai@npm:^6.0.70":
+  version: 6.0.70
+  resolution: "ai@npm:6.0.70"
   dependencies:
-    "@ai-sdk/gateway": "npm:3.0.32"
+    "@ai-sdk/gateway": "npm:3.0.33"
     "@ai-sdk/provider": "npm:3.0.7"
     "@ai-sdk/provider-utils": "npm:4.0.13"
     "@opentelemetry/api": "npm:1.9.0"
   peerDependencies:
     zod: ^3.25.76 || ^4.1.8
-  checksum: 10c0/2cdce6351e120842f92e904682c297abc812a3c16373b836254f44726b422c98d653135900cccf1870bd6c459d9f46ab19029fb90a67478bbe82f257b378f5c3
+  checksum: 10c0/de9fce71dedf3d808e839626098f3e297024133ea6556c31b7bb3b5ff7b3d77d10fb067a44af146eb55b7587088de1aeb3b31e32bffdc3f09556f364a3918b15
   languageName: node
   linkType: hard
 
@@ -24242,8 +24242,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "thatcovidlife@workspace:."
   dependencies:
-    "@ai-sdk/deepinfra": "npm:^2.0.28"
-    "@ai-sdk/vue": "npm:^3.0.69"
+    "@ai-sdk/deepinfra": "npm:^2.0.31"
+    "@ai-sdk/vue": "npm:^3.0.70"
     "@commitlint/cli": "npm:^19.8.1"
     "@commitlint/config-conventional": "npm:^19.8.1"
     "@formkit/auto-animate": "npm:^0.9.0"
@@ -24297,7 +24297,7 @@ __metadata:
     "@vue/test-utils": "npm:^2.4.6"
     "@vueuse/core": "npm:^13.9.0"
     "@vueuse/nuxt": "npm:13.9.0"
-    ai: "npm:^6.0.69"
+    ai: "npm:^6.0.70"
     class-variance-authority: "npm:^0.7.1"
     clsx: "npm:^2.1.1"
     crypto-hash: "npm:^3.1.0"
