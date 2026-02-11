@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useAttrs } from 'vue'
+import { computed, useAttrs, watch } from 'vue'
 import type { HTMLAttributes } from 'vue'
 import { cn } from '@/lib/utils'
 import { renderMarkdown } from './markdown'
