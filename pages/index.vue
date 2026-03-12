@@ -3,6 +3,8 @@ import { motion } from 'motion-v'
 import type { Tag } from '@/lib/types'
 import LATEST_PUBLICATIONS_QUERY from '@/sanity/queries/latestPublications.sanity'
 import type { LATEST_PUBLICATIONS_QUERYResult } from '@/sanity/types'
+import PROMO_QUERY from '@/sanity/queries/promo.sanity'
+import type { PROMO_QUERYResult } from '@/sanity/types'
 import * as Sentry from '@sentry/nuxt'
 
 // const host = computed(() => window?.location?.origin || '')
@@ -22,6 +24,16 @@ const { data, status } = await Sentry.startSpan(
   },
 )
 
+const { data: promoData } = await Sentry.startSpan(
+  {
+    name: 'fetch promo',
+    op: 'sanity.query',
+  },
+  async () => {
+    return await useLazySanityQuery<PROMO_QUERYResult>(PROMO_QUERY, { locale })
+  },
+)
+
 const loading = computed(
   () => status?.value === 'pending' || status?.value === 'idle',
 )
@@ -33,6 +45,9 @@ const news = computed(() => data?.value?.news || [])
 const phw = computed(() => data?.value?.phw || [])
 const showcase = computed(() => data?.value?.showcase || [])
 const videos = computed(() => data?.value?.videos || [])
+const promo = computed(() => promoData?.value || [])
+
+console.log('promo', promo.value)
 </script>
 
 <template>
@@ -61,6 +76,29 @@ const videos = computed(() => data?.value?.videos || [])
           class="container mx-auto my-4 md:my-8 lg:my-12"
           :docs="showcase"
         />
+      </motion.div>
+
+      <!-- PROMO -->
+      <motion.div
+        v-if="promo.length > 0"
+        class="w-full"
+        :initial="{ opacity: 0 }"
+        :whileInView="{ opacity: 1 }"
+      >
+        <template v-for="zone in promo" :key="<string>zone.zoneId">
+          <div class="container mb-8">
+            <a
+              :href="<string>zone.url"
+              :target="zone.external ? '_blank' : '_self'"
+            >
+              <SanityImage
+                :alt="zone.name"
+                :asset-id="<string>zone.visual"
+                class="w-full object-cover"
+              />
+            </a>
+          </div>
+        </template>
       </motion.div>
 
       <!-- NEWS -->
