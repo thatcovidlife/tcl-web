@@ -46,8 +46,6 @@ const phw = computed(() => data?.value?.phw || [])
 const showcase = computed(() => data?.value?.showcase || [])
 const videos = computed(() => data?.value?.videos || [])
 const promo = computed(() => promoData?.value || [])
-
-console.log('promo', promo.value)
 </script>
 
 <template>
