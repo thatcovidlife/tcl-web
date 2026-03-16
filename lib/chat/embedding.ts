@@ -7,6 +7,7 @@ import { config } from './config'
 export const embeddingModel = deepinfra.embeddingModel(config.embedModel!)
 export const qdrant = new QdrantClient({
   url: config.qdrantUrl,
+  port: config.qdrantPort,
   apiKey: config.qdrantKey,
 })
 
