@@ -27,16 +27,16 @@ const conversationId = ref<string>(
 )
 
 // TODO: fix the i18n issue
-// const modelNames = {
-//   'openai/gpt-oss-120b': 'Basic',
-//   'zai-org/GLM-4.7-Flash': 'Pro',
-// }
+const modelNames = {
+  'openai/gpt-oss-120b': 'Basic',
+  'zai-org/GLM-4.7-Flash': 'Pro',
+}
 
 const models = computed(() => {
   return MODELS.map((model) => ({
     id: model as modelID,
-    // name: modelNames[model as modelID] || model,
-    name: t(`chatbot.models.${model}`),
+    name: modelNames[model as modelID] || model,
+    // name: t(`chatbot.models.${model}`),
   }))
 })
 

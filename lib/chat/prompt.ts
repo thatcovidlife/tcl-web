@@ -1,6 +1,6 @@
 import { Client } from 'langsmith'
 import { captureException } from '@sentry/nuxt'
-import { llmInstructionsV4 } from './messages'
+import { llmInstructionsV5 } from './messages'
 import { config } from './config'
 
 const client = new Client()
@@ -12,7 +12,7 @@ export async function fetchPrompt() {
   // Force local fallback if enabled (for testing)
   if (FORCE_LOCAL_PROMPT) {
     console.log('[LangSmith] FORCE_LOCAL_PROMPT is true, using local fallback')
-    return llmInstructionsV4
+    return llmInstructionsV5
   }
 
   try {
@@ -39,7 +39,7 @@ export async function fetchPrompt() {
   } catch (error) {
     console.error('Error fetching prompt:', error)
     captureException(error)
-    console.log('[LangSmith] Falling back to local prompt (llmInstructionsV4)')
-    return llmInstructionsV4
+    console.log('[LangSmith] Falling back to local prompt (llmInstructionsV5)')
+    return llmInstructionsV5
   }
 }

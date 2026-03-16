@@ -62,9 +62,22 @@ const hasTextResponse = (parts: UIMessage['parts']) => {
 
 const avatarUrl = ref<string | null>(null)
 
-const getHostname = (url: string) => new URL(url).hostname
+const getHostname = (url: string) => {
+  try {
+    return new URL(url).hostname
+  } catch {
+    return url
+  }
+}
+
 const getFavicon = (url: string) =>
   `https://www.google.com/s2/favicons?sz=64&domain_url=${encodeURIComponent(url)}`
+
+// Resolve the URL from a Qdrant result payload.
+// New ingestion stores url flat in payload (payload.url).
+// Legacy ingestion stored it nested (payload.metadata.url).
+const resolveUrl = (result: any): string | null =>
+  result?.payload?.url ?? result?.payload?.metadata?.url ?? null
 
 const mapStep = (step: UIMessage['parts'][number], index: number) => {
   switch (step.type) {
@@ -91,21 +104,26 @@ const mapStep = (step: UIMessage['parts'][number], index: number) => {
             ? 'Validated user question against content policy.'
             : 'Validating...',
       }
-    case 'tool-getInformation':
+    case 'tool-getInformation': {
       const label =
         // @ts-expect-error
         step.input?.selectedCollection === 'lancet'
           ? 'scientific papers'
           : 'general documents'
 
-      const results = uniqBy(
-        (step.output as any[]) || [],
-        'payload.metadata.url',
-      ).map((result) => ({
-        domain: getHostname(result.payload.metadata.url),
-        favicon: getFavicon(result.payload.metadata.url),
-        url: result.payload.metadata.url,
-      }))
+      const results = uniqBy((step.output as any[]) || [], (result: any) =>
+        resolveUrl(result),
+      )
+        // Drop results with no resolvable URL — avoids crashing getHostname/getFavicon
+        .filter((result: any) => !!resolveUrl(result))
+        .map((result: any) => {
+          const url = resolveUrl(result)!
+          return {
+            domain: getHostname(url),
+            favicon: getFavicon(url),
+            url,
+          }
+        })
 
       return {
         id: index,
@@ -121,6 +139,7 @@ const mapStep = (step: UIMessage['parts'][number], index: number) => {
             : 'Digging through the archives...',
         results,
       }
+    }
     default:
       return null
   }

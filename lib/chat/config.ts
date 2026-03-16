@@ -13,6 +13,7 @@ export const config = {
   qdrantCollection: process.env.QDRANT_COLLECTION,
   qdrantKey: process.env.QDRANT_KEY,
   qdrantMaxResults: parseInt(process.env.DEEPINFRA_MAX_RESULTS!),
+  qdrantPort: parseInt(process.env.QDRANT_PORT || '6333'),
   qdrantUrl: process.env.QDRANT_URL,
   promptName: process.env.LANGSMITH_PROMPT_NAME,
   // rewriterModel: process.env.DEEPINFRA_REWRITER_MODEL,
