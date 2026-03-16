@@ -15,12 +15,24 @@ import type { UIMessage } from 'ai'
 import type { modelID } from '@/lib/chat/providers'
 
 // Vercel function max duration (5 minutes)
-// Prevents responses from being cut off unexpectedly
 export const maxDuration = 300
+
+// ---------------------------------------------------------------------------
+// Expected tool call sequence per turn:
+//
+//   Step 1 — checkContent        (guard, always first)
+//   Step 2 — getInformation x1   (general collection, always)
+//   Step 3 — getInformation x1   (lancet collection, if scientific)
+//   Step 4 — text response
+//
+// Max 6 steps: covers guard + 2 searches + potential retries + final answer
+// Previously set to 50 — that allowed runaway loops, wasting tokens and time
+// ---------------------------------------------------------------------------
+const MAX_STEPS = 6
 
 export default defineLazyEventHandler(() => {
   return defineEventHandler(async (event) => {
-    // bypass XSS validator for this endpoint
+    // Bypass XSS validator for this endpoint
     event.node.req.headers['x-skip-xss-validator'] = 'true'
 
     const {
@@ -32,7 +44,6 @@ export default defineLazyEventHandler(() => {
 
     const { success, remaining } = await ratelimit.limit(userId)
 
-    // TODO: fix this so the LLM sends the message
     if (!success && process.env.NODE_ENV !== 'development') {
       const errorMessage = `Too many requests, please try again later. Remaining queries: ${remaining}`
       captureMessage(errorMessage, {
@@ -45,18 +56,11 @@ export default defineLazyEventHandler(() => {
 
     const prompt = await fetchPrompt()
 
-    // Set up abort controller for stream cancellation
-    // This allows proper cleanup when user clicks stop or navigates away
     const controller = new AbortController()
-    const timeout = setTimeout(
-      () => controller.abort(),
-      290000, // 4:50 timeout (slightly less than maxDuration)
-    )
+    const timeout = setTimeout(() => controller.abort(), 290000)
 
     const startTime = Date.now()
 
-    // Use ToolLoopAgent to handle tool calling + text generation properly
-    // Agents automatically continue until text response is generated
     const agent = new ToolLoopAgent({
       model: model.languageModel(selectedModel as modelID),
       temperature: config.llmTemperature,
@@ -67,24 +71,35 @@ export default defineLazyEventHandler(() => {
         checkContent: guardTool,
         getInformation: searchTool,
       },
-      stopWhen: stepCountIs(50),
+
+      // Tightly bounded: guard + 2 searches + answer = 4 steps normally,
+      // 6 gives headroom for a retry without allowing runaway loops
+      stopWhen: stepCountIs(MAX_STEPS),
+
       experimental_telemetry: {
         isEnabled: true,
-        metadata: {
-          userId,
-        },
+        metadata: { userId },
       },
+
       onStepFinish: (stepResult) => {
-        console.log('Agent step finished:', {
+        const elapsed = Date.now() - startTime
+        console.log('Agent step:', {
+          elapsed,
           finishReason: stepResult.finishReason,
-          toolCalls: stepResult.toolCalls?.length || 0,
-          textLength: stepResult.text?.length || 0,
+          toolCalls: stepResult.toolCalls?.length ?? 0,
+          textLength: stepResult.text?.length ?? 0,
         })
+
+        // Clear timeout on final text response to avoid aborting a completed stream
+        if (
+          stepResult.finishReason === 'stop' &&
+          (stepResult.text?.length ?? 0) > 0
+        ) {
+          clearTimeout(timeout)
+        }
       },
     })
 
-    // createAgentUIStreamResponse handles streaming internally
-    // We provide onStepFinish for response-level logging
     return createAgentUIStreamResponse({
       agent,
       uiMessages: messages,
@@ -92,12 +107,11 @@ export default defineLazyEventHandler(() => {
       timeout: 290000,
       consumeSseStream: consumeStream,
       onStepFinish: (stepResult) => {
-        const duration = Date.now() - startTime
-        console.log('Response step:', {
-          duration,
+        console.log('Stream step:', {
+          duration: Date.now() - startTime,
           finishReason: stepResult.finishReason,
-          toolCalls: stepResult.toolCalls?.length || 0,
-          textLength: stepResult.text?.length || 0,
+          toolCalls: stepResult.toolCalls?.length ?? 0,
+          textLength: stepResult.text?.length ?? 0,
         })
       },
     })

@@ -1,53 +1,78 @@
 import { tool } from 'ai'
 import { z } from 'zod'
 
-import { collectionName } from './collections'
-import { findRelevantContent } from './embedding'
-import { /* aiGuardCheck, */ aiGuardCheckLlm } from './guard'
+import { collectionName, collectionType } from './collections'
+import { smartSearch, findRelevantContent } from './embedding'
+import { aiGuardCheckLlm } from './guard'
 import { rerankDocuments } from './rerank'
 import { config } from './config'
 
-// const PANGEA_ENABLED = process.env.PANGEA_ENABLED === 'true'
 const RERANK_ENABLED = Boolean(config.rerankEnabled)
 const RERANK_TOP_N = (() => {
   const value = config.rerankTopN
   const fallback = 5
-  if (typeof value !== 'number' || !Number.isInteger(value) || value <= 0) {
+  if (typeof value !== 'number' || !Number.isInteger(value) || value <= 0)
     return fallback
-  }
   return value
 })()
 
+// ---------------------------------------------------------------------------
+// searchTool — uses smartSearch with named vector routing + hybrid RRF fusion
+// Falls back to legacy single-vector search if smartSearch returns null
+// ---------------------------------------------------------------------------
 export const searchTool = tool({
-  description: `get information from your knowledge base to answer questions.`,
-  inputSchema: z.object({
-    selectedCollection: z.string().describe('the collection to use'),
-    question: z.string().describe('the users question'),
-  }),
-  execute: async ({ question, selectedCollection }) => {
-    // Get initial results from vector search
-    const initialResults = await findRelevantContent(
-      question,
-      collectionName(selectedCollection),
-    )
+  description: `Search the knowledge base to answer questions about public health,
+COVID-19, infectious diseases, epidemiology, clinical research, and related topics.
+Always call this tool before answering any factual question.`,
 
-    if (!initialResults) {
+  inputSchema: z.object({
+    selectedCollection: z
+      .string()
+      .describe(
+        'The collection to search: "general" for public health content, "lancet" for scientific papers',
+      ),
+    question: z
+      .string()
+      .describe(
+        'The search query — rephrase the user question as a clear, specific search query if needed',
+      ),
+  }),
+
+  execute: async ({ question, selectedCollection }) => {
+    const name = collectionName(selectedCollection)
+    const type = collectionType(selectedCollection) // 'general' | 'lancet'
+
+    // Primary: smartSearch with named vector routing + hybrid RRF
+    let initialResults = await smartSearch(question, name, type)
+
+    // Fallback to legacy search if smartSearch fails or collection has no named vectors
+    if (!initialResults || initialResults.length === 0) {
+      console.log(
+        'searchTool: smartSearch returned no results, falling back to legacy search',
+      )
+      initialResults = await findRelevantContent(question, name)
+    }
+
+    if (!initialResults || initialResults.length === 0) {
       return null
     }
 
-    // Apply reranking if enabled and we have results
-    if (RERANK_ENABLED && initialResults.length > 0) {
-      console.log('searchTool: reranking enabled', {
+    // Reranking pass — uses Qwen3 reranker to rescore top candidates
+    if (RERANK_ENABLED) {
+      console.log('searchTool: reranking', {
+        collection: selectedCollection,
         resultCount: initialResults.length,
         topN: RERANK_TOP_N,
       })
 
-      // Transform Qdrant results to rerank format
       const documents = initialResults.map((result) => ({
         id: String(result.id),
+        // Prefer rawContent (original chunk text) over enriched content for reranking
+        // rawContent is what was stored pre-prefix-injection, giving cleaner signal
         content:
-          (result.payload?.content as string) ||
-          (result.payload?.text as string) ||
+          (result.payload?.rawContent as string) ??
+          (result.payload?.content as string) ??
+          (result.payload?.text as string) ??
           '',
         metadata: result.payload ?? {},
       }))
@@ -63,7 +88,7 @@ export const searchTool = tool({
         rerankedCount: reranked.length,
       })
 
-      // Transform reranked results back to Qdrant format for frontend compatibility
+      // Return in Qdrant-compatible format so the LLM sees consistent structure
       return reranked.map((doc) => ({
         id: doc.id,
         score: doc.score ?? 0,
@@ -75,25 +100,28 @@ export const searchTool = tool({
   },
 })
 
+// ---------------------------------------------------------------------------
+// guardTool — content safety check before any retrieval
+// ---------------------------------------------------------------------------
 export const guardTool = tool({
-  description: `check text for harmful content.`,
+  description: `Check whether the user's question is safe to answer.
+Always call this tool FIRST before any other tool.
+Returns true if the content should be blocked, false if it is safe.`,
+
   inputSchema: z.object({
-    question: z.string().describe("the user's original question"),
+    question: z.string().describe("The user's original question"),
   }),
+
   execute: async ({ question }) => {
-    // if (PANGEA_ENABLED) {
-    console.log('guardTool checking question:', question)
+    console.log('guardTool: checking question:', question)
     try {
       const result = await aiGuardCheckLlm(question)
-      console.log('guardTool result:', result)
-      return result?.blocked
+      console.log('guardTool: result:', result)
+      return result?.blocked ?? false
     } catch (error) {
-      console.error('Error in guardTool:', error)
-      // On error, default to not blocked
+      console.error('guardTool: error:', error)
+      // Default to safe on error — avoids silently blocking valid questions
       return false
     }
-    // } else {
-    //   return false
-    // }
   },
 })
