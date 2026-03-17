@@ -245,6 +245,7 @@ export default defineNuxtConfig({
       flagsmith: {
         environmentId: process.env.FLAGSMITH_ENVIRONMENT_ID,
       },
+      pdfExportUrl: process.env.PDF_EXPORT_URL,
       statsig: {
         clientKey: process.env.STATSIG_CLIENT_ID,
       },
