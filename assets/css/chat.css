@@ -6,8 +6,13 @@
   line-height: theme('lineHeight.relaxed');
 }
 
-.markdown-body h3 {
+.markdown-body h2 {
   font-size: 1.25rem;
+  margin-bottom: theme('spacing.2');
+}
+
+.markdown-body h3 {
+  font-size: 1.15rem;
   margin-bottom: theme('spacing.2');
 }
 
