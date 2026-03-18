@@ -948,5 +948,27 @@ export default {
         report: 'Signaler ce chat',
       },
     },
+    chainOfThought: {
+      reasoning: {
+        done: 'A réfléchi pendant quelques secondes',
+        active: 'Réflexion...',
+      },
+      contentCheck: {
+        done: 'Analyse terminée',
+        active: 'Analyse en cours...',
+        doneContent:
+          "Question de l'utilisateur validée par rapport à la politique de contenu.",
+        activeContent: 'Validation...',
+      },
+      search: {
+        done: 'Recherche terminée',
+        active: 'Recherche...',
+        doneContent: '{count} résultats trouvés dans {source}.',
+        activeContent: 'Parcours des archives...',
+        sourceScientific: 'articles scientifiques',
+        sourceGeneral: 'documents généraux',
+      },
+      title: 'Chaîne de Pensée',
+    },
   },
 }

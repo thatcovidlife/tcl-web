@@ -919,5 +919,26 @@ export default {
         report: 'Report this chat',
       },
     },
+    chainOfThought: {
+      reasoning: {
+        done: 'Thought for a few seconds',
+        active: 'Thinking...',
+      },
+      contentCheck: {
+        done: 'Analysis complete',
+        active: 'Analyzing...',
+        doneContent: 'Validated user question against content policy.',
+        activeContent: 'Validating...',
+      },
+      search: {
+        done: 'Search complete',
+        active: 'Searching...',
+        doneContent: 'Found {count} results in {source}.',
+        activeContent: 'Digging through the archives...',
+        sourceScientific: 'scientific papers',
+        sourceGeneral: 'general documents',
+      },
+      title: 'Chain of Thought',
+    },
   },
 }

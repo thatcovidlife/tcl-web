@@ -935,5 +935,27 @@ export default {
         report: 'Denunciar este chat',
       },
     },
+    chainOfThought: {
+      reasoning: {
+        done: 'Pensou por alguns segundos',
+        active: 'Pensando...',
+      },
+      contentCheck: {
+        done: 'Análise concluída',
+        active: 'Analisando...',
+        doneContent:
+          'Pergunta do usuário validada contra a política de conteúdo.',
+        activeContent: 'Validando...',
+      },
+      search: {
+        done: 'Pesquisa concluída',
+        active: 'Pesquisando...',
+        doneContent: 'Encontrados {count} resultados em {source}.',
+        activeContent: 'Pesquisando nos arquivos...',
+        sourceScientific: 'artigos científicos',
+        sourceGeneral: 'documentos gerais',
+      },
+      title: 'Cadeia de Pensamento',
+    },
   },
 }
