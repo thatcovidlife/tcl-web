@@ -265,9 +265,12 @@ onMounted(async () => {
   <div class="grid md:grid-cols-[70px_1fr] lg:grid-cols-[16rem_1fr] h-full">
     <TclChatSidebar @new-chat="onNewChat" />
     <div
-      class="h-full max-h-[calc(100vh-64px)] flex flex-col justify-center items-center w-full max-w-3xl px-8 mx-auto"
+      class="h-full max-h-[calc(100vh-64px)] flex flex-col justify-end md:justify-center items-center w-full max-w-[100vw] md:max-w-3xl px-3 md:px-8 mx-auto"
     >
-      <TclChatOverview v-if="chat.messages.length === 0" />
+      <TclChatOverview
+        v-if="chat.messages.length === 0"
+        class="flex-1 flex items-center justify-center md:flex-none md:items-center md:justify-start"
+      />
       <TclConversation
         v-else
         :messages="chat.messages"
@@ -275,6 +278,7 @@ onMounted(async () => {
         :chat-id="conversationId"
       />
       <TclPromptInput
+        class="order-last md:order-none pb-4"
         :model="selectedModel"
         :models="models"
         :submit-status="chat.status"
@@ -284,6 +288,7 @@ onMounted(async () => {
       />
       <TclSuggestedPrompts
         v-if="chat.messages.length === 0"
+        class="order-1 md:order-none"
         @send-message="
           ({ e, input }) => {
             e.preventDefault()
