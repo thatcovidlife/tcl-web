@@ -162,6 +162,13 @@ const getChainOfThought = (parts: UIMessage['parts']) => {
     .map(mapStep)
 }
 
+const firstUserQuestion = computed(() => {
+  const firstUser = props.messages.find((m) => m.role === 'user')
+  if (!firstUser) return ''
+  const text = decodeHtmlEntities((firstUser.parts[0] as TextUIPart).text)
+  return text.length > 55 ? text.slice(0, 55) + '...' : text
+})
+
 const { handleLike, handleDislike, handleUnlike, handleCopy, handleExport } =
   useChatActions(toRef(props, 'messages'), messageLikes)
 
@@ -211,7 +218,7 @@ watch(
       >
         <TclShareDialog
           :chat-id="props.chatId"
-          :chat-title="`Chat ${props.chatId.slice(0, 8)}...`"
+          :chat-title="firstUserQuestion"
           @created="emit('share')"
         />
       </div>
