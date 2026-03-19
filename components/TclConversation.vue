@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import { Search, Brain, ShieldCheck } from 'lucide-vue-next'
 import lodash from 'lodash'
 
@@ -39,6 +40,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'share'): void
 }>()
+
+const breakpoints = useBreakpoints(breakpointsTailwind)
 
 // Store like states for messages
 const messageLikes = ref<Record<string, boolean | null>>({})
@@ -213,14 +216,20 @@ watch(
   >
     <Conversation class="relative size-full">
       <div
-        v-if="props.messages.length > 0 && props.status === 'ready'"
-        class="hidden md:flex justify-end py-2 sticky top-0 z-10 bg-background/80 backdrop-blur-sm"
+        class="flex justify-end py-2 sticky top-0 z-10 bg-background/80 backdrop-blur-sm"
       >
         <TclShareDialog
+          v-if="
+            props.messages.length > 0 &&
+            props.status === 'ready' &&
+            breakpoints.isGreaterOrEqual('md')
+          "
           :chat-id="props.chatId"
           :chat-title="firstUserQuestion"
+          class="hidden md:flex"
           @created="emit('share')"
         />
+        <TclChatActionMenu v-else />
       </div>
       <ConversationContent>
         <template v-for="message in props.messages" :key="message.id">
