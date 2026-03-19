@@ -214,7 +214,7 @@ watch(
     <Conversation class="relative size-full">
       <div
         v-if="props.messages.length > 0 && props.status === 'ready'"
-        class="flex justify-end py-2 sticky top-0 z-10 bg-background/80 backdrop-blur-sm"
+        class="hidden md:flex justify-end py-2 sticky top-0 z-10 bg-background/80 backdrop-blur-sm"
       >
         <TclShareDialog
           :chat-id="props.chatId"
