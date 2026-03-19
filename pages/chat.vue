@@ -276,6 +276,7 @@ onMounted(async () => {
         :messages="chat.messages"
         :status="chat.status"
         :chat-id="conversationId"
+        @new-chat="onNewChat"
       />
       <TclPromptInput
         class="order-last md:order-none pb-4"

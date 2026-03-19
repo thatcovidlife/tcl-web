@@ -21,9 +21,9 @@ import {
 <template>
   <DropdownMenu>
     <DropdownMenuTrigger as-child>
-      <Button variant="outline"><MenuIcon />Menu</Button>
+      <Button variant="outline" size="sm"><MenuIcon />Menu</Button>
     </DropdownMenuTrigger>
-    <DropdownMenuContent class="w-56 mr-4" align="start">
+    <DropdownMenuContent class="w-56" align="start">
       <DropdownMenuLabel>My Account</DropdownMenuLabel>
       <DropdownMenuGroup>
         <DropdownMenuItem>

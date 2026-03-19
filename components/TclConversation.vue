@@ -216,20 +216,16 @@ watch(
   >
     <Conversation class="relative size-full">
       <div
-        class="flex justify-end py-2 sticky top-0 z-10 bg-background/80 backdrop-blur-sm"
+        class="flex justify-between md:justify-end py-2 sticky top-0 z-10 bg-background/80 backdrop-blur-sm"
       >
+        <TclChatActionMenu v-if="breakpoints.isSmaller('md')" />
         <TclShareDialog
-          v-if="
-            props.messages.length > 0 &&
-            props.status === 'ready' &&
-            breakpoints.isGreaterOrEqual('md')
-          "
+          v-if="props.messages.length > 0 && props.status === 'ready'"
           :chat-id="props.chatId"
           :chat-title="firstUserQuestion"
           class="hidden md:flex"
           @created="emit('share')"
         />
-        <TclChatActionMenu v-else />
       </div>
       <ConversationContent>
         <template v-for="message in props.messages" :key="message.id">
