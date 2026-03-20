@@ -18,6 +18,11 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 const { t } = useI18n()
+const localePath = useLocalePath()
+
+const emit = defineEmits<{
+  (e: 'new-chat'): void
+}>()
 </script>
 
 <template>
@@ -32,11 +37,21 @@ const { t } = useI18n()
         <DropdownMenuItem> {{ t('chatbot.menu.history') }} </DropdownMenuItem>
         <DropdownMenuItem> {{ t('chatbot.menu.about') }} </DropdownMenuItem>
         <DropdownMenuItem> {{ t('chatbot.menu.faq') }} </DropdownMenuItem>
-        <DropdownMenuItem> {{ t('chatbot.menu.support') }} </DropdownMenuItem>
+        <DropdownMenuItem>
+          <NuxtLink
+            :to="localePath('/support')"
+            target="_blank"
+            class="w-full h-full"
+          >
+            {{ t('chatbot.menu.support') }}
+          </NuxtLink>
+        </DropdownMenuItem>
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
       <DropdownMenuGroup>
-        <DropdownMenuItem> {{ t('chatbot.menu.new') }} </DropdownMenuItem>
+        <DropdownMenuItem @click="emit('new-chat')">
+          {{ t('chatbot.menu.new') }}
+        </DropdownMenuItem>
       </DropdownMenuGroup>
     </DropdownMenuContent>
   </DropdownMenu>

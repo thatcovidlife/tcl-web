@@ -39,6 +39,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'share'): void
+  (e: 'new-chat'): void
 }>()
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
@@ -218,7 +219,10 @@ watch(
       <div
         class="flex justify-between md:justify-end py-2 sticky top-0 z-10 bg-background/80 backdrop-blur-sm"
       >
-        <TclChatActionMenu v-if="breakpoints.isSmaller('md')" />
+        <TclChatActionMenu
+          v-if="breakpoints.isSmaller('md')"
+          @new-chat="emit('new-chat')"
+        />
         <TclShareDialog
           v-if="props.messages.length > 0 && props.status === 'ready'"
           :chat-id="props.chatId"
