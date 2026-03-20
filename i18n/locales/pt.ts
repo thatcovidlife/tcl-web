@@ -871,6 +871,7 @@ export default {
       faq: 'FAQ',
       history: 'Histórico',
       new: 'Nova Conversa',
+      title: 'Menu',
     },
     models: {
       'openai/gpt-oss-20b': 'Básico',

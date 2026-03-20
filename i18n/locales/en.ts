@@ -858,6 +858,7 @@ export default {
       faq: 'FAQ',
       history: 'History',
       new: 'New Chat',
+      title: 'Menu',
     },
     models: {
       'openai/gpt-oss-20b': 'Basic',

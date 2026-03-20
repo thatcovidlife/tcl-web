@@ -878,6 +878,7 @@ export default {
       faq: 'Preguntas Frecuentes',
       history: 'Historial',
       new: 'Nuevo chat',
+      title: 'Menú',
     },
     models: {
       'openai/gpt-oss-20b': 'Básico',
