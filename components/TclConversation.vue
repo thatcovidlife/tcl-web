@@ -230,7 +230,7 @@ watch(
           v-if="props.messages.length > 0 && props.status === 'ready'"
           :chat-id="props.chatId"
           :chat-title="firstUserQuestion"
-          class="hidden md:flex"
+          class="flex"
           @created="emit('share')"
         />
       </div>
