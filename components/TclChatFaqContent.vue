@@ -31,7 +31,7 @@ const { data: faqData } = await useSanityQuery<FAQ_QUERYResult>(FAQ_QUERY, {
   >
     <AccordionItem
       v-for="(faq, index) in faqData"
-      :key="index"
+      :key="faq.id"
       :value="faq.id!"
     >
       <AccordionTrigger
