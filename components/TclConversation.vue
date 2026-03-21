@@ -23,7 +23,6 @@ import {
 import { Response } from '@/components/ai-elements/response'
 
 import { useUserStore } from '@/store/user'
-import { useI18n } from 'vue-i18n'
 import { getGravatarUrl } from '@/assets/utils/gravatar'
 import { useChatActions } from '@/composables/useChatActions'
 import { decodeHtmlEntities } from '@/lib/utils'
