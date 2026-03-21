@@ -168,7 +168,11 @@ const getChainOfThought = (parts: UIMessage['parts']) => {
 const firstUserQuestion = computed(() => {
   const firstUser = props.messages.find((m) => m.role === 'user')
   if (!firstUser) return ''
-  const text = decodeHtmlEntities((firstUser.parts[0] as TextUIPart).text)
+  const textPart = firstUser.parts.find(
+    (part): part is TextUIPart =>
+      part.type === 'text' && 'text' in part,
+  )
+  const text = decodeHtmlEntities(textPart?.text ?? '')
   return text.length > 55 ? text.slice(0, 55) + '...' : text
 })
 
