@@ -884,6 +884,7 @@ export default {
       faq: 'FAQ',
       history: 'Historique',
       new: 'Nouveau Chat',
+      title: 'Menu',
     },
     models: {
       'openai/gpt-oss-20b': 'Basique',
@@ -901,6 +902,9 @@ export default {
       },
       openChat: 'Ouvrir le chat',
       placeholder: "Rechercher dans l'historique des discussions...",
+      relativeTime: {
+        justNow: "À l'instant",
+      },
       results: {
         results: 'Résultats de la recherche',
         recentChats: 'Discussions récentes',
@@ -947,6 +951,28 @@ export default {
         tryYourself: 'Essayez ce chat vous-même',
         report: 'Signaler ce chat',
       },
+    },
+    chainOfThought: {
+      reasoning: {
+        done: 'A réfléchi pendant quelques secondes',
+        active: 'Réflexion...',
+      },
+      contentCheck: {
+        done: 'Analyse terminée',
+        active: 'Analyse en cours...',
+        doneContent:
+          "Question de l'utilisateur validée par rapport à la politique de contenu.",
+        activeContent: 'Validation...',
+      },
+      search: {
+        done: 'Recherche terminée',
+        active: 'Recherche...',
+        doneContent: '{count} résultats trouvés dans {source}.',
+        activeContent: 'Parcours des archives...',
+        sourceScientific: 'articles scientifiques',
+        sourceGeneral: 'documents généraux',
+      },
+      title: 'Chaîne de Pensée',
     },
   },
 }

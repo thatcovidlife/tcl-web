@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import { Search, Brain, ShieldCheck } from 'lucide-vue-next'
 import lodash from 'lodash'
 
@@ -37,12 +38,16 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'share'): void
+  (e: 'new-chat'): void
 }>()
+
+const breakpoints = useBreakpoints(breakpointsTailwind)
 
 // Store like states for messages
 const messageLikes = ref<Record<string, boolean | null>>({})
 
 const { uniqBy } = lodash
+const { t } = useI18n()
 const userStore = useUserStore()
 
 // Map to store open state for each assistant message by id
@@ -87,7 +92,9 @@ const mapStep = (step: UIMessage['parts'][number], index: number) => {
         icon: Brain,
         status: step.state === 'done' ? 'complete' : 'active',
         label:
-          step.state === 'done' ? 'Thought for a few seconds' : 'Thinking...',
+          step.state === 'done'
+            ? t('chatbot.chainOfThought.reasoning.done')
+            : t('chatbot.chainOfThought.reasoning.active'),
         content: step.text,
       }
     case 'tool-checkContent':
@@ -97,19 +104,19 @@ const mapStep = (step: UIMessage['parts'][number], index: number) => {
         status: step.state === 'output-available' ? 'complete' : 'active',
         label:
           step.state === 'output-available'
-            ? 'Analysis complete'
-            : 'Analyzing...',
+            ? t('chatbot.chainOfThought.contentCheck.done')
+            : t('chatbot.chainOfThought.contentCheck.active'),
         content:
           step.state === 'output-available'
-            ? 'Validated user question against content policy.'
-            : 'Validating...',
+            ? t('chatbot.chainOfThought.contentCheck.doneContent')
+            : t('chatbot.chainOfThought.contentCheck.activeContent'),
       }
     case 'tool-getInformation': {
       const label =
         // @ts-expect-error
         step.input?.selectedCollection === 'lancet'
-          ? 'scientific papers'
-          : 'general documents'
+          ? t('chatbot.chainOfThought.search.sourceScientific')
+          : t('chatbot.chainOfThought.search.sourceGeneral')
 
       const results = uniqBy((step.output as any[]) || [], (result: any) =>
         resolveUrl(result),
@@ -131,12 +138,15 @@ const mapStep = (step: UIMessage['parts'][number], index: number) => {
         status: step.state === 'output-available' ? 'complete' : 'active',
         label:
           step.state === 'output-available'
-            ? 'Search complete'
-            : 'Searching...',
+            ? t('chatbot.chainOfThought.search.done')
+            : t('chatbot.chainOfThought.search.active'),
         content:
           step.state === 'output-available'
-            ? `Found ${results.length} results in ${label}.`
-            : 'Digging through the archives...',
+            ? t('chatbot.chainOfThought.search.doneContent', {
+                count: results.length,
+                source: label,
+              })
+            : t('chatbot.chainOfThought.search.activeContent'),
         results,
       }
     }
@@ -154,6 +164,16 @@ const getChainOfThought = (parts: UIMessage['parts']) => {
     )
     .map(mapStep)
 }
+
+const firstUserQuestion = computed(() => {
+  const firstUser = props.messages.find((m) => m.role === 'user')
+  if (!firstUser) return ''
+  const textPart = firstUser.parts.find(
+    (part): part is TextUIPart => part.type === 'text' && 'text' in part,
+  )
+  const text = decodeHtmlEntities(textPart?.text ?? '')
+  return text.length > 55 ? text.slice(0, 55) + '...' : text
+})
 
 const { handleLike, handleDislike, handleUnlike, handleCopy, handleExport } =
   useChatActions(toRef(props, 'messages'), messageLikes)
@@ -199,12 +219,17 @@ watch(
   >
     <Conversation class="relative size-full">
       <div
-        v-if="props.messages.length > 0 && props.status === 'ready'"
-        class="flex justify-end py-2 sticky top-0 z-10 bg-background/80 backdrop-blur-sm"
+        class="flex justify-between md:justify-end py-2 sticky top-0 z-10 bg-background/80 backdrop-blur-sm"
       >
+        <TclChatActionMenu
+          v-if="breakpoints.isSmaller('md')"
+          @new-chat="emit('new-chat')"
+        />
         <TclShareDialog
+          v-if="props.messages.length > 0 && props.status === 'ready'"
           :chat-id="props.chatId"
-          :chat-title="`Chat ${props.chatId.slice(0, 8)}...`"
+          :chat-title="firstUserQuestion"
+          class="flex"
           @created="emit('share')"
         />
       </div>
@@ -225,7 +250,9 @@ watch(
               :model-value="getOpenState(message.id)"
               @update:model-value="(isOpen) => onOpenChange(message.id, isOpen)"
             >
-              <ChainOfThoughtHeader />
+              <ChainOfThoughtHeader
+                :title="t('chatbot.chainOfThought.title')"
+              />
               <ChainOfThoughtContent>
                 <ChainOfThoughtStep
                   v-for="step in getChainOfThought(message.parts)"

@@ -871,6 +871,7 @@ export default {
       faq: 'FAQ',
       history: 'Histórico',
       new: 'Nova Conversa',
+      title: 'Menu',
     },
     models: {
       'openai/gpt-oss-20b': 'Básico',
@@ -887,6 +888,9 @@ export default {
       },
       openChat: 'Abrir Chat',
       placeholder: 'Pesquisar no histórico de bate-papo...',
+      relativeTime: {
+        justNow: 'Agora mesmo',
+      },
       results: {
         results: 'Resultados da Pesquisa',
         recentChats: 'Conversas Recentes',
@@ -934,6 +938,28 @@ export default {
         tryYourself: 'Experimente este chat você mesmo',
         report: 'Denunciar este chat',
       },
+    },
+    chainOfThought: {
+      reasoning: {
+        done: 'Pensou por alguns segundos',
+        active: 'Pensando...',
+      },
+      contentCheck: {
+        done: 'Análise concluída',
+        active: 'Analisando...',
+        doneContent:
+          'Pergunta do usuário validada contra a política de conteúdo.',
+        activeContent: 'Validando...',
+      },
+      search: {
+        done: 'Pesquisa concluída',
+        active: 'Pesquisando...',
+        doneContent: 'Encontrados {count} resultados em {source}.',
+        activeContent: 'Pesquisando nos arquivos...',
+        sourceScientific: 'artigos científicos',
+        sourceGeneral: 'documentos gerais',
+      },
+      title: 'Cadeia de Pensamento',
     },
   },
 }

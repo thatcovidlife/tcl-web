@@ -58,6 +58,7 @@ const onPressEnter = () => {
   <div class="w-full max-w-3xl py-6">
     <PromptInput
       global-drop
+      class="shadow-lg"
       multiple
       :on-submit="(message: PromptInputMessage) => emit('submit', message)"
     >
