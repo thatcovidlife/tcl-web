@@ -41,7 +41,7 @@ const emit = defineEmits<{
 const router = useRouter()
 const { getUserChats, searchChats } = useApiRoutes()
 const { user } = useUserSession()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const localePath = useLocalePath()
 
 const search = ref('')
@@ -153,11 +153,15 @@ const formatDate = (dateInput?: Date | string) => {
   const diffHours = Math.floor(diffMs / 3600000)
   const diffDays = Math.floor(diffMs / 86400000)
 
-  if (diffMins < 1) return 'Just now'
-  if (diffMins < 60) return `${diffMins}m ago`
-  if (diffHours < 24) return `${diffHours}h ago`
-  if (diffDays < 7) return `${diffDays}d ago`
-  return date.toLocaleDateString()
+  if (diffMins < 1) return t('chatbot.search.relativeTime.justNow')
+
+  const rtf = new Intl.RelativeTimeFormat(locale.value, { numeric: 'auto' })
+
+  if (diffMins < 60) return rtf.format(-diffMins, 'minute')
+  if (diffHours < 24) return rtf.format(-diffHours, 'hour')
+  if (diffDays < 7) return rtf.format(-diffDays, 'day')
+
+  return date.toLocaleDateString(locale.value)
 }
 
 watch(search, (newValue) => {

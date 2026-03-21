@@ -902,6 +902,9 @@ export default {
       },
       openChat: 'Ouvrir le chat',
       placeholder: "Rechercher dans l'historique des discussions...",
+      relativeTime: {
+        justNow: "À l'instant",
+      },
       results: {
         results: 'Résultats de la recherche',
         recentChats: 'Discussions récentes',

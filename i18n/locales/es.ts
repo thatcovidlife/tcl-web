@@ -895,6 +895,9 @@ export default {
       },
       openChat: 'Abrir chat',
       placeholder: 'Buscar en el historial de chat...',
+      relativeTime: {
+        justNow: 'Ahora mismo',
+      },
       results: {
         results: 'Resultados de la búsqueda',
         recentChats: 'Chats recientes',

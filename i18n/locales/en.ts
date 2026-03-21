@@ -874,6 +874,9 @@ export default {
       },
       openChat: 'Open Chat',
       placeholder: 'Search chat history...',
+      relativeTime: {
+        justNow: 'Just now',
+      },
       results: {
         results: 'Search Results',
         recentChats: 'Recent Chats',

@@ -888,6 +888,9 @@ export default {
       },
       openChat: 'Abrir Chat',
       placeholder: 'Pesquisar no histórico de bate-papo...',
+      relativeTime: {
+        justNow: 'Agora mesmo',
+      },
       results: {
         results: 'Resultados da Pesquisa',
         recentChats: 'Conversas Recentes',
