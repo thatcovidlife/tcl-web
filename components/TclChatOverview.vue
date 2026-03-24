@@ -10,8 +10,9 @@ const { t } = useI18n()
     :transition="{ duration: 0.5, delay: 0.2 }"
     class="flex flex-col items-center justify-end"
   >
-    <div class="h-[60px] mb-4">
+    <div class="h-[85px] mb-4 flex flex-col items-center">
       <ClientOnly>
+        <Badge class="mb-2 uppercase tracking-wider">Beta</Badge>
         <NuxtImg
           :src="`/covid-life-v3-${colorMode.value}.png`"
           alt="That Covid Life logo"

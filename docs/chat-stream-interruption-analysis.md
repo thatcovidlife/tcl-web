@@ -7,6 +7,7 @@ The chatbot sometimes stops streaming mid-response, leaving partial answers inco
 ## Investigation Scope
 
 **Files Analyzed:**
+
 - [server/api/chat/index.post.ts](../server/api/chat/index.post.ts) - Main chat API endpoint
 - [lib/chat/providers.ts](../lib/chat/providers.ts) - LLM provider configuration
 - [lib/chat/config.ts](../lib/chat/config.ts) - Chat configuration
@@ -18,6 +19,7 @@ The chatbot sometimes stops streaming mid-response, leaving partial answers inco
 - [plugins/citation-hydration.client.ts](../plugins/citation-hydration.client.ts) - Citation hydration plugin
 
 **AI SDK Documentation Reviewed:**
+
 - Stream abort handling
 - Timeout configuration
 - `consumeStream` utility
@@ -38,6 +40,7 @@ The chatbot sometimes stops streaming mid-response, leaving partial answers inco
 > Without `consumeStream`, the `onFinish` callback has no chance to execute when the stream is aborted, preventing important cleanup operations.
 
 **Current Code:**
+
 ```typescript
 return createUIMessageStreamResponse({ stream })
 ```
@@ -53,11 +56,13 @@ return createUIMessageStreamResponse({ stream })
 **Issue:** The chat uses `stopWhen: stepCountIs(20)` which limits the tool-calling loop to 20 steps. While this prevents infinite loops, it may truncate legitimate multi-step reasoning.
 
 **Analysis:**
+
 - Each tool call (search, guard) counts as a step
 - Complex queries may require multiple search iterations
 - The default in AI SDK is `stepCountIs(20)` for tool-loop agents
 
 **Current Configuration:**
+
 ```typescript
 stopWhen: stepCountIs(20),
 ```
@@ -89,6 +94,7 @@ const timeoutPromise = new Promise<never>((_, reject) =>
 **Location:** [server/api/chat/index.post.ts:67-69](../server/api/chat/index.post.ts#L67-L69)
 
 **Current Configuration:**
+
 ```typescript
 experimental_transform: smoothStream({
   delayInMs: 20,
@@ -112,6 +118,7 @@ experimental_transform: smoothStream({
 3. The `onAbort` callback cannot be triggered
 
 **AI SDK Recommendation:**
+
 > Forward the abort signal from the request to enable proper stream cancellation and resource cleanup.
 
 ---
@@ -121,6 +128,7 @@ experimental_transform: smoothStream({
 **Location:** [server/api/chat/index.post.ts:88-95](../server/api/chat/index.post.ts#L88-L95)
 
 **Current Code:**
+
 ```typescript
 onError: (error) => {
   captureException(error, {
@@ -139,6 +147,7 @@ onError: (error) => {
 **Location:** [components/ai-elements/response/markdown.ts:19-23](../components/ai-elements/response/markdown.ts#L19-L23)
 
 **Current Code:**
+
 ```typescript
 export async function renderMarkdown(markdown: string): Promise<string> {
   const html = await marked.parse(markdown)
@@ -159,6 +168,7 @@ export async function renderMarkdown(markdown: string): Promise<string> {
 > Streaming works locally but gets chopped off when deployed to Vercel due to default function duration limits.
 
 **Vercel Limits:**
+
 - Hobby: 300 seconds (5 minutes)
 - Pro: 800 seconds (~13 minutes)
 - Enterprise: 800 seconds
@@ -206,7 +216,8 @@ export default defineLazyEventHandler(() => {
         const result = streamText({
           // ... existing config ...
           abortSignal: event.node.req.signal || controller.signal, // ADD THIS
-          onAbort: ({ steps }) => { // ADD THIS
+          onAbort: ({ steps }) => {
+            // ADD THIS
             console.log('Stream aborted after', steps.length, 'steps')
           },
           // ... rest of config ...
@@ -216,7 +227,10 @@ export default defineLazyEventHandler(() => {
     })
 
     clearTimeout(timeout) // Clear timeout on completion
-    return createUIMessageStreamResponse({ stream, consumeSseStream: consumeStream })
+    return createUIMessageStreamResponse({
+      stream,
+      consumeSseStream: consumeStream,
+    })
   })
 })
 ```
@@ -247,7 +261,8 @@ export const maxDuration = 300 // 5 minutes - adjust based on Vercel plan
 ```typescript
 const result = streamText({
   // ... existing config ...
-  onFinish: async ({ isAborted, finishReason }) => { // ADD THIS
+  onFinish: async ({ isAborted, finishReason }) => {
+    // ADD THIS
     if (isAborted) {
       console.log('Stream was aborted by client')
       captureMessage('Chat stream aborted', {
@@ -273,11 +288,13 @@ const result = streamText({
 **File:** [server/api/chat/index.post.ts](../server/api/chat/index.post.ts)
 
 **Option A - Increase limit:**
+
 ```typescript
 stopWhen: stepCountIs(50), // Increased from 20
 ```
 
 **Option B - Remove explicit limit (use default):**
+
 ```typescript
 // Remove the stopWhen line entirely to use AI SDK default behavior
 ```
@@ -430,17 +447,18 @@ const result = streamText({
 
 ## Summary
 
-| Issue | Priority | Impact | Fix Complexity |
-|-------|----------|--------|----------------|
-| Missing `consumeStream` | HIGH | Stream cleanup, abort handling | Low |
-| No abort signal forwarding | MEDIUM | Cannot cancel requests, resource leaks | Low |
-| No `maxDuration` for Vercel | HIGH | Responses cut off at 5 min default | Low |
-| `stepCountIs(20)` limit | MEDIUM | Complex queries truncated | Low |
-| Guard tool timeout | MEDIUM | Content moderation bypassed | Medium |
-| `smoothStream` delay | LOW | Perceived slowness | Low |
-| Markdown rendering | LOW | Rendering delays on large responses | Medium |
+| Issue                       | Priority | Impact                                 | Fix Complexity |
+| --------------------------- | -------- | -------------------------------------- | -------------- |
+| Missing `consumeStream`     | HIGH     | Stream cleanup, abort handling         | Low            |
+| No abort signal forwarding  | MEDIUM   | Cannot cancel requests, resource leaks | Low            |
+| No `maxDuration` for Vercel | HIGH     | Responses cut off at 5 min default     | Low            |
+| `stepCountIs(20)` limit     | MEDIUM   | Complex queries truncated              | Low            |
+| Guard tool timeout          | MEDIUM   | Content moderation bypassed            | Medium         |
+| `smoothStream` delay        | LOW      | Perceived slowness                     | Low            |
+| Markdown rendering          | LOW      | Rendering delays on large responses    | Medium         |
 
 **Recommended Implementation Order:**
+
 1. Add `consumeStream` (5 minutes)
 2. Add abort signal forwarding (10 minutes)
 3. Add `maxDuration` export (2 minutes)

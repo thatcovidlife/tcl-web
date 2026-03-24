@@ -968,5 +968,7 @@ export default {
       },
       title: 'Cadena de Pensamiento',
     },
+    disclaimer:
+      'La IA puede cometer errores; verifica siempre las respuestas y las fuentes.',
   },
 }

@@ -974,5 +974,7 @@ export default {
       },
       title: 'Chaîne de Pensée',
     },
+    disclaimer:
+      "L'IA peut faire des erreurs; vérifiez toujours les réponses et les sources.",
   },
 }

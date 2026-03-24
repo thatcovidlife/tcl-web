@@ -961,5 +961,7 @@ export default {
       },
       title: 'Cadeia de Pensamento',
     },
+    disclaimer:
+      'A IA pode cometer erros; sempre verifique as respostas e as fontes.',
   },
 }

@@ -944,5 +944,6 @@ export default {
       },
       title: 'Chain of Thought',
     },
+    disclaimer: 'AI can make mistakes; always check answers and sources.',
   },
 }

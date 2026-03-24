@@ -6,9 +6,9 @@ import { CollapsibleTrigger } from '@/components/ui/collapsible'
 import { useChainOfThought } from './chain-of-thought-context'
 
 const props = withDefaults(
-defineProps<{
-  title?: string
-}>(),
+  defineProps<{
+    title?: string
+  }>(),
   {
     title: 'Chain of Thought',
   },

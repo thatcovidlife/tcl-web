@@ -297,6 +297,12 @@ onMounted(async () => {
           }
         "
       />
+      <p
+        v-if="chat.messages.length > 0"
+        class="order-last md:order-none pt-2 pb-6 text-center text-xs text-muted-foreground shrink-0"
+      >
+        {{ t('chatbot.disclaimer') }}
+      </p>
     </div>
   </div>
 </template>
