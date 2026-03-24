@@ -14,6 +14,10 @@ definePageMeta({
   layout: 'chatbot',
 })
 
+useHead({
+  bodyAttrs: { class: 'chat-page' },
+})
+
 const { t } = useI18n()
 const user = useUserSession()
 const userStore = useUserStore()
