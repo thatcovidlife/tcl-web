@@ -61,6 +61,8 @@ export default defineLazyEventHandler(() => {
 
     const startTime = Date.now()
 
+    console.log(`Selected model: ${selectedModel}`)
+
     const agent = new ToolLoopAgent({
       model: model.languageModel(selectedModel as modelID),
       temperature: config.llmTemperature,

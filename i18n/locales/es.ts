@@ -881,6 +881,7 @@ export default {
       faq: 'Preguntas Frecuentes',
       history: 'Historial',
       new: 'Nuevo chat',
+      title: 'Menú',
     },
     models: {
       'openai/gpt-oss-20b': 'Básico',
@@ -897,6 +898,9 @@ export default {
       },
       openChat: 'Abrir chat',
       placeholder: 'Buscar en el historial de chat...',
+      relativeTime: {
+        justNow: 'Ahora mismo',
+      },
       results: {
         results: 'Resultados de la búsqueda',
         recentChats: 'Chats recientes',
@@ -945,5 +949,29 @@ export default {
         report: 'Reportar este chat',
       },
     },
+    chainOfThought: {
+      reasoning: {
+        done: 'Pensó durante unos segundos',
+        active: 'Pensando...',
+      },
+      contentCheck: {
+        done: 'Análisis completo',
+        active: 'Analizando...',
+        doneContent:
+          'Pregunta del usuario validada contra la política de contenido.',
+        activeContent: 'Validando...',
+      },
+      search: {
+        done: 'Búsqueda completa',
+        active: 'Buscando...',
+        doneContent: 'Se encontraron {count} resultados en {source}.',
+        activeContent: 'Revisando los archivos...',
+        sourceScientific: 'artículos científicos',
+        sourceGeneral: 'documentos generales',
+      },
+      title: 'Cadena de Pensamiento',
+    },
+    disclaimer:
+      'La IA puede cometer errores; verifica siempre las respuestas y las fuentes.',
   },
 }

@@ -3,8 +3,11 @@ export const exportPDF = async (
   title: string,
   filename: string,
 ) => {
+  const runtimeConfig = useRuntimeConfig()
+  const apiUrl = runtimeConfig.public.pdfExportUrl
+
   try {
-    const res = await fetch('https://tcl-pdf-export.vercel.app/api/chat', {
+    const res = await fetch(`${apiUrl}/api/chat`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

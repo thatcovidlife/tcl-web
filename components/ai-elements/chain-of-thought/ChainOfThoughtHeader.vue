@@ -5,6 +5,15 @@ import { cn } from '@/lib/utils'
 import { CollapsibleTrigger } from '@/components/ui/collapsible'
 import { useChainOfThought } from './chain-of-thought-context'
 
+const props = withDefaults(
+  defineProps<{
+    title?: string
+  }>(),
+  {
+    title: 'Chain of Thought',
+  },
+)
+
 defineOptions({ inheritAttrs: false })
 
 const attrs = useAttrs()
@@ -28,7 +37,7 @@ const restAttrs = computed(() => {
   <CollapsibleTrigger :class="triggerClasses" v-bind="restAttrs">
     <Link class="size-4" />
     <span class="flex-1 text-left">
-      <slot>Chain of Thought</slot>
+      <slot>{{ props.title }}</slot>
     </span>
     <ChevronDown
       :class="

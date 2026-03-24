@@ -21,21 +21,21 @@
 
 ## Tech Stack
 
-| Category | Technology |
-|----------|------------|
-| **Framework** | Nuxt 3.19.1, Vue 3, TypeScript |
-| **Package Manager** | Yarn 4.9.4 |
-| **Runtime** | Node.js 22.18.0 |
-| **Database** | PostgreSQL with Drizzle ORM |
-| **Vector DB** | Qdrant (for AI semantic search) |
-| **CMS** | Sanity (editorial content management) |
-| **AI Provider** | DeepInfra (GPT-OSS LLM) |
-| **Auth** | Auth0 via nuxt-auth-utils |
-| **Rate Limiting** | Upstash Redis |
-| **Monitoring** | Sentry (error tracking) |
-| **Styling** | Tailwind CSS, Shadcn UI, Radix Vue |
-| **Testing** | Vitest |
-| **Deployment** | Vercel |
+| Category            | Technology                            |
+| ------------------- | ------------------------------------- |
+| **Framework**       | Nuxt 3.19.1, Vue 3, TypeScript        |
+| **Package Manager** | Yarn 4.9.4                            |
+| **Runtime**         | Node.js 22.18.0                       |
+| **Database**        | PostgreSQL with Drizzle ORM           |
+| **Vector DB**       | Qdrant (for AI semantic search)       |
+| **CMS**             | Sanity (editorial content management) |
+| **AI Provider**     | DeepInfra (GPT-OSS LLM)               |
+| **Auth**            | Auth0 via nuxt-auth-utils             |
+| **Rate Limiting**   | Upstash Redis                         |
+| **Monitoring**      | Sentry (error tracking)               |
+| **Styling**         | Tailwind CSS, Shadcn UI, Radix Vue    |
+| **Testing**         | Vitest                                |
+| **Deployment**      | Vercel                                |
 
 ## Project Structure
 
@@ -75,12 +75,14 @@ tcl-web/
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone <repository-url>
 cd tcl-web
 ```
 
 2. Install dependencies:
+
 ```bash
 yarn install --immutable
 ```
@@ -88,12 +90,14 @@ yarn install --immutable
 3. Configure environment variables (see [Environment Variables](#environment-variables) below)
 
 4. Set up the database:
+
 ```bash
 yarn db:push     # Push schema to database
 yarn db:seed     # Seed with initial data (optional)
 ```
 
 5. Start the development server:
+
 ```bash
 yarn dev
 ```
@@ -129,24 +133,24 @@ yarn sanity:gen         # Regenerate GROQ types after schema changes
 
 Create a `.env` file with the following variables:
 
-| Variable | Purpose | Required |
-|----------|---------|----------|
-| `NUXT_PUBLIC_SITE_URL` | Base site URL | Yes |
-| `SANITY_DATASET` | Sanity dataset name | Yes |
-| `SANITY_PROJECTID` | Sanity project ID | Yes |
-| `SANITY_TOKEN` | Sanity API token | Yes |
-| `TURNSTILE_SITE_KEY` | Cloudflare Turnstile site key | Yes |
-| `TURNSTILE_SECRET_KEY` | Cloudflare Turnstile secret | Yes |
-| `DZL_DATABASE_URL` | PostgreSQL connection string | Yes |
-| `DEEPINFRA_API_KEY` | DeepInfra AI provider key | Yes |
-| `DEEPINFRA_BASE_URL` | DeepInfra API base URL | Yes |
-| `QDRANT_URL` | Qdrant vector DB URL | Yes |
-| `QDRANT_KEY` | Qdrant API key | Yes |
-| `QDRANT_COLLECTION` | Qdrant collection name | Yes |
-| `UPSTASH_REDIS_REST_URL` | Upstash Redis URL | Yes |
-| `UPSTASH_REDIS_REST_TOKEN` | Upstash Redis token | Yes |
-| `LANGSMITH_PROMPT_NAME` | LangSmith prompt name | No |
-| `STATSIG_CLIENT_ID` | Statsig analytics client ID | No |
+| Variable                   | Purpose                       | Required |
+| -------------------------- | ----------------------------- | -------- |
+| `NUXT_PUBLIC_SITE_URL`     | Base site URL                 | Yes      |
+| `SANITY_DATASET`           | Sanity dataset name           | Yes      |
+| `SANITY_PROJECTID`         | Sanity project ID             | Yes      |
+| `SANITY_TOKEN`             | Sanity API token              | Yes      |
+| `TURNSTILE_SITE_KEY`       | Cloudflare Turnstile site key | Yes      |
+| `TURNSTILE_SECRET_KEY`     | Cloudflare Turnstile secret   | Yes      |
+| `DZL_DATABASE_URL`         | PostgreSQL connection string  | Yes      |
+| `DEEPINFRA_API_KEY`        | DeepInfra AI provider key     | Yes      |
+| `DEEPINFRA_BASE_URL`       | DeepInfra API base URL        | Yes      |
+| `QDRANT_URL`               | Qdrant vector DB URL          | Yes      |
+| `QDRANT_KEY`               | Qdrant API key                | Yes      |
+| `QDRANT_COLLECTION`        | Qdrant collection name        | Yes      |
+| `UPSTASH_REDIS_REST_URL`   | Upstash Redis URL             | Yes      |
+| `UPSTASH_REDIS_REST_TOKEN` | Upstash Redis token           | Yes      |
+| `LANGSMITH_PROMPT_NAME`    | LangSmith prompt name         | No       |
+| `STATSIG_CLIENT_ID`        | Statsig analytics client ID   | No       |
 
 ## AI Chat Architecture
 
@@ -165,6 +169,7 @@ AI SDK streamText
 ## Contributing
 
 This project uses:
+
 - **Husky** for git hooks
 - **Commitlint** for conventional commit enforcement
 - **Prettier** for code formatting

@@ -11,19 +11,7 @@ import {
 } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 
-import { SERIALIZERS } from '@/assets/constants/serializers'
-import POLICY_QUERY from '@/sanity/queries/policy.sanity'
-import type { POLICY_QUERYResult } from '@/sanity/types'
-
 const { locale, t } = useI18n()
-
-const { data: policyData } = await useSanityQuery<POLICY_QUERYResult>(
-  POLICY_QUERY,
-  {
-    locale,
-    policyType: 'Chatbot Disclaimer',
-  },
-)
 
 const { width } = useWindowSize()
 </script>
@@ -47,15 +35,7 @@ const { width } = useWindowSize()
       <DialogHeader>
         <DialogTitle>{{ t('chatbot.menu.about') }}</DialogTitle>
       </DialogHeader>
-      <div
-        class="prose prose-invert prose-a:text-primary hover:prose-a:text-primary-hover [&>p]:mb-4 max-h-[50vh] overflow-y-auto"
-      >
-        <SanityContent
-          v-if="policyData?.contents"
-          :blocks="<any>policyData?.contents"
-          :serializers="SERIALIZERS"
-        />
-      </div>
+      <TclChatAboutContent :locale="locale" />
     </DialogContent>
   </Dialog>
 </template>

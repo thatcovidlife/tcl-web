@@ -14,11 +14,13 @@ The chat system currently uses a two-step retrieval process:
 2. **Direct LLM Usage**: Raw search results are passed directly to the LLM without re-ranking
 
 **Flow:**
+
 ```
 User Query → Embedding Generation → Qdrant Vector Search → Raw Results → LLM → Response
 ```
 
 **Key Files:**
+
 - [lib/chat/tools.ts](lib/chat/tools.ts) - Search tool definition
 - [lib/chat/embedding.ts](lib/chat/embedding.ts) - Vector search implementation
 - [lib/chat/providers.ts](lib/chat/providers.ts) - DeepInfra provider configuration
@@ -27,6 +29,7 @@ User Query → Embedding Generation → Qdrant Vector Search → Raw Results →
 ### Problem with Current Approach
 
 Vector similarity search alone has limitations:
+
 - Semantic embeddings may miss nuanced query-document relationships
 - No cross-query reranking when searching multiple collections
 - Fixed result ordering may not match user's actual information need
@@ -38,6 +41,7 @@ Vector similarity search alone has limitations:
 **Recommendation: Modify the existing `searchTool` in [lib/chat/tools.ts](lib/chat/tools.ts)**
 
 **Rationale:**
+
 1. **No system prompt changes needed** - The LLM already uses the `getInformation` tool with a specific query
 2. **Transparent improvement** - Better results without changing the chat flow
 3. **Cleaner data flow** - Reranking happens within the tool execution, not exposed to the LLM
@@ -71,6 +75,7 @@ const { ranking, rerankedDocuments } = await rerank({
 ```
 
 **Supported Providers:**
+
 - Cohere (`cohere.reranking()`)
 - Amazon Bedrock
 - Together.ai
@@ -88,6 +93,7 @@ const { ranking, rerankedDocuments } = await rerank({
 **Pricing:** $0.025 per 1M tokens
 
 **Request Format:**
+
 ```bash
 curl -X POST \
   -d '{"queries": ["What is the capital of United States?"], "documents": ["The capital of USA is Washington DC."]}' \
@@ -97,6 +103,7 @@ curl -X POST \
 ```
 
 **Response Format:**
+
 ```json
 {
   "scores": [0.1, 0.2, 0.3],
@@ -191,7 +198,7 @@ import { z } from 'zod'
 
 import { collectionName } from './collections'
 import { findRelevantContent } from './embedding'
-import { rerankDocuments } from './rerank'  // Import rerank function
+import { rerankDocuments } from './rerank' // Import rerank function
 
 // const PANGEA_ENABLED = process.env.PANGEA_ENABLED === 'true'
 const RERANK_ENABLED = process.env.RERANK_ENABLED === 'true'
@@ -217,7 +224,7 @@ export const searchTool = tool({
     if (RERANK_ENABLED && initialResults.length > 0) {
       const reranked = await rerankDocuments({
         query: question,
-        documents: initialResults.map(result => ({
+        documents: initialResults.map((result) => ({
           id: result.id,
           content: result.payload?.content || result.payload?.text || '',
           metadata: result.payload,
@@ -273,14 +280,17 @@ export const config = {
 ## Trade-offs and Considerations
 
 ### Latency Impact
+
 - **Additional API call**: ~100-300ms added to each search
 - **Mitigation**: Can be disabled via `RERANK_ENABLED=false` for faster responses
 
 ### Error Handling
+
 - **Fallback behavior**: If reranking fails, return original vector search results
 - **Implementation**: Wrap rerank call in try-catch with logging
 
 ### Top-K vs Top-N Strategy
+
 - **Current**: Vector search returns `qdrantMaxResults` results
 - **Proposed**: Rerank top K (e.g., 20) and return top N (e.g., 5)
 - **Rationale**: Reranking is most effective on a smaller, high-similarity candidate set

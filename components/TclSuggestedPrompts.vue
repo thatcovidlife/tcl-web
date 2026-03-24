@@ -39,7 +39,7 @@ const { loggedIn } = useUserSession()
       >
         <ShadButton
           variant="ghost"
-          class="text-left border rounded-xl px-4 py-3.5 text-sm flex-1 gap-1 sm:flex-col w-full h-auto justify-start items-start hover:cursor-pointer"
+          class="text-left border rounded-xl px-4 py-3.5 text-sm flex-1 gap-1 flex-col w-full h-auto justify-start items-start hover:cursor-pointer shadow-sm"
           :disabled="!loggedIn"
           @click="
             (e: Event) =>
@@ -49,8 +49,10 @@ const { loggedIn } = useUserSession()
               })
           "
         >
-          <p class="font-medium">{{ suggestedAction.title }}</p>
-          <p class="text-muted-foreground">
+          <p class="font-medium w-full text-center">
+            {{ suggestedAction.title }}
+          </p>
+          <p class="text-muted-foreground w-full text-center">
             {{ suggestedAction.label }}
           </p>
         </ShadButton>
