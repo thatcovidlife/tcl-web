@@ -874,8 +874,8 @@ export default {
       title: 'Menu',
     },
     models: {
-      'openai/gpt-oss-20b': 'Básico',
-      'openai/gpt-oss-120b': 'Pro',
+      'accounts/fireworks/models/gpt-oss-20b': 'Básico',
+      'accounts/fireworks/models/gpt-oss-120b': 'Pro',
     },
     overview: 'Seu companheiro de IA para navegar a pandemia de COVID-19.',
     search: {

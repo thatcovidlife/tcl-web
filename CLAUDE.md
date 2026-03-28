@@ -124,7 +124,7 @@ Utilities                → lib/utils/, lib/chat/, lib/db/
 ```
 pages/chat.vue → /api/chat/index.post.ts → AI SDK streamText
                                               ├─ Qdrant (vector search)
-                                              ├─ DeepInfra (GPT-OSS LLM)
+                                              ├─ Fireworks AI (GPT-OSS / GLM LLMs)
                                               ├─ Guard Tool (LLM-based content moderation, 5s timeout fallback)
                                               └─ Upstash Redis (rate limiting)
 ```
@@ -185,7 +185,7 @@ Key variables for full functionality:
 | `SANITY_DATASET`, `SANITY_PROJECTID`, `SANITY_TOKEN` | Sanity CMS                |
 | `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`         | Bot protection            |
 | `DZL_DATABASE_URL`                                   | PostgreSQL connection     |
-| `DEEPINFRA_API_KEY`, `DEEPINFRA_BASE_URL`            | AI provider               |
+| `FIREWORKS_API_KEY`, `FIREWORKS_BASE_URL`            | AI provider               |
 | `QDRANT_URL`, `QDRANT_KEY`, `QDRANT_COLLECTION`      | Vector DB                 |
 | `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | Rate limiting             |
 | `LANGSMITH_PROMPT_NAME`                              | LLM prompt management     |

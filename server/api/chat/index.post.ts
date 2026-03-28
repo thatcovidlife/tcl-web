@@ -28,7 +28,7 @@ export const maxDuration = 300
 // Max 6 steps: covers guard + 2 searches + potential retries + final answer
 // Previously set to 50 — that allowed runaway loops, wasting tokens and time
 // ---------------------------------------------------------------------------
-const MAX_STEPS = 6
+const MAX_STEPS = 10
 
 export default defineLazyEventHandler(() => {
   return defineEventHandler(async (event) => {

@@ -1,18 +1,28 @@
 export const config = {
-  apiKey: process.env.DEEPINFRA_API_KEY,
-  baseUrl: process.env.DEEPINFRA_BASE_URL,
-  embedModel: process.env.DEEPINFRA_EMBED_MODEL,
+  fireworksApiKey:
+    process.env.FIREWORKS_API_KEY ?? process.env.DEEPINFRA_API_KEY,
+  fireworksBaseUrl: process.env.FIREWORKS_BASE_URL,
+  embedModel:
+    process.env.FIREWORKS_EMBED_MODEL ?? process.env.DEEPINFRA_EMBED_MODEL,
   // lfFunctionId: process.env.LANGFUSE_FUNCTION_ID,
   // lfPublicKey: process.env.LANGFUSE_PUBLIC_KEY,
   // lfSecretKey: process.env.LANGFUSE_SECRET_KEY,
   // lfBaseUrl: process.env.LANGFUSE_BASE_URL,
-  llmMaxTokens: parseInt(process.env.DEEPINFRA_LLM_MAX_TOKENS!),
-  llmModel: process.env.DEEPINFRA_LLM_MODEL,
-  llmTemperature: parseFloat(process.env.DEEPINFRA_LLM_TEMPERATURE!),
+  llmMaxTokens: parseInt(
+    process.env.FIREWORKS_LLM_MAX_TOKENS ??
+      process.env.DEEPINFRA_LLM_MAX_TOKENS!,
+  ),
+  llmModel: process.env.FIREWORKS_LLM_MODEL ?? process.env.DEEPINFRA_LLM_MODEL,
+  llmTemperature: parseFloat(
+    process.env.FIREWORKS_LLM_TEMPERATURE ??
+      process.env.DEEPINFRA_LLM_TEMPERATURE!,
+  ),
   // memoryPostgresUrl: process.env.MEMORY_POSTGRES_URL,
   qdrantCollection: process.env.QDRANT_COLLECTION,
   qdrantKey: process.env.QDRANT_KEY,
-  qdrantMaxResults: parseInt(process.env.DEEPINFRA_MAX_RESULTS!),
+  qdrantMaxResults: parseInt(
+    process.env.FIREWORKS_MAX_RESULTS ?? process.env.DEEPINFRA_MAX_RESULTS!,
+  ),
   qdrantPort: parseInt(process.env.QDRANT_PORT || '6333'),
   qdrantUrl: process.env.QDRANT_URL,
   promptName: process.env.LANGSMITH_PROMPT_NAME,
@@ -25,6 +35,9 @@ export const config = {
   rateWindow: process.env.RATE_LIMIT_WINDOW,
   // Reranking
   rerankEnabled: process.env.RERANK_ENABLED === 'true',
-  rerankModel: process.env.RERANK_MODEL || 'Qwen/Qwen3-Reranker-4B',
+  rerankModel:
+    process.env.FIREWORKS_RERANK_MODEL ??
+    process.env.RERANK_MODEL ??
+    'accounts/fireworks/models/qwen3-reranker-8b',
   rerankTopN: parseInt(process.env.RERANK_TOP_N || '5'),
 }

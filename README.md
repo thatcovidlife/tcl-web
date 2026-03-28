@@ -29,7 +29,7 @@
 | **Database**        | PostgreSQL with Drizzle ORM           |
 | **Vector DB**       | Qdrant (for AI semantic search)       |
 | **CMS**             | Sanity (editorial content management) |
-| **AI Provider**     | DeepInfra (GPT-OSS LLM)               |
+| **AI Provider**     | Fireworks AI (GPT-OSS / GLM LLMs)     |
 | **Auth**            | Auth0 via nuxt-auth-utils             |
 | **Rate Limiting**   | Upstash Redis                         |
 | **Monitoring**      | Sentry (error tracking)               |
@@ -142,8 +142,8 @@ Create a `.env` file with the following variables:
 | `TURNSTILE_SITE_KEY`       | Cloudflare Turnstile site key | Yes      |
 | `TURNSTILE_SECRET_KEY`     | Cloudflare Turnstile secret   | Yes      |
 | `DZL_DATABASE_URL`         | PostgreSQL connection string  | Yes      |
-| `DEEPINFRA_API_KEY`        | DeepInfra AI provider key     | Yes      |
-| `DEEPINFRA_BASE_URL`       | DeepInfra API base URL        | Yes      |
+| `FIREWORKS_API_KEY`        | Fireworks AI provider key     | Yes      |
+| `FIREWORKS_BASE_URL`       | Fireworks API base URL        | No       |
 | `QDRANT_URL`               | Qdrant vector DB URL          | Yes      |
 | `QDRANT_KEY`               | Qdrant API key                | Yes      |
 | `QDRANT_COLLECTION`        | Qdrant collection name        | Yes      |
@@ -161,7 +161,7 @@ pages/chat.vue
     ↓
 AI SDK streamText
     ├─ Qdrant (vector search for knowledge base)
-    ├─ DeepInfra (GPT-OSS LLM)
+    ├─ Fireworks AI (GPT-OSS / GLM LLMs)
     ├─ Guard Tool (LLM-based content moderation, 5s timeout fallback)
     └─ Upstash Redis (rate limiting)
 ```

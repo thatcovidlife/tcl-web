@@ -1,28 +1,29 @@
-import { deepinfra } from '@ai-sdk/deepinfra'
 import {
   customProvider,
   extractReasoningMiddleware,
   wrapLanguageModel,
 } from 'ai'
 
+import { fireworksProvider } from './fireworks'
+
 const languageModels = {
-  // 'openai/gpt-oss-20b': wrapLanguageModel({
+  // 'accounts/fireworks/models/gpt-oss-20b': wrapLanguageModel({
   //   middleware: extractReasoningMiddleware({
   //     tagName: 'think',
   //   }),
-  //   model: deepinfra('openai/gpt-oss-20b'),
+  //   model: fireworksProvider('accounts/fireworks/models/gpt-oss-20b'),
   // }),
-  'openai/gpt-oss-120b': wrapLanguageModel({
+  'accounts/fireworks/models/gpt-oss-120b': wrapLanguageModel({
     middleware: extractReasoningMiddleware({
       tagName: 'think',
     }),
-    model: deepinfra('openai/gpt-oss-120b'),
+    model: fireworksProvider('accounts/fireworks/models/gpt-oss-120b'),
   }),
-  'zai-org/GLM-4.7-Flash': wrapLanguageModel({
+  'accounts/fireworks/models/glm-4p7': wrapLanguageModel({
     middleware: extractReasoningMiddleware({
       tagName: 'think',
     }),
-    model: deepinfra('zai-org/GLM-4.7-Flash'),
+    model: fireworksProvider('accounts/fireworks/models/glm-4p7'),
   }),
 }
 
@@ -34,4 +35,4 @@ export type modelID = keyof typeof languageModels
 
 export const MODELS = Object.keys(languageModels)
 
-export const defaultModel: modelID = 'zai-org/GLM-4.7-Flash'
+export const defaultModel: modelID = 'accounts/fireworks/models/glm-4p7'

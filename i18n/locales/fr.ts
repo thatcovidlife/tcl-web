@@ -887,8 +887,8 @@ export default {
       title: 'Menu',
     },
     models: {
-      'openai/gpt-oss-20b': 'Basique',
-      'openai/gpt-oss-120b': 'Pro',
+      'accounts/fireworks/models/gpt-oss-20b': 'Basique',
+      'accounts/fireworks/models/gpt-oss-120b': 'Pro',
     },
     overview: 'Votre compagnon IA pour naviguer la pandémie de COVID-19.',
     search: {

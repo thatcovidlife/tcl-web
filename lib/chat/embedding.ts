@@ -1,21 +1,124 @@
 import { embed } from 'ai'
-import { deepinfra } from '@ai-sdk/deepinfra'
 import { QdrantClient } from '@qdrant/js-client-rest'
 
 import { config } from './config'
+import { fireworksProvider } from './fireworks'
 
-export const embeddingModel = deepinfra.embeddingModel(config.embedModel!)
+const getEmbeddingModelId = (modelId: string): string => {
+  if (modelId.startsWith('accounts/fireworks/models/qwen3-embedding-')) {
+    return modelId.replace('accounts/fireworks/models/', 'fireworks/')
+  }
+
+  return modelId
+}
+
+export const embeddingModel = fireworksProvider.embeddingModel(
+  getEmbeddingModelId(config.embedModel!),
+)
+
+interface CollectionVectorConfig {
+  denseVectorSize: number | null
+  denseVectorName: string | null
+  denseVectorNames: string[]
+  hasSparseVector: boolean
+}
+
+const collectionVectorConfigCache = new Map<
+  string,
+  Promise<CollectionVectorConfig | null>
+>()
+
 export const qdrant = new QdrantClient({
   url: config.qdrantUrl,
   port: config.qdrantPort,
   apiKey: config.qdrantKey,
 })
 
-export const generateEmbedding = async (value: string): Promise<number[]> => {
+const getCollectionVectorConfig = async (
+  collection: string,
+): Promise<CollectionVectorConfig | null> => {
+  if (!collectionVectorConfigCache.has(collection)) {
+    collectionVectorConfigCache.set(
+      collection,
+      (async () => {
+        try {
+          const info = await qdrant.getCollection(collection)
+          const vectors = info.config?.params?.vectors
+          const sparseVectors = info.config?.params?.sparse_vectors
+
+          if (!vectors) {
+            return null
+          }
+
+          if ('size' in vectors && typeof vectors.size === 'number') {
+            return {
+              denseVectorSize: vectors.size,
+              denseVectorName: null,
+              denseVectorNames: [],
+              hasSparseVector: Boolean(sparseVectors),
+            }
+          }
+
+          const namedVectors = Object.entries(vectors as Record<string, unknown>)
+            .map(([name, value]) => {
+              if (value === null || typeof value !== 'object') {
+                return null
+              }
+
+              return {
+                name,
+                size:
+                  'size' in value && typeof value.size === 'number'
+                    ? value.size
+                    : null,
+              }
+            })
+            .filter(
+              (
+                vector,
+              ): vector is { name: string; size: number | null } =>
+                vector !== null,
+            )
+
+          const preferredDenseVector =
+            namedVectors.find((vector) => vector.name === 'content') ??
+            namedVectors.find((vector) => vector.size !== null) ??
+            null
+
+          return {
+            denseVectorSize: preferredDenseVector?.size ?? null,
+            denseVectorName: preferredDenseVector?.name ?? null,
+            denseVectorNames: namedVectors.map((vector) => vector.name),
+            hasSparseVector: Boolean(sparseVectors),
+          }
+        } catch (error) {
+          console.error('getCollectionVectorConfig error:', error)
+          return null
+        }
+      })(),
+    )
+  }
+
+  return collectionVectorConfigCache.get(collection) ?? null
+}
+
+export const generateEmbedding = async (
+  value: string,
+  dimensions?: number,
+): Promise<number[]> => {
   const input = value.replaceAll('\n', ' ')
   const { embedding } = await embed({
     model: embeddingModel,
     value: input,
+    ...(dimensions
+      ? {
+          providerOptions: {
+            fireworks: {
+              dimensions,
+            },
+          },
+        }
+      : {}),
   })
   return embedding
 }
@@ -96,7 +199,16 @@ export const smartSearch = async (
   prefetchK: number = 25,
   sectionFilter?: string[],
 ) => {
-  const denseVector = await generateEmbedding(userQuery)
+  const collectionConfig = await getCollectionVectorConfig(collection)
+
+  if (!collectionConfig?.denseVectorNames.length) {
+    return null
+  }
+
+  const denseVector = await generateEmbedding(
+    userQuery,
+    collectionConfig.denseVectorSize ?? undefined,
+  )
   const sparseVector = buildSparseVector(userQuery)
 
   // For Lancet: detect section-level intent and apply payload filter
@@ -119,7 +231,13 @@ export const smartSearch = async (
   }
 
   // Route to relevant named vector spaces based on query intent
-  const facets = routeQuery(userQuery, collectionType)
+  const facets = routeQuery(userQuery, collectionType).filter((facet) =>
+    collectionConfig.denseVectorNames.includes(facet),
+  )
+
+  if (facets.length === 0 && collectionConfig.denseVectorNames.includes('content')) {
+    facets.push('content')
+  }
 
   // Build prefetch — one entry per matched vector space + sparse
   const prefetch = [
@@ -129,12 +247,16 @@ export const smartSearch = async (
       limit: prefetchK,
       ...(filter ? { filter } : {}),
     })),
-    {
-      query: sparseVector,
-      using: 'sparse',
-      limit: prefetchK,
-      ...(filter ? { filter } : {}),
-    },
+    ...(collectionConfig.hasSparseVector
+      ? [
+          {
+            query: sparseVector,
+            using: 'sparse',
+            limit: prefetchK,
+            ...(filter ? { filter } : {}),
+          },
+        ]
+      : []),
   ]
 
   try {
@@ -160,10 +282,21 @@ export const findRelevantContent = async (
   userQuery: string,
   collection?: string,
 ) => {
-  const userQueryEmbedded = await generateEmbedding(userQuery)
+  const targetCollection = collection ?? config.qdrantCollection!
+  const collectionConfig = await getCollectionVectorConfig(targetCollection)
+  const userQueryEmbedded = await generateEmbedding(
+    userQuery,
+    collectionConfig?.denseVectorSize ?? undefined,
+  )
+
   try {
-    return await qdrant.search(collection ?? config.qdrantCollection!, {
-      vector: userQueryEmbedded,
+    return await qdrant.search(targetCollection, {
+      vector: collectionConfig?.denseVectorName
+        ? {
+            name: collectionConfig.denseVectorName,
+            vector: userQueryEmbedded,
+          }
+        : userQueryEmbedded,
       limit: config.qdrantMaxResults,
     })
   } catch (e) {

@@ -1,15 +1,17 @@
 import { config } from './config'
+import { fireworksBaseUrl } from './fireworks'
 
 interface RerankResponse {
-  scores: number[]
-  input_tokens: number
-  request_id: string | null
-  inference_status: {
-    status: string
-    runtime_ms: number
-    cost: number
-    tokens_generated: number
-    tokens_input: number
+  object: string
+  model: string
+  data: {
+    index: number
+    relevance_score: number
+    document?: string
+  }[]
+  usage: {
+    prompt_tokens: number
+    total_tokens: number
   }
 }
 
@@ -27,9 +29,9 @@ interface RerankOptions {
 }
 
 /**
- * Reranks documents using DeepInfra's Qwen3-Reranker-4B model.
- * This custom implementation is needed because AI SDK v6's rerank()
- * function does not currently support DeepInfra as a provider.
+ * Reranks documents using Fireworks' Qwen3 reranker endpoint.
+ * This stays separate from the AI SDK provider because reranking uses
+ * Fireworks' dedicated `/rerank` HTTP API.
  */
 export async function rerankDocuments({
   query,
@@ -41,16 +43,16 @@ export async function rerankDocuments({
   }
 
   try {
-    console.log('rerankDocuments: calling DeepInfra rerank API', {
+    console.log('rerankDocuments: calling Fireworks rerank API', {
       queryLength: query.length,
       documentCount: documents.length,
       topN,
     })
 
-    const rerankUrl = `${config.baseUrl}/v1/inference/${config.rerankModel}`
+    const rerankUrl = `${fireworksBaseUrl}/rerank`
 
     // Add timeout handling to prevent hanging on stalled requests
-    // Increased to 30s since DeepInfra reranking can be slow with large documents
+    // Increased to 30s since reranking can be slow with large documents
     const timeoutPromise = new Promise<never>((_, reject) =>
       setTimeout(() => reject(new Error('Rerank API timeout')), 30000),
     )
@@ -58,12 +60,15 @@ export async function rerankDocuments({
     const fetchPromise = fetch(rerankUrl, {
       method: 'POST',
       headers: {
-        Authorization: `bearer ${config.apiKey}`,
+        Authorization: `bearer ${config.fireworksApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        queries: [query],
+        model: config.rerankModel,
+        query,
         documents: documents.map((d) => d.content),
+        top_n: topN,
+        return_documents: false,
       }),
     })
 
@@ -71,38 +76,41 @@ export async function rerankDocuments({
 
     if (!response.ok) {
       const errorText = await response.text()
-      console.error('rerankDocuments: API error', {
+      console.error('rerankDocuments: Fireworks API error', {
         status: response.status,
         statusText: response.statusText,
         body: errorText,
       })
       throw new Error(
-        `DeepInfra rerank API error: ${response.status} ${response.statusText}`,
+        `Fireworks rerank API error: ${response.status} ${response.statusText}`,
       )
     }
 
     const result = (await response.json()) as RerankResponse
 
     console.log('rerankDocuments: API success', {
-      scoresCount: result.scores.length,
-      inputTokens: result.input_tokens,
-      runtimeMs: result.inference_status.runtime_ms,
+      resultCount: result.data.length,
+      promptTokens: result.usage.prompt_tokens,
+      totalTokens: result.usage.total_tokens,
     })
 
-    // Pair scores with original documents and sort by relevance
-    const ranked = documents
-      .map((doc, index) => ({
-        doc,
-        score: result.scores[index] ?? 0,
-        originalIndex: index,
-      }))
-      .sort((a, b) => b.score - a.score)
+    return result.data.reduce<RerankDocument[]>(
+      (ranked, { index, relevance_score }) => {
+        const doc = documents[index]
 
-    // Return top N documents with scores included
-    return ranked.slice(0, topN).map((r) => ({
-      ...r.doc,
-      score: r.score,
-    }))
+        if (!doc) {
+          return ranked
+        }
+
+        ranked.push({
+          ...doc,
+          score: relevance_score,
+        })
+
+        return ranked
+      },
+      [],
+    )
   } catch (error) {
     console.error('rerankDocuments: error during reranking', error)
     // On error, return original documents truncated to topN

@@ -32,8 +32,8 @@ const conversationId = ref<string>(
 
 // TODO: fix the i18n issue
 const modelNames = {
-  'openai/gpt-oss-120b': 'Basic',
-  'zai-org/GLM-4.7-Flash': 'Pro',
+  'accounts/fireworks/models/gpt-oss-120b': 'Basic',
+  'accounts/fireworks/models/glm-4p7': 'Pro',
 }
 
 const models = computed(() => {

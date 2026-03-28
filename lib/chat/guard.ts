@@ -1,8 +1,9 @@
 import { PangeaConfig, AIGuardService } from 'pangea-node-sdk'
 import type { AIGuard } from 'pangea-node-sdk'
 import { generateText } from 'ai'
-import { deepinfra } from '@ai-sdk/deepinfra'
 import { guardToolInstructions } from './messages'
+
+import { fireworksProvider } from './fireworks'
 
 const token = process.env.PANGEA_TOKEN!
 const domain = process.env.PANGEA_DOMAIN!
@@ -35,7 +36,7 @@ export const aiGuardCheckLlm = async (
 ): Promise<AIGuard.TextGuardResult> => {
   try {
     const response = await generateText({
-      model: deepinfra('openai/gpt-oss-20b'),
+      model: fireworksProvider('accounts/fireworks/models/gpt-oss-20b'),
       system: guardToolInstructions,
       prompt: text,
     })
