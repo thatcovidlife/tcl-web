@@ -181,15 +181,71 @@ export default {
     pageTitle: 'Ùltimas Publicações',
     title: 'That Covid Life - Ùltimas Publicações',
     events: 'Próximos eventos',
+    eventsDescription:
+      'Um fluxo menor de conversas, webinars e encontros que vale a pena manter no radar.',
+    eventsEyebrow: 'Próximos eventos',
+    guidedQuestion3:
+      'O que devo fazer se as pessoas ao meu redor estiverem doentes?',
+    guidedQuestionsDescription:
+      'Abra o chatbot com uma pergunta inicial e continue até a resposta realmente ajudar.',
+    guidedQuestionsDescriptionSignedOut:
+      'Faça login com uma conta gratuita para abrir o chatbot e manter um registro do que você está tentando entender.',
+    guidedQuestionsEyebrow: 'Orientação prática',
+    guidedQuestionsTitle:
+      'Comece pela pergunta que você realmente quer responder.',
+    guidanceCopy:
+      'Use o chatbot para testar decisões do dia a dia e encontrar fontes que valem a leitura.',
+    guidanceLabel: 'Orientação prática',
+    heroDescription:
+      'Reportagem curada, contexto científico e orientação prática para entender o risco da COVID sem ruído nem falso conforto.',
+    heroEyebrow: 'Risco de COVID, explicado com clareza',
+    heroPrimaryCta: 'Ler o que importa agora',
+    heroSecondaryCta: 'Fazer uma pergunta prática',
+    heroSecondaryCtaSignedOut: 'Entrar para fazer uma pergunta',
+    heroTitle:
+      'Entenda o que importa agora. Faça a pergunta que você realmente tem.',
     latestNews: 'Últimas notícias',
     library: 'Biblioteca científica',
+    nowDescription:
+      'Uma leitura rápida das histórias, estudos e mudanças de saúde pública que merecem sua atenção primeiro.',
+    nowEyebrow: 'Panorama editorial',
+    nowTitle: 'O que importa agora',
     phw: 'De olho na sáude pública',
+    reportingDescription:
+      'Estas são as histórias mais claras para entender o que está mudando agora no seu quadro de risco.',
+    reportingEyebrow: 'Cobertura',
+    reportingTitle:
+      'Comece pela cobertura que muda a forma como você lê o risco.',
+    researchCopy:
+      'Saia das manchetes e vá para os estudos quando precisar de evidência, não apenas de resumo.',
+    researchDescription:
+      'Vá da cobertura atual para os artigos, revisões e evidências que dão peso às notícias.',
+    researchEyebrow: 'Contexto científico',
+    researchLabel: 'Contexto científico',
+    researchTitle:
+      'Aprofunde-se quando precisar dos estudos por trás das afirmações.',
     seeAllEvents: 'Veja todos os eventos futuros e passados',
     seeAllLibrary: 'Veja todos os artigos científicos',
     seeAllNews: 'Veja todas as últimas notícias',
     seeAllPhw: 'Veja todas as notícias de saúde pública',
     seeAllVideos: 'Veja todos os vídeos',
+    signalCopy:
+      'Comece pelas reportagens e mudanças de saúde pública com maior chance de afetar a sua semana.',
+    signalCta: 'Abrir a editoria de notícias',
+    signalEyebrow: 'O sinal de hoje',
+    signalLabel: 'O que importa agora',
+    signalTitle:
+      'Três pontos de partida quando você precisa do quadro mais claro.',
     videos: 'Vídeos',
+    watchAndAttendDescription:
+      'Acompanhe por meio de explicações, entrevistas e eventos que conectam a ciência às decisões do cotidiano.',
+    watchAndAttendEyebrow: 'Assistir e participar',
+    watchAndAttendTitle:
+      'Use vídeos e eventos ao vivo quando a leitura não for suficiente.',
+    watchDescription:
+      'Use este caminho quando quiser enxergar além de um único ciclo de manchetes, incluindo sinais mais amplos de saúde pública e ameaças emergentes.',
+    watchEyebrow: 'Saúde pública',
+    watchTitle: 'Mantenha o quadro geral no seu campo de visão.',
   },
   layout: {
     about: 'Sobre',
@@ -770,9 +826,14 @@ export default {
   },
 
   searchbox: {
-    placeholder: 'Pesquisar notícias, vídeos e mais...',
+    clear: 'Limpar busca',
+    placeholder: 'Pesquisar notícias, estudos, saúde pública e vídeos...',
     results: {
+      error: 'Não foi possível pesquisar agora.',
+      hint: 'Tente uma palavra-chave mais ampla ou abra a busca completa para explorar melhor.',
+      loading: 'Pesquisando...',
       noResults: 'Nenhum resultado encontrado para "{query}"',
+      retry: 'Tentar novamente',
       total: '{amount} resultados',
     },
     viewAll: 'Ver Todos os Resultados',

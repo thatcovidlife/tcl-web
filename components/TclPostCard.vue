@@ -44,17 +44,19 @@ const endDate = computed(() => {
 </script>
 
 <template>
-  <Card class="overflow-hidden group">
+  <Card
+    class="group overflow-hidden border-border/70 bg-card shadow-none transition-colors duration-200 hover:border-primary/25"
+  >
     <NuxtLink
       :to="target === '_blank' ? link : localePath(link)"
       :target="target"
     >
-      <CardHeader class="p-0 pb-6">
+      <CardHeader class="overflow-hidden p-0 pb-5">
         <SanityImage
           v-if="visual"
           :alt="title"
           :asset-id="visual"
-          class="w-full"
+          class="w-full transition-transform duration-300 group-hover:scale-[1.02]"
           fit="crop"
           crop="entropy"
           :h="450"
@@ -63,8 +65,8 @@ const endDate = computed(() => {
         <NuxtImg v-else src="/tcl-fallback-169.jpg" :alt="title" />
       </CardHeader>
     </NuxtLink>
-    <CardContent>
-      <h3 class="font-title text-2xl mb-3">
+    <CardContent class="space-y-3">
+      <h3 class="font-title text-[1.7rem] leading-8 tracking-[-0.03em]">
         <NuxtLink
           class="transition-colors duration-200 hover:text-primary"
           :to="target === '_blank' ? link : localePath(link)"
@@ -73,7 +75,10 @@ const endDate = computed(() => {
           {{ title }}
         </NuxtLink>
       </h3>
-      <h4 v-if="publicationDate" class="uppercase tracking-widest text-xs">
+      <h4
+        v-if="publicationDate"
+        class="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground"
+      >
         <span v-if="source">{{ source }} | </span>
         <span
           >{{
@@ -91,7 +96,9 @@ const endDate = computed(() => {
           }}
         </span>
       </h4>
-      <p v-if="description" class="mt-4 text-base">{{ description }}</p>
+      <p v-if="description" class="text-sm leading-6 text-muted-foreground">
+        {{ description }}
+      </p>
     </CardContent>
     <CardFooter v-if="tags?.length">
       <TclTagList

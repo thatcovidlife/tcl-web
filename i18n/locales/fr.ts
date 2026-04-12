@@ -182,15 +182,71 @@ export default {
     pageTitle: 'Dernières Publications',
     title: 'That Covid Life - Dernières Publications',
     events: 'Événements à venir',
+    eventsDescription:
+      'Un flux plus resserré de discussions, webinaires et rendez-vous à garder sur votre radar.',
+    eventsEyebrow: 'Événements à venir',
+    guidedQuestion3:
+      'Que dois-je faire si des personnes autour de moi sont malades ?',
+    guidedQuestionsDescription:
+      'Ouvrez le chatbot avec une question de départ, puis continuez jusqu’à obtenir une réponse vraiment utile.',
+    guidedQuestionsDescriptionSignedOut:
+      'Connectez-vous avec un compte gratuit pour ouvrir le chatbot et garder une trace de vos questions.',
+    guidedQuestionsEyebrow: 'Conseils pratiques',
+    guidedQuestionsTitle:
+      'Commencez par la question que vous vous posez vraiment.',
+    guidanceCopy:
+      'Utilisez le chatbot pour tester vos décisions du quotidien et trouver des sources qui valent le détour.',
+    guidanceLabel: 'Conseils pratiques',
+    heroDescription:
+      'Une veille éditoriale, un contexte scientifique et des conseils pratiques pour comprendre le risque lié au COVID sans bruit ni faux réconfort.',
+    heroEyebrow: 'Le risque COVID, expliqué clairement',
+    heroPrimaryCta: 'Lire ce qui compte maintenant',
+    heroSecondaryCta: 'Poser une question pratique',
+    heroSecondaryCtaSignedOut: 'Se connecter pour poser une question',
+    heroTitle:
+      'Comprenez ce qui compte maintenant. Posez la question que vous avez vraiment.',
     latestNews: 'Dernières nouvelles',
     library: 'Bibliothèque scientifique',
+    nowDescription:
+      'Un balayage rapide des sujets, études et évolutions de santé publique qui méritent votre attention en premier.',
+    nowEyebrow: 'Brief éditorial',
+    nowTitle: 'Ce qui compte maintenant',
     phw: 'Veille sanitaire',
+    reportingDescription:
+      'Voici les articles les plus clairs à lire si vous voulez comprendre ce qui modifie votre lecture du risque.',
+    reportingEyebrow: 'Couverture',
+    reportingTitle:
+      'Commencez par la couverture qui change votre lecture du risque.',
+    researchCopy:
+      'Passez des titres aux études quand vous avez besoin de preuves et pas seulement de résumés.',
+    researchDescription:
+      'Passez de la couverture actuelle aux articles, revues et données qui donnent du poids aux nouvelles.',
+    researchEyebrow: 'Contexte scientifique',
+    researchLabel: 'Contexte scientifique',
+    researchTitle:
+      'Allez plus loin lorsque vous avez besoin des études derrière les affirmations.',
     seeAllEvents: 'Voir tous les événements à venir et passés',
     seeAllLibrary: 'Voir tous les articles scientifiques',
     seeAllNews: 'Voir toutes les dernières nouvelles',
     seeAllPhw: 'Voir toutes les actualités de veille sanitaire',
     seeAllVideos: 'Voir toutes les vidéos',
+    signalCopy:
+      'Commencez par les évolutions journalistiques et sanitaires les plus susceptibles d’avoir un impact sur votre semaine.',
+    signalCta: 'Ouvrir le bureau des actualités',
+    signalEyebrow: 'Le signal du jour',
+    signalLabel: 'Ce qui compte maintenant',
+    signalTitle:
+      'Trois points de départ quand vous avez besoin de la vision la plus nette.',
     videos: 'Vidéos',
+    watchAndAttendDescription:
+      'Suivez l’actualité à travers des explications, des entretiens et des événements qui relient la science aux choix du quotidien.',
+    watchAndAttendEyebrow: 'Regarder et participer',
+    watchAndAttendTitle:
+      'Utilisez les vidéos et les événements en direct quand la lecture ne suffit pas.',
+    watchDescription:
+      'Choisissez cette voie si vous voulez voir au-delà d’un simple cycle de titres, avec des signaux sanitaires plus larges et des menaces émergentes.',
+    watchEyebrow: 'Santé publique',
+    watchTitle: 'Gardez un œil sur le tableau d’ensemble.',
   },
   layout: {
     about: 'À Propos',
@@ -780,9 +836,15 @@ export default {
   },
 
   searchbox: {
-    placeholder: 'Rechercher des nouvelles, des vidéos et plus encore...',
+    clear: 'Effacer la recherche',
+    placeholder:
+      'Recherchez des actualités, des études, la santé publique et des vidéos...',
     results: {
+      error: "La recherche n'est pas disponible pour le moment.",
+      hint: 'Essayez un mot-clé plus large ou ouvrez la recherche complète pour mieux explorer.',
+      loading: 'Recherche en cours...',
       noResults: 'Aucun résultat trouvé pour "{query}"',
+      retry: 'Réessayer',
       total: '{amount} résultat(s)',
     },
     viewAll: 'Voir tous les résultats',

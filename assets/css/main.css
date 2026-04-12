@@ -1,6 +1,7 @@
 .article-body h3 {
   font-family:
-    'PT Serif', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+    'Source Serif 4', ui-serif, Georgia, Cambria, 'Times New Roman', Times,
+    serif;
   font-weight: 600;
   font-size: 1.5rem;
   letter-spacing: 0.1rem;
@@ -51,8 +52,6 @@
   max-width: 136px !important;
   bottom: 20px !important;
 }
-
-
 
 .floating-chat-kofi-popup-iframe {
   bottom: 80px !important;

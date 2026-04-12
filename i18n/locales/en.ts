@@ -178,15 +178,65 @@ export default {
     pageTitle: 'Latest Publications',
     title: 'That Covid Life - Latest Publications',
     events: 'Upcoming Events',
+    eventsDescription:
+      'A smaller feed of discussions, webinars, and gatherings worth keeping on your radar.',
+    eventsEyebrow: 'Upcoming events',
+    guidedQuestion3: 'What should I do if people around me are sick?',
+    guidedQuestionsDescription:
+      'Open the chatbot with a starter question, then keep going until the answer feels useful.',
+    guidedQuestionsDescriptionSignedOut:
+      'Sign in with a free account to open the chatbot and keep a question-focused record of what you learn.',
+    guidedQuestionsEyebrow: 'Practical guidance',
+    guidedQuestionsTitle: 'Start with the question you actually have.',
+    guidanceCopy:
+      'Use the chatbot to pressure-test everyday decisions and find sources worth reading.',
+    guidanceLabel: 'Practical guidance',
+    heroDescription:
+      'Curated reporting, scientific context, and practical guidance for people trying to understand COVID risk without noise or false reassurance.',
+    heroEyebrow: 'COVID risk, clearly explained',
+    heroPrimaryCta: 'Read what matters now',
+    heroSecondaryCta: 'Ask a practical question',
+    heroSecondaryCtaSignedOut: 'Sign in to ask a question',
+    heroTitle: 'Know what matters now. Ask the question you actually have.',
     latestNews: 'Latest News',
     library: 'Scientific Library',
+    nowDescription:
+      'A fast scan of the stories, studies, and public-health developments worth your attention first.',
+    nowEyebrow: 'Editorial briefing',
+    nowTitle: 'What matters now',
     phw: 'Public Health Watch',
+    reportingDescription:
+      'These are the clearest recent stories to read if you want to understand what is shifting right now.',
+    reportingEyebrow: 'Reporting',
+    reportingTitle: 'Start with the reporting that changes your risk picture.',
+    researchCopy:
+      'Move from headlines to studies when you need evidence, not just summaries.',
+    researchDescription:
+      'Move from current reporting into the papers, reviews, and evidence that give the news its weight.',
+    researchEyebrow: 'Scientific context',
+    researchLabel: 'Scientific context',
+    researchTitle: 'Go deeper when you need the studies behind the claims.',
     seeAllEvents: 'See all upcoming and past events',
     seeAllLibrary: 'See all scientific papers',
     seeAllNews: 'See all latest news',
     seeAllPhw: 'See all public health news',
     seeAllVideos: 'See all videos',
+    signalCopy:
+      'Start with the reporting and public-health changes most likely to affect your week.',
+    signalCta: 'Open the news desk',
+    signalEyebrow: 'Today’s signal',
+    signalLabel: 'What matters now',
+    signalTitle: 'Three places to begin when you need the clearest picture.',
     videos: 'Videos',
+    watchAndAttendDescription:
+      'Keep up through explainers, interviews, and events that help you connect the science to everyday choices.',
+    watchAndAttendEyebrow: 'Watch and attend',
+    watchAndAttendTitle:
+      'Use video and live events when reading is not enough.',
+    watchDescription:
+      'Use this lane when you want developments beyond one headline cycle, including broader public-health signals and emerging threats.',
+    watchEyebrow: 'Public health',
+    watchTitle: 'Keep an eye on the wider outbreak picture.',
   },
   layout: {
     about: 'About',
@@ -757,9 +807,14 @@ export default {
   },
 
   searchbox: {
-    placeholder: 'Search for news, videos, and more...',
+    clear: 'Clear search',
+    placeholder: 'Search news, studies, public health, and videos...',
     results: {
+      error: "We couldn't search right now.",
+      hint: 'Try a broader keyword, or open the full search page for more ways to browse.',
+      loading: 'Searching...',
       noResults: 'No results found for "{query}"',
+      retry: 'Try again',
       total: '{amount} results',
     },
     viewAll: 'View All Results',

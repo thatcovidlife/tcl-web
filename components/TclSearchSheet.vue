@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import {
-  Search as SearchIcon,
-  X as XIcon,
-  FileText as FileTextIcon,
-  BookOpen as BookOpenIcon,
   AlertCircle as AlertCircleIcon,
-  Video as VideoIcon,
+  BookOpen as BookOpenIcon,
   Calendar as CalendarIcon,
+  FileText as FileTextIcon,
+  Search as SearchIcon,
   SearchX as SearchXIcon,
+  Video as VideoIcon,
+  X as XIcon,
 } from 'lucide-vue-next'
-import QUICK_SEARCH_QUERY from '@/sanity/queries/quickSearch.sanity'
-import type { QUICK_SEARCH_QUERYResult } from '@/sanity/types'
+
 import { Button } from '@/components/ui/button'
 import {
   Drawer,
@@ -20,209 +19,296 @@ import {
   DrawerHeader,
   DrawerTrigger,
 } from '@/components/ui/drawer'
+import { Input } from '@/components/ui/input'
 
-const { t, locale } = useI18n()
-const localePath = useLocalePath()
-const router = useRouter()
+const { t } = useI18n()
 
-const searchQuery = ref('')
-const showResults = ref(false)
-const categories = ['news', 'scientific-library', 'public-health', 'video']
-const searchResults = ref<QUICK_SEARCH_QUERYResult>([])
-const totalResults = computed(() => searchResults.value.length)
+const drawerOpen = ref(false)
 
-const formatCategory = (category: string) => {
-  return t(`layout.${category}`)
-}
+const {
+  clearSearch,
+  getCategoryAccentClass,
+  getHighlightParts,
+  getResultHref,
+  getResultTo,
+  groupedResults,
+  isExternalResult,
+  isSearching,
+  openResults,
+  resetSearch,
+  retrySearch,
+  searchError,
+  searchQuery,
+  shouldShowResults,
+  totalResults,
+  viewAllResults,
+} = useQuickSearch()
 
-// Clear search
-const clearSearch = () => {
-  searchQuery.value = ''
-}
-
-const searchFn = async () => {
-  if (!searchQuery.value) {
-    searchResults.value = []
-    return
-  }
-
-  const { data } = await useSanityQuery<QUICK_SEARCH_QUERYResult>(
-    QUICK_SEARCH_QUERY,
-    { searchTerm: searchQuery.value, locale }, // Adjust locale as needed
-  )
-
-  searchResults.value = data?.value || []
-}
-
-const viewAllResults = () => {
-  router.push({
-    path: localePath('/search'),
-    query: { limit: 5, offset: 0, q: searchQuery.value },
-  })
-}
-
-const selectResult = (result: QUICK_SEARCH_QUERYResult[0]) => {
-  // showResults.value = false
-  // searchQuery.value = ''
-
-  if (result.link) {
-    router.push(localePath(result.link))
-  } else if (result.url) {
-    window.open(result.url, '_blank')
+watch(drawerOpen, (isOpen) => {
+  if (!isOpen) {
+    resetSearch()
   } else {
-    // Handle case where no link is provided
-    console.warn('No link or URL provided for result:', result)
+    openResults()
   }
-}
-
-const getResultsByCategory = (category: string) => {
-  return searchResults.value.filter((item) => item.type === category)
-}
-
-const highlightMatch = (text: string) => {
-  if (!searchQuery.value) return text
-
-  const regex = new RegExp(`(${searchQuery.value})`, 'gi')
-  return text.replace(regex, '<span class="bg-primary font-medium">$1</span>')
-}
-
-// Show results when typing
-watch(searchQuery, (newValue) => {
-  showResults.value = newValue.length > 0
-  useDebounceFn(searchFn, 300, { rejectOnCancel: true })()
 })
+
+const closeDrawer = () => {
+  drawerOpen.value = false
+}
+
+const onViewAll = () => {
+  viewAllResults()
+  closeDrawer()
+}
 </script>
+
 <template>
-  <Drawer
-    @update:open="
-      () => {
-        clearSearch()
-        searchResults = []
-      }
-    "
-  >
-    <DrawerTrigger>
+  <Drawer v-model:open="drawerOpen">
+    <DrawerTrigger as-child>
       <Button size="icon" variant="outline" class="rounded-full md:hidden">
         <SearchIcon />
+        <span class="sr-only">{{ t('layout.search') }}</span>
       </Button>
     </DrawerTrigger>
+
     <DrawerContent>
       <DrawerHeader class="mb-2 border-b">
         <div class="relative">
           <Input
             v-model="searchQuery"
             :placeholder="t('searchbox.placeholder')"
-            class="w-full h-10 pl-10 text-base"
+            class="h-11 rounded-full border-border/70 bg-background/90 pl-10 pr-11 text-base"
+            @focus="openResults"
+            @keydown.esc.stop.prevent="closeDrawer"
           />
           <SearchIcon
-            class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
+            class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
           />
           <Button
             v-if="searchQuery"
             variant="ghost"
             size="icon"
-            class="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 p-0"
+            class="absolute right-1 top-1/2 h-8 w-8 -translate-y-1/2 rounded-full"
             @click="clearSearch"
           >
             <XIcon class="h-4 w-4" />
+            <span class="sr-only">{{ t('searchbox.clear') }}</span>
           </Button>
         </div>
       </DrawerHeader>
 
       <div class="h-[60vh] overflow-y-auto">
-        <template v-if="searchQuery && showResults">
+        <template v-if="shouldShowResults">
           <div
-            class="p-2 flex items-center justify-between border-b sticky top-0 bg-background z-10"
+            class="sticky top-0 z-10 flex items-center justify-between border-b border-border/60 bg-background/95 px-4 py-3 backdrop-blur-sm"
           >
             <span class="text-sm font-medium text-muted-foreground">
-              {{ t('searchbox.results.total', { amount: totalResults }) }}
+              {{
+                isSearching
+                  ? t('searchbox.results.loading')
+                  : t('searchbox.results.total', { amount: totalResults })
+              }}
             </span>
           </div>
 
-          <!-- No results state -->
-          <div v-if="searchResults.length === 0" class="p-4 text-center">
-            <SearchXIcon class="w-6 h-6 text-muted-foreground mx-auto mb-2" />
-            <p class="text-sm text-muted-foreground">
+          <div v-if="searchError" class="space-y-3 px-4 py-5">
+            <p class="text-sm text-foreground">
+              {{ t('searchbox.results.error') }}
+            </p>
+            <Button variant="outline" size="sm" @click="retrySearch">
+              {{ t('searchbox.results.retry') }}
+            </Button>
+          </div>
+
+          <div
+            v-else-if="!isSearching && groupedResults.length === 0"
+            class="space-y-2 px-4 py-6 text-center"
+          >
+            <SearchXIcon class="mx-auto h-6 w-6 text-muted-foreground" />
+            <p class="text-sm font-medium text-foreground">
               {{ t('searchbox.results.noResults', { query: searchQuery }) }}
+            </p>
+            <p class="text-xs leading-5 text-muted-foreground">
+              {{ t('searchbox.results.hint') }}
             </p>
           </div>
 
-          <!-- Results by category -->
-          <div v-else>
-            <div
-              v-for="(category, index) in categories"
-              :key="index"
-              class="py-2"
+          <div v-else class="py-2">
+            <section
+              v-for="group in groupedResults"
+              :key="group.category"
+              class="py-1"
             >
-              <div v-if="getResultsByCategory(category).length > 0">
-                <div
-                  class="px-4 py-1 text-xs font-semibold text-muted-foreground uppercase"
-                >
-                  {{ formatCategory(category) }}
-                </div>
+              <div
+                class="px-4 py-2 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground"
+              >
+                {{ group.label }}
+              </div>
 
-                <div
-                  v-for="(result, resultIndex) in getResultsByCategory(
-                    category,
-                  )"
-                  :key="resultIndex"
-                  class="px-4 py-2 hover:bg-accent cursor-pointer"
-                  @click="selectResult(result)"
+              <template v-for="result in group.results" :key="result.id">
+                <NuxtLink
+                  v-if="!isExternalResult(result) && getResultTo(result)"
+                  :to="getResultTo(result)"
+                  class="block border-y border-transparent px-4 py-3 transition-colors hover:border-border/60 hover:bg-muted/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  @click="closeDrawer"
                 >
-                  <div class="flex items-start">
-                    <!-- Category-specific icon -->
-                    <div class="mr-3 mt-0.5">
+                  <div class="flex items-start gap-3">
+                    <div
+                      :class="getCategoryAccentClass(group.category)"
+                      class="mt-0.5 shrink-0"
+                    >
                       <FileTextIcon
-                        v-if="category === 'news'"
-                        class="w-4 h-4 text-primary"
+                        v-if="group.category === 'news'"
+                        class="h-4 w-4"
                       />
                       <BookOpenIcon
-                        v-else-if="category === 'scientific-library'"
-                        class="w-4 h-4 text-emerald-500"
+                        v-else-if="group.category === 'scientific-library'"
+                        class="h-4 w-4"
                       />
                       <AlertCircleIcon
-                        v-else-if="category === 'public-health'"
-                        class="w-4 h-4 text-amber-500"
+                        v-else-if="group.category === 'public-health'"
+                        class="h-4 w-4"
                       />
-                      <VideoIcon
-                        v-else-if="category === 'video'"
-                        class="w-4 h-4 text-rose-500"
-                      />
+                      <VideoIcon v-else class="h-4 w-4" />
                     </div>
 
-                    <!-- Result content -->
-                    <div class="flex-1">
+                    <div class="min-w-0 flex-1">
+                      <p class="text-sm font-medium leading-5 text-foreground">
+                        <template
+                          v-for="(part, index) in getHighlightParts(
+                            result.title as string,
+                          )"
+                          :key="`${result.id}-title-${index}`"
+                        >
+                          <mark
+                            v-if="part.isMatch"
+                            class="rounded-sm bg-primary/15 px-0.5 text-primary"
+                          >
+                            {{ part.text }}
+                          </mark>
+                          <span v-else>{{ part.text }}</span>
+                        </template>
+                      </p>
+
+                      <p
+                        v-if="result.description"
+                        class="mt-1 text-xs leading-5 text-muted-foreground"
+                      >
+                        <template
+                          v-for="(part, index) in getHighlightParts(
+                            result.description,
+                          )"
+                          :key="`${result.id}-description-${index}`"
+                        >
+                          <mark
+                            v-if="part.isMatch"
+                            class="rounded-sm bg-primary/15 px-0.5 text-primary"
+                          >
+                            {{ part.text }}
+                          </mark>
+                          <span v-else>{{ part.text }}</span>
+                        </template>
+                      </p>
+
                       <div
-                        class="text-sm font-medium"
-                        v-html="highlightMatch(result.title as string)"
-                      ></div>
-                      <div
-                        class="text-xs text-muted-foreground mt-1"
-                        v-html="highlightMatch(result.description ?? '')"
-                      ></div>
-                      <div class="flex items-center mt-1">
-                        <CalendarIcon
-                          class="w-3 h-3 text-muted-foreground mr-1"
-                        />
-                        <span class="text-xs text-muted-foreground">{{
-                          result.date
-                        }}</span>
+                        v-if="result.date"
+                        class="mt-2 flex items-center gap-1 text-[0.7rem] uppercase tracking-[0.2em] text-muted-foreground"
+                      >
+                        <CalendarIcon class="h-3 w-3" />
+                        <span>{{ result.date }}</span>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
+                </NuxtLink>
+
+                <a
+                  v-else-if="getResultHref(result)"
+                  :href="getResultHref(result)"
+                  class="block border-y border-transparent px-4 py-3 transition-colors hover:border-border/60 hover:bg-muted/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  @click="closeDrawer"
+                >
+                  <div class="flex items-start gap-3">
+                    <div
+                      :class="getCategoryAccentClass(group.category)"
+                      class="mt-0.5 shrink-0"
+                    >
+                      <FileTextIcon
+                        v-if="group.category === 'news'"
+                        class="h-4 w-4"
+                      />
+                      <BookOpenIcon
+                        v-else-if="group.category === 'scientific-library'"
+                        class="h-4 w-4"
+                      />
+                      <AlertCircleIcon
+                        v-else-if="group.category === 'public-health'"
+                        class="h-4 w-4"
+                      />
+                      <VideoIcon v-else class="h-4 w-4" />
+                    </div>
+
+                    <div class="min-w-0 flex-1">
+                      <p class="text-sm font-medium leading-5 text-foreground">
+                        <template
+                          v-for="(part, index) in getHighlightParts(
+                            result.title as string,
+                          )"
+                          :key="`${result.id}-external-title-${index}`"
+                        >
+                          <mark
+                            v-if="part.isMatch"
+                            class="rounded-sm bg-primary/15 px-0.5 text-primary"
+                          >
+                            {{ part.text }}
+                          </mark>
+                          <span v-else>{{ part.text }}</span>
+                        </template>
+                      </p>
+
+                      <p
+                        v-if="result.description"
+                        class="mt-1 text-xs leading-5 text-muted-foreground"
+                      >
+                        <template
+                          v-for="(part, index) in getHighlightParts(
+                            result.description,
+                          )"
+                          :key="`${result.id}-external-description-${index}`"
+                        >
+                          <mark
+                            v-if="part.isMatch"
+                            class="rounded-sm bg-primary/15 px-0.5 text-primary"
+                          >
+                            {{ part.text }}
+                          </mark>
+                          <span v-else>{{ part.text }}</span>
+                        </template>
+                      </p>
+
+                      <div
+                        v-if="result.date"
+                        class="mt-2 flex items-center gap-1 text-[0.7rem] uppercase tracking-[0.2em] text-muted-foreground"
+                      >
+                        <CalendarIcon class="h-3 w-3" />
+                        <span>{{ result.date }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </template>
+            </section>
           </div>
         </template>
       </div>
 
       <DrawerFooter class="bg-background">
-        <DrawerClose>
+        <DrawerClose as-child>
           <Button
-            @click="viewAllResults"
             class="w-full"
-            :disabled="!searchQuery || !totalResults"
+            :disabled="!searchQuery.trim().length"
+            @click="onViewAll"
           >
             {{ t('searchbox.viewAll') }}
           </Button>

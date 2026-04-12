@@ -82,9 +82,9 @@ module.exports = {
         'collapsible-up': 'collapsible-up 0.2s ease-in-out',
       },
       fontFamily: {
-        sans: ['Inter', ...fontFamily.sans],
-        title: ['Oswald', ...fontFamily.sans],
-        pt: ['PT Serif', ...fontFamily.serif],
+        sans: ['Public Sans', ...fontFamily.sans],
+        title: ['Archivo SemiExpanded', ...fontFamily.sans],
+        pt: ['Source Serif 4', ...fontFamily.serif],
       },
     },
   },

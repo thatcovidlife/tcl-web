@@ -45,9 +45,9 @@ const endDate = computed(() => {
 </script>
 
 <template>
-  <div class="flex xl:col-span-2">
+  <div class="flex min-w-0 xl:col-span-2">
     <NuxtLink
-      class="hidden xl:mr-8 xl:block xl:w-[180px] 2xl:w-[240px] xl:shrink-0"
+      class="hidden xl:mr-8 xl:block xl:w-[180px] xl:shrink-0 2xl:w-[240px]"
       :to="target === '_blank' ? link : localePath(link)"
       :target="target"
     >
@@ -76,8 +76,10 @@ const endDate = computed(() => {
         :alt="title"
       />
     </NuxtLink>
-    <div>
-      <h2 class="font-title text-2xl mb-3">
+    <div class="min-w-0">
+      <h2
+        class="mb-3 font-title text-[1.45rem] leading-7 tracking-[-0.025em] text-foreground"
+      >
         <NuxtLink
           class="transition-colors duration-200 hover:text-primary"
           :to="target === '_blank' ? link : localePath(link)"
@@ -86,7 +88,10 @@ const endDate = computed(() => {
           {{ title }}
         </NuxtLink>
       </h2>
-      <h4 v-if="publicationDate" class="uppercase tracking-widest text-xs mb-3">
+      <h4
+        v-if="publicationDate"
+        class="mb-3 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground"
+      >
         <span v-if="source">{{ source }} | </span>
         <span
           >{{
@@ -104,7 +109,9 @@ const endDate = computed(() => {
           }}
         </span>
       </h4>
-      <p v-if="description" class="text-sm">{{ description }}</p>
+      <p v-if="description" class="text-sm leading-6 text-muted-foreground">
+        {{ description }}
+      </p>
       <TclTagList
         v-if="tags?.length"
         class="mt-4"
