@@ -21,6 +21,7 @@ import {
 import type { modelID } from '@/lib/chat/providers'
 
 const props = defineProps<{
+  initialText?: string
   models: { id: modelID; name: string }[]
   model: modelID | null
   submitStatus: PromptInputStatus
@@ -35,6 +36,16 @@ const emit = defineEmits<{
 const { t } = useI18n()
 // const searchEnabled = ref(false)
 const text = ref('')
+
+watch(
+  () => props.initialText,
+  (value) => {
+    if (typeof value === 'string') {
+      text.value = value
+    }
+  },
+  { immediate: true },
+)
 
 const handleTranscriptionChange = (value: string) => {
   text.value = value

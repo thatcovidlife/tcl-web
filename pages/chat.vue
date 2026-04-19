@@ -46,6 +46,10 @@ const models = computed(() => {
 
 const selectedModel = ref<modelID | null>(defaultModel)
 
+const initialPrompt = computed(() =>
+  typeof route.query.prompt === 'string' ? route.query.prompt : '',
+)
+
 const setSelectedModel = (newModel: modelID) => {
   selectedModel.value = newModel
 }
@@ -208,6 +212,12 @@ const onSubmit = async (data: PromptInputMessage) => {
         },
       },
     )
+
+    if (route.query.prompt) {
+      router.replace({
+        query: conversationId.value ? { id: conversationId.value } : {},
+      })
+    }
   } catch (error) {
     captureException(error)
     console.error('Error sending message:', error)
@@ -284,6 +294,7 @@ onMounted(async () => {
       />
       <TclPromptInput
         class="order-last md:order-none pb-4"
+        :initial-text="chat.messages.length === 0 ? initialPrompt : ''"
         :model="selectedModel"
         :models="models"
         :submit-status="chat.status"
