@@ -10,6 +10,7 @@ import * as Sentry from '@sentry/nuxt'
 // const host = computed(() => window?.location?.origin || '')
 const { locale, t } = useI18n()
 const localePath = useLocalePath()
+const { loggedIn } = useUserSession()
 
 const { data, status } = await Sentry.startSpan(
   {
@@ -46,6 +47,18 @@ const phw = computed(() => data?.value?.phw || [])
 const showcase = computed(() => data?.value?.showcase || [])
 const videos = computed(() => data?.value?.videos || [])
 const promo = computed(() => promoData?.value || [])
+
+const guidedQuestions = computed(() => [
+  t('chatbot.suggestedPrompts.prompt1.action'),
+  t('chatbot.suggestedPrompts.prompt2.action'),
+  t('home.guidedQuestion3'),
+])
+
+const startChatLink = (prompt?: string) =>
+  localePath({
+    path: '/chat',
+    query: prompt ? { prompt } : {},
+  })
 </script>
 
 <template>
@@ -64,6 +77,114 @@ const promo = computed(() => promoData?.value || [])
     <TclLoader v-if="loading" />
 
     <template v-else>
+      <!-- CHATBOT TEASER -->
+      <motion.div
+        class="w-full"
+        :initial="{ opacity: 0 }"
+        :whileInView="{ opacity: 1 }"
+      >
+        <section class="container py-8 md:py-12 lg:py-16">
+          <div
+            class="grid gap-6 lg:gap-10 xl:grid-cols-[minmax(0,1.15fr)_minmax(22rem,0.85fr)]"
+          >
+            <div class="space-y-6">
+              <Badge
+                variant="outline"
+                class="gap-2 rounded-full border-primary/20 bg-primary/5 px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-primary"
+              >
+                {{ t('home.heroEyebrow') }}
+              </Badge>
+
+              <div class="space-y-4">
+                <h1
+                  class="max-w-[12ch] font-pt text-[clamp(2.8rem,6vw,5.3rem)] font-semibold leading-[0.95] tracking-[-0.04em] text-foreground"
+                >
+                  {{ t('home.heroTitle') }}
+                </h1>
+                <p
+                  class="max-w-[62ch] text-base leading-7 text-muted-foreground md:text-lg md:leading-8"
+                >
+                  {{ t('home.heroDescription') }}
+                </p>
+              </div>
+
+              <div class="flex flex-col gap-3 sm:flex-row">
+                <TclMoreButton
+                  extra="w-full sm:w-auto px-6"
+                  :label="t('home.heroPrimaryCta')"
+                  link="/news?offset=0&limit=5"
+                />
+
+                <a v-if="!loggedIn" class="inline-flex" href="/auth/auth0">
+                  <Button
+                    variant="outline"
+                    class="w-full border-primary/25 px-6 text-primary hover:bg-primary/10 hover:text-primary sm:w-auto"
+                  >
+                    {{ t('home.heroSecondaryCtaSignedOut') }}
+                  </Button>
+                </a>
+
+                <NuxtLink v-else :to="startChatLink()">
+                  <Button
+                    variant="outline"
+                    class="w-full border-primary/25 px-6 text-primary hover:bg-primary/10 hover:text-primary sm:w-auto"
+                  >
+                    {{ t('home.heroSecondaryCta') }}
+                  </Button>
+                </NuxtLink>
+              </div>
+            </div>
+
+            <Card
+              class="gap-0 border-primary/15 bg-[hsl(var(--primary-foreground))] p-6 shadow-sm dark:bg-muted/40"
+            >
+              <CardHeader class="p-0">
+                <Label
+                  class="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-primary"
+                >
+                  {{ t('home.guidedQuestionsEyebrow') }}
+                </Label>
+                <CardTitle
+                  class="mt-3 max-w-[16ch] font-pt text-3xl font-semibold leading-tight tracking-[-0.03em]"
+                >
+                  {{ t('home.guidedQuestionsTitle') }}
+                </CardTitle>
+              </CardHeader>
+              <CardContent class="mt-3 p-0">
+                <p class="max-w-[38ch] text-sm leading-6 text-muted-foreground">
+                  {{
+                    loggedIn
+                      ? t('home.guidedQuestionsDescription')
+                      : t('home.guidedQuestionsDescriptionSignedOut')
+                  }}
+                </p>
+
+                <div class="mt-5 grid gap-2.5">
+                  <template v-for="question in guidedQuestions" :key="question">
+                    <NuxtLink v-if="loggedIn" :to="startChatLink(question)">
+                      <Button
+                        variant="outline"
+                        class="h-auto w-full items-start justify-start border-border/70 px-4 py-3 text-left whitespace-normal hover:border-primary/30 hover:bg-primary/5"
+                      >
+                        {{ question }}
+                      </Button>
+                    </NuxtLink>
+                    <a v-else href="/auth/auth0">
+                      <Button
+                        variant="outline"
+                        class="h-auto w-full items-start justify-start border-border/70 px-4 py-3 text-left whitespace-normal hover:border-primary/30 hover:bg-primary/5"
+                      >
+                        {{ question }}
+                      </Button>
+                    </a>
+                  </template>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+      </motion.div>
+
       <!-- SHOWCASE -->
       <motion.div
         class="w-full"
