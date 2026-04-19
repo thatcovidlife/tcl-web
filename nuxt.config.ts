@@ -176,6 +176,7 @@ export default defineNuxtConfig({
   ],
 
   nitro: {
+    preset: 'cloudflare-pages',
     routeRules: {
       '/api/chat': {
         cors: false,
