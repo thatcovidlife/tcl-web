@@ -177,6 +177,21 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: 'cloudflare-pages',
+    rollupConfig: {
+      plugins: [
+        {
+          name: 'ignore-non-js-assets',
+          resolveId(source) {
+            if (/\.(png|jpg|jpeg|gif|svg)$/.test(source)) return source
+            return null
+          },
+          load(id) {
+            if (/\.(png|jpg|jpeg|gif|svg)$/.test(id)) return 'export default ""'
+            return null
+          },
+        },
+      ],
+    },
     routeRules: {
       '/api/chat': {
         cors: false,
@@ -254,6 +269,37 @@ export default defineNuxtConfig({
     turnstile: {
       secretKey: process.env.TURNSTILE_SECRET_KEY,
     },
+    deepinfraApiKey: process.env.DEEPINFRA_API_KEY,
+    deepinfraBaseUrl: process.env.DEEPINFRA_BASE_URL,
+    deepinfraEmbedModel: process.env.DEEPINFRA_EMBED_MODEL,
+    deepinfraLlmMaxTokens: process.env.DEEPINFRA_LLM_MAX_TOKENS,
+    deepinfraLlmModel: process.env.DEEPINFRA_LLM_MODEL,
+    deepinfraLlmTemperature: process.env.DEEPINFRA_LLM_TEMPERATURE,
+    deepinfraMaxResults: process.env.DEEPINFRA_MAX_RESULTS,
+    qdrantCollection: process.env.QDRANT_COLLECTION,
+    qdrantKey: process.env.QDRANT_KEY,
+    qdrantPort: process.env.QDRANT_PORT,
+    qdrantUrl: process.env.QDRANT_URL,
+    langsmithPromptName: process.env.LANGSMITH_PROMPT_NAME,
+    langchainApiKey: process.env.LANGCHAIN_API_KEY,
+    langchainEndpoint: process.env.LANGCHAIN_ENDPOINT,
+    upstashToken: process.env.UPSTASH_REDIS_REST_TOKEN,
+    upstashUrl: process.env.UPSTASH_REDIS_REST_URL,
+    rateMaxRequests: process.env.RATE_LIMIT_MAX_REQUESTS,
+    ratePrefix: process.env.RATE_LIMIT_PREFIX,
+    rateWindow: process.env.RATE_LIMIT_WINDOW,
+    rerankEnabled: process.env.RERANK_ENABLED,
+    rerankModel: process.env.RERANK_MODEL,
+    rerankTopN: process.env.RERANK_TOP_N,
+    resendApiKey: process.env.RESEND_API_KEY,
+    resendRecipientEmail1: process.env.RESEND_RECIPIENT_EMAIL_1,
+    resendRecipientEmail2: process.env.RESEND_RECIPIENT_EMAIL_2,
+    resendSupportEmail: process.env.RESEND_SUPPORT_EMAIL,
+    deeplApiKey: process.env.DEEPL_API_KEY,
+    agenticEnabled: process.env.AGENTIC_ENABLED,
+    agenticMaxIterations: process.env.AGENTIC_MAX_ITERATIONS,
+    agenticMinScoreThreshold: process.env.AGENTIC_MIN_SCORE_THRESHOLD,
+    dzlDatabaseUrl: process.env.DZL_DATABASE_URL,
   },
 
   sanity: {

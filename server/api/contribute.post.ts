@@ -1,10 +1,8 @@
-import { Resend } from 'resend'
 import * as Sentry from '@sentry/nuxt'
-
-const resend = new Resend(process.env.RESEND_API_KEY)
 
 export default eventHandler(async (event) => {
   const body = await readBody(event)
+  const rc = useRuntimeConfig()
 
   try {
     await Sentry.startSpan(
@@ -13,20 +11,24 @@ export default eventHandler(async (event) => {
         op: 'external.http',
       },
       async () => {
-        return await resend.emails.send({
-          from: 'That Covid Life <no-reply@thatcovid.life>',
-          to: [
-            process.env.RESEND_RECIPIENT_EMAIL_1!,
-            process.env.RESEND_RECIPIENT_EMAIL_2!,
-          ],
-          subject: 'New Contribution',
-          html: `
+        return await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${rc.resendApiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            from: 'That Covid Life <no-reply@thatcovid.life>',
+            to: [rc.resendRecipientEmail1, rc.resendRecipientEmail2],
+            subject: 'New Contribution',
+            html: `
         <h1>New Contribution</h1>
         <p><strong>Name:</strong> ${body.from_name}</p>
         <p><strong>Email:</strong> ${body.email}</p>
         <p><strong>Type:</strong> ${body.category}</p>
         <p><strong>Description:</strong> ${body.description}</p>
       `,
+          }),
         })
       },
     )

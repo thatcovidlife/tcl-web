@@ -57,7 +57,7 @@ export default defineEventHandler(async (event) => {
     // Rate limiting: max 10 shares per hour per user
     const { success } = await ratelimit.limit(`share:create:${dbUser.id}`)
 
-    if (!success && process.env.NODE_ENV !== 'development') {
+    if (!success && import.meta.dev !== true) {
       const errorMessage =
         'Too many share links created. Please try again later.'
       captureMessage(errorMessage, {

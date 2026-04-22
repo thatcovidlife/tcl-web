@@ -14,9 +14,6 @@ import { fetchPrompt } from '@/lib/chat/prompt'
 import type { UIMessage } from 'ai'
 import type { modelID } from '@/lib/chat/providers'
 
-// Vercel function max duration (5 minutes)
-export const maxDuration = 300
-
 // ---------------------------------------------------------------------------
 // Expected tool call sequence per turn:
 //
@@ -32,8 +29,7 @@ const MAX_STEPS = 6
 
 export default defineLazyEventHandler(() => {
   return defineEventHandler(async (event) => {
-    // Bypass XSS validator for this endpoint
-    event.node.req.headers['x-skip-xss-validator'] = 'true'
+    setHeader(event, 'x-skip-xss-validator', 'true')
 
     const {
       messages,
@@ -44,7 +40,7 @@ export default defineLazyEventHandler(() => {
 
     const { success, remaining } = await ratelimit.limit(userId)
 
-    if (!success && process.env.NODE_ENV !== 'development') {
+    if (!success && import.meta.dev !== true) {
       const errorMessage = `Too many requests, please try again later. Remaining queries: ${remaining}`
       captureMessage(errorMessage, {
         level: 'warning',
@@ -57,7 +53,7 @@ export default defineLazyEventHandler(() => {
     const prompt = await fetchPrompt()
 
     const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), 290000)
+    const timeout = setTimeout(() => controller.abort(), 25000)
 
     const startTime = Date.now()
 
@@ -106,7 +102,7 @@ export default defineLazyEventHandler(() => {
       agent,
       uiMessages: messages,
       abortSignal: controller.signal,
-      timeout: 290000,
+      timeout: 25000,
       consumeSseStream: consumeStream,
       onStepFinish: (stepResult) => {
         console.log('Stream step:', {

@@ -1,6 +1,7 @@
-import { Translator } from 'deepl-node'
 import { consola } from 'consola'
 import * as Sentry from '@sentry/nuxt'
+
+const DEEPL_API_BASE = 'https://api-free.deepl.com/v2'
 
 export default eventHandler(async (event) => {
   const { locale = null, text = null } = await readBody(event)
@@ -19,14 +20,19 @@ export default eventHandler(async (event) => {
     )
   }
 
-  const d = new Translator(process.env.DEEPL_API_KEY as string)
+  const rc = useRuntimeConfig()
+  const apiKey = rc.deeplApiKey
+
   const usage = await Sentry.startSpan(
     {
       name: 'get DeepL usage',
       op: 'external.http',
     },
     async () => {
-      return await d.getUsage()
+      const response = await fetch(`${DEEPL_API_BASE}/usage`, {
+        headers: { Authorization: `DeepL-Auth-Key ${apiKey}` },
+      })
+      return response.json() as Promise<{ character: { count: number; limit: number } }>
     },
   )
 
@@ -34,7 +40,7 @@ export default eventHandler(async (event) => {
     `[${Date.parse(new Date().toString())}] DeepL usage: ${JSON.stringify(usage.character)}`,
   )
 
-  if (usage.anyLimitReached()) {
+  if (usage.character.count >= usage.character.limit) {
     sendError(
       event,
       createError({ statusCode: 429, statusMessage: 'Too many requests' }),
@@ -48,9 +54,23 @@ export default eventHandler(async (event) => {
         op: 'external.http',
       },
       async () => {
-        return await d.translateText(text, null, locale, {
-          tagHandling: 'html',
+        const response = await fetch(`${DEEPL_API_BASE}/translate`, {
+          method: 'POST',
+          headers: {
+            Authorization: `DeepL-Auth-Key ${apiKey}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({
+            text: text as string,
+            target_lang: locale as string,
+            tag_handling: 'html',
+          }),
         })
+
+        const result = (await response.json()) as {
+          translations: { text: string; detected_source_language: string }[]
+        }
+        return result.translations[0]
       },
     )
   } catch (e) {

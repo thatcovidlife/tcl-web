@@ -1,15 +1,40 @@
-import { Client } from 'langsmith'
 import { captureException } from '@sentry/nuxt'
 import { llmInstructionsV5 } from './messages'
 import { config } from './config'
 
-const client = new Client()
-
-// Set to true to force using local fallback prompt instead of LangSmith
 const FORCE_LOCAL_PROMPT = process.env.FORCE_LOCAL_PROMPT === 'true'
 
+async function pullPromptFromLangSmith(
+  promptName: string,
+): Promise<string | null> {
+  const rc = useRuntimeConfig()
+  const apiKey = rc.langchainApiKey
+  const endpoint = rc.langchainEndpoint || 'https://api.smith.langchain.com'
+
+  if (!apiKey) return null
+
+  try {
+    const response = await fetch(
+      `${endpoint}/api/v1/prompts/${encodeURIComponent(promptName)}`,
+      {
+        headers: {
+          'x-api-key': apiKey,
+          Accept: 'application/json',
+        },
+      },
+    )
+
+    if (!response.ok) return null
+
+    const data = await response.json()
+    return data?.kwargs?.template ?? null
+  } catch (error) {
+    console.error('[LangSmith] HTTP fetch error:', error)
+    return null
+  }
+}
+
 export async function fetchPrompt() {
-  // Force local fallback if enabled (for testing)
   if (FORCE_LOCAL_PROMPT) {
     console.log('[LangSmith] FORCE_LOCAL_PROMPT is true, using local fallback')
     return llmInstructionsV5
@@ -20,22 +45,18 @@ export async function fetchPrompt() {
     if (!promptName) {
       throw new Error('Prompt name is not defined in configuration.')
     }
-    const call = await client._pullPrompt(promptName)
-    const prompt = JSON.parse(call)
 
-    if (!prompt?.kwargs?.template) {
+    const template = await pullPromptFromLangSmith(promptName)
+
+    if (!template) {
       throw new Error(`Prompt template not found for prompt: ${promptName}`)
     }
 
-    // Log the LangSmith prompt for debugging
     console.log('[LangSmith] Using prompt:', promptName)
-    console.log('[LangSmith] Prompt length:', prompt.kwargs.template.length)
-    console.log(
-      '[LangSmith] First 500 chars:',
-      prompt.kwargs.template.slice(0, 500),
-    )
+    console.log('[LangSmith] Prompt length:', template.length)
+    console.log('[LangSmith] First 500 chars:', template.slice(0, 500))
 
-    return prompt.kwargs.template
+    return template
   } catch (error) {
     console.error('Error fetching prompt:', error)
     captureException(error)

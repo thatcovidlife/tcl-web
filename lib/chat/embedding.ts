@@ -4,17 +4,27 @@ import { QdrantClient } from '@qdrant/js-client-rest'
 
 import { config } from './config'
 
-export const embeddingModel = deepinfra.embeddingModel(config.embedModel!)
-export const qdrant = new QdrantClient({
-  url: config.qdrantUrl,
-  port: config.qdrantPort,
-  apiKey: config.qdrantKey,
-})
+let _qdrant: QdrantClient | null = null
+
+function getQdrant(): QdrantClient {
+  if (!_qdrant) {
+    _qdrant = new QdrantClient({
+      url: config.qdrantUrl,
+      port: config.qdrantPort,
+      apiKey: config.qdrantKey,
+    })
+  }
+  return _qdrant
+}
+
+function getEmbeddingModel() {
+  return deepinfra.embeddingModel(config.embedModel!)
+}
 
 export const generateEmbedding = async (value: string): Promise<number[]> => {
   const input = value.replaceAll('\n', ' ')
   const { embedding } = await embed({
-    model: embeddingModel,
+    model: getEmbeddingModel(),
     value: input,
   })
   return embedding
@@ -98,6 +108,7 @@ export const smartSearch = async (
 ) => {
   const denseVector = await generateEmbedding(userQuery)
   const sparseVector = buildSparseVector(userQuery)
+  const qdrant = getQdrant()
 
   // For Lancet: detect section-level intent and apply payload filter
   let filter: object | undefined
@@ -161,6 +172,7 @@ export const findRelevantContent = async (
   collection?: string,
 ) => {
   const userQueryEmbedded = await generateEmbedding(userQuery)
+  const qdrant = getQdrant()
   try {
     return await qdrant.search(collection ?? config.qdrantCollection!, {
       vector: userQueryEmbedded,

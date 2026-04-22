@@ -1,30 +1,72 @@
+const rc = () => useRuntimeConfig()
+
+function intOr(value: string | undefined, fallback: number): number {
+  return value ? parseInt(value) : fallback
+}
+
+function floatOr(value: string | undefined, fallback: number): number {
+  return value ? parseFloat(value) : fallback
+}
+
 export const config = {
-  apiKey: process.env.DEEPINFRA_API_KEY,
-  baseUrl: process.env.DEEPINFRA_BASE_URL,
-  embedModel: process.env.DEEPINFRA_EMBED_MODEL,
-  // lfFunctionId: process.env.LANGFUSE_FUNCTION_ID,
-  // lfPublicKey: process.env.LANGFUSE_PUBLIC_KEY,
-  // lfSecretKey: process.env.LANGFUSE_SECRET_KEY,
-  // lfBaseUrl: process.env.LANGFUSE_BASE_URL,
-  llmMaxTokens: parseInt(process.env.DEEPINFRA_LLM_MAX_TOKENS!),
-  llmModel: process.env.DEEPINFRA_LLM_MODEL,
-  llmTemperature: parseFloat(process.env.DEEPINFRA_LLM_TEMPERATURE!),
-  // memoryPostgresUrl: process.env.MEMORY_POSTGRES_URL,
-  qdrantCollection: process.env.QDRANT_COLLECTION,
-  qdrantKey: process.env.QDRANT_KEY,
-  qdrantMaxResults: parseInt(process.env.DEEPINFRA_MAX_RESULTS!),
-  qdrantPort: parseInt(process.env.QDRANT_PORT || '6333'),
-  qdrantUrl: process.env.QDRANT_URL,
-  promptName: process.env.LANGSMITH_PROMPT_NAME,
-  // rewriterModel: process.env.DEEPINFRA_REWRITER_MODEL,
-  // workflowName: process.env.WORKFLOW_NAME,
-  upstashToken: process.env.UPSTASH_REDIS_REST_TOKEN,
-  upstashUrl: process.env.UPSTASH_REDIS_REST_URL,
-  rateMaxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS!),
-  ratePrefix: process.env.RATE_LIMIT_PREFIX || '@upstash/ratelimit',
-  rateWindow: process.env.RATE_LIMIT_WINDOW,
-  // Reranking
-  rerankEnabled: process.env.RERANK_ENABLED === 'true',
-  rerankModel: process.env.RERANK_MODEL || 'Qwen/Qwen3-Reranker-4B',
-  rerankTopN: parseInt(process.env.RERANK_TOP_N || '5'),
+  get apiKey() {
+    return rc().deepinfraApiKey
+  },
+  get baseUrl() {
+    return rc().deepinfraBaseUrl
+  },
+  get embedModel() {
+    return rc().deepinfraEmbedModel
+  },
+  get llmMaxTokens() {
+    return intOr(rc().deepinfraLlmMaxTokens, 16384)
+  },
+  get llmModel() {
+    return rc().deepinfraLlmModel
+  },
+  get llmTemperature() {
+    return floatOr(rc().deepinfraLlmTemperature, 0.5)
+  },
+  get qdrantCollection() {
+    return rc().qdrantCollection
+  },
+  get qdrantKey() {
+    return rc().qdrantKey
+  },
+  get qdrantMaxResults() {
+    return intOr(rc().deepinfraMaxResults, 15)
+  },
+  get qdrantPort() {
+    return intOr(rc().qdrantPort, 6333)
+  },
+  get qdrantUrl() {
+    return rc().qdrantUrl
+  },
+  get promptName() {
+    return rc().langsmithPromptName
+  },
+  get upstashToken() {
+    return rc().upstashToken
+  },
+  get upstashUrl() {
+    return rc().upstashUrl
+  },
+  get rateMaxRequests() {
+    return intOr(rc().rateMaxRequests, 50)
+  },
+  get ratePrefix() {
+    return rc().ratePrefix || '@upstash/ratelimit'
+  },
+  get rateWindow() {
+    return rc().rateWindow
+  },
+  get rerankEnabled() {
+    return rc().rerankEnabled === 'true'
+  },
+  get rerankModel() {
+    return rc().rerankModel || 'Qwen/Qwen3-Reranker-4B'
+  },
+  get rerankTopN() {
+    return intOr(rc().rerankTopN, 5)
+  },
 }
