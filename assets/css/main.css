@@ -1,3 +1,14 @@
+.article-body h2 {
+  font-family:
+    'PT Serif', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  font-weight: 600;
+  font-size: 1.75rem;
+  letter-spacing: 0.1rem;
+  line-height: 2.25rem;
+  margin-bottom: 1.25rem;
+  text-transform: uppercase;
+}
+
 .article-body h3 {
   font-family:
     'PT Serif', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
@@ -6,6 +17,17 @@
   letter-spacing: 0.1rem;
   line-height: 2rem;
   margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.article-body h4 {
+  font-family:
+    'PT Serif', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  font-weight: 600;
+  font-size: 1.25rem;
+  letter-spacing: 0.1rem;
+  line-height: 1.75rem;
+  margin-bottom: 0.75rem;
   text-transform: uppercase;
 }
 
@@ -51,8 +73,6 @@
   max-width: 136px !important;
   bottom: 20px !important;
 }
-
-
 
 .floating-chat-kofi-popup-iframe {
   bottom: 80px !important;
