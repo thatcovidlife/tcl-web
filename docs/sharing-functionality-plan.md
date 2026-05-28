@@ -284,7 +284,7 @@ chatbot: {
 
 #### 5.2 Content Moderation
 
-- Integrate with existing Guard Tool (`lib/chat/guard.ts`)
+- Integrate with existing Guard Tool (`lib/chat/tools.ts`)
 - Flag shared chats for review if detected policy violations
 - Option to auto-hide flagged shares
 

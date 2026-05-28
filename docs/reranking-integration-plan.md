@@ -200,7 +200,6 @@ import { collectionName } from './collections'
 import { findRelevantContent } from './embedding'
 import { rerankDocuments } from './rerank' // Import rerank function
 
-// const PANGEA_ENABLED = process.env.PANGEA_ENABLED === 'true'
 const RERANK_ENABLED = process.env.RERANK_ENABLED === 'true'
 
 export const searchTool = tool({

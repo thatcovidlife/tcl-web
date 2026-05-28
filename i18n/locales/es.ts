@@ -262,6 +262,12 @@ export default {
     },
     news: 'Noticias',
     privacyPolicy: 'Política de Privacidad',
+    privacyPolicyUpdate: {
+      title: 'Actualización de la política de privacidad',
+      content:
+        'Estamos cambiando nuestra política de privacidad a partir del 1 de junio de 2026 para que sea más simple y fácil de entender.',
+      dismiss: 'Entendido',
+    },
     product: 'EPI',
     'public-health': 'Atentos a la salud pública',
     resource: 'Recursos',

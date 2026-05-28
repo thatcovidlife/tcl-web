@@ -1,11 +1,12 @@
-import { tool } from 'ai'
+import { generateText, tool } from 'ai'
 import { z } from 'zod'
+import { deepinfra } from '@ai-sdk/deepinfra'
 
 import { collectionName, collectionType } from './collections'
 import { smartSearch, findRelevantContent } from './embedding'
-import { aiGuardCheckLlm } from './guard'
 import { rerankDocuments } from './rerank'
 import { config } from './config'
+import { guardToolInstructions } from './messages'
 
 const RERANK_ENABLED = Boolean(config.rerankEnabled)
 const RERANK_TOP_N = (() => {
@@ -15,6 +16,23 @@ const RERANK_TOP_N = (() => {
     return fallback
   return value
 })()
+
+const checkQuestionSafety = async (question: string): Promise<boolean> => {
+  const response = await generateText({
+    model: deepinfra('openai/gpt-oss-20b'),
+    system: guardToolInstructions,
+    prompt: question,
+  })
+
+  const result = response.text.trim()
+  const blocked = result.startsWith('UNSAFE')
+
+  if (blocked) {
+    console.log('guardTool: blocked question:', result)
+  }
+
+  return blocked
+}
 
 // ---------------------------------------------------------------------------
 // searchTool — uses smartSearch with named vector routing + hybrid RRF fusion
@@ -115,9 +133,9 @@ Returns true if the content should be blocked, false if it is safe.`,
   execute: async ({ question }) => {
     console.log('guardTool: checking question:', question)
     try {
-      const result = await aiGuardCheckLlm(question)
-      console.log('guardTool: result:', result)
-      return result?.blocked ?? false
+      const blocked = await checkQuestionSafety(question)
+      console.log('guardTool: result:', { blocked })
+      return blocked
     } catch (error) {
       console.error('guardTool: error:', error)
       // Default to safe on error — avoids silently blocking valid questions

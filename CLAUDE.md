@@ -129,7 +129,7 @@ pages/chat.vue → /api/chat/index.post.ts → AI SDK streamText
                                               └─ Upstash Redis (rate limiting)
 ```
 
-**Chat system files:** [lib/chat/providers.ts](lib/chat/providers.ts), [lib/chat/config.ts](lib/chat/config.ts), [lib/chat/tools.ts](lib/chat/tools.ts), [lib/chat/embedding.ts](lib/chat/embedding.ts), [lib/chat/guard.ts](lib/chat/guard.ts)
+**Chat system files:** [lib/chat/providers.ts](lib/chat/providers.ts), [lib/chat/config.ts](lib/chat/config.ts), [lib/chat/tools.ts](lib/chat/tools.ts), [lib/chat/embedding.ts](lib/chat/embedding.ts)
 
 ## Development Patterns
 
