@@ -1258,11 +1258,12 @@ if (!success) {
 
 #### Content Moderation (Optional)
 
-Integrate with existing Guard Tool:
+Integrate with the existing chat guard logic before allowing a chat to be shared. There is no standalone moderation module; add one first if server-side share moderation is required.
 
 ```typescript
 // In server/api/chat/share.create.post.ts
-import { moderateContent } from '@/lib/chat/guard'
+// After adding a dedicated moderation helper:
+// import { moderateSharedContent } from '@/lib/chat/moderation'
 
 // After ownership check, add:
 const [lastMessage] = await db
@@ -1273,7 +1274,7 @@ const [lastMessage] = await db
   .limit(1)
 
 if (lastMessage) {
-  const moderation = await moderateContent(lastMessage.content)
+  const moderation = await moderateSharedContent(lastMessage.content)
   if (moderation.flagged) {
     throw createError({
       status: 400,
@@ -1385,4 +1386,4 @@ i18n/locales/
 - i18n structure: [i18n/locales/en.ts](i18n/locales/en.ts)
 - Protected pages: [assets/constants/protected-pages.ts](assets/constants/protected-pages.ts)
 - Auth middleware: [middleware/redirect.global.ts](middleware/redirect.global.ts)
-- Guard tool: [lib/chat/guard.ts](lib/chat/guard.ts)
+- Guard tool: [lib/chat/tools.ts](lib/chat/tools.ts)

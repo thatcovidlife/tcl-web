@@ -12,7 +12,7 @@ The chatbot sometimes stops streaming mid-response, leaving partial answers inco
 - [lib/chat/providers.ts](../lib/chat/providers.ts) - LLM provider configuration
 - [lib/chat/config.ts](../lib/chat/config.ts) - Chat configuration
 - [lib/chat/tools.ts](../lib/chat/tools.ts) - Tool implementations (search, guard)
-- [lib/chat/guard.ts](../lib/chat/guard.ts) - Content moderation guard
+- [lib/chat/tools.ts](../lib/chat/tools.ts) - Tool implementations, including content moderation guard
 - [pages/chat.vue](../pages/chat.vue) - Client-side chat UI
 - [components/TclConversation.vue](../components/TclConversation.vue) - Conversation display component
 - [components/ai-elements/response/Response.vue](../components/ai-elements/response/Response.vue) - Markdown response renderer
@@ -71,17 +71,11 @@ stopWhen: stepCountIs(20),
 
 ---
 
-### 3. **Guard Tool Timeout Fallback** (MEDIUM PRIORITY)
+### 3. **Guard Tool Failure Fallback** (MEDIUM PRIORITY)
 
-**Location:** [lib/chat/guard.ts:17-18](../lib/chat/guard.ts#L17-L18)
+**Location:** [lib/chat/tools.ts](../lib/chat/tools.ts)
 
-**Issue:** The guard tool has a 5-second hard timeout that returns "not blocked" on failure:
-
-```typescript
-const timeoutPromise = new Promise<never>((_, reject) =>
-  setTimeout(() => reject(new Error('AI Guard timeout')), 5000),
-)
-```
+**Issue:** The guard tool returns "not blocked" on failure to avoid blocking valid questions when moderation is unavailable.
 
 **Impact:** If the guard LLM times out, it allows the content through (fail-open). This is noted as a "temp fix" in the code comments. While this doesn't directly cause stream interruption, it creates unpredictable behavior where content moderation may be silently bypassed.
 
