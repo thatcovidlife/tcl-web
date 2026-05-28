@@ -262,6 +262,12 @@ export default {
     },
     news: 'Notícias',
     privacyPolicy: 'Política de Privacidade',
+    privacyPolicyUpdate: {
+      title: 'Atualização da Política de Privacidade',
+      content:
+        'Estamos alterando nossa Política de Privacidade a partir de 1º de junho de 2026 para torná-la mais simples e fácil de entender.',
+      dismiss: 'Entendi',
+    },
     product: 'EPI',
     'public-health': 'De olho na sáude pública',
     rss: 'Feed RSS',

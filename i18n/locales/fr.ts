@@ -263,6 +263,12 @@ export default {
     },
     news: 'Actualités',
     privacyPolicy: 'Politique de Confidentialité',
+    privacyPolicyUpdate: {
+      title: 'Mise à jour de la politique de confidentialité',
+      content:
+        'Nous modifions notre politique de confidentialité à partir du 1er juin 2026 afin de la rendre plus simple et plus facile à comprendre.',
+      dismiss: "J'ai compris",
+    },
     product: 'EPI',
     'public-health': 'Veille Sanitaire',
     resource: 'Ressources',
