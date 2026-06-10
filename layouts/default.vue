@@ -4,6 +4,7 @@ import { Toaster } from '@/components/ui/sonner'
 
 <template>
   <div class="font-sans">
+    <TclDonateBanner />
     <TclHeader />
     <TclBody>
       <NuxtPage />

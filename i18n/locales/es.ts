@@ -283,6 +283,13 @@ export default {
     description:
       'Esta aplicación es una herramienta educativa que reúne enlaces a noticias, investigaciones y otros recursos relacionados con el COVID-19. No ofrecemos asesoramiento médico o sanitario ni vendemos productos.',
     directory: 'Directorio',
+    donateBanner: {
+      ariaLabel: 'Banner de apoyo con donaciones',
+      cta: 'Donar',
+      dismiss: 'Cerrar banner de donaciones',
+      message:
+        'Ayuda a mantener That Covid Life en marcha. Apoya las herramientas y reportajes sin anuncios en los que la gente confía.',
+    },
     disclaimer: 'Descargo de responsabilidad',
     event: 'Próximos Eventos',
     events: 'Próximos Eventos',

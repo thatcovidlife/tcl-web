@@ -278,6 +278,13 @@ export default {
     description:
       'This app serves as an educational tool that gathers links to news, research, and other resources relative to COVID-19. We do not offer medical or health advice or sell products.',
     directory: 'Directory',
+    donateBanner: {
+      ariaLabel: 'Donation support banner',
+      cta: 'Donate',
+      dismiss: 'Dismiss donation banner',
+      message:
+        'Help keep That Covid Life running. Support the ad-free tools and reporting people rely on.',
+    },
     disclaimer: 'Disclaimer',
     event: 'Upcoming Events',
     events: 'Upcoming Events',
