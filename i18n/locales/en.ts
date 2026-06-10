@@ -145,7 +145,7 @@ export default {
   },
   donate: {
     description:
-      'That Covid Life is an independent, ad-free platform curating COVID news, research, product reviews, and resources for the COVID-conscious community. Your support helps cover hosting costs and the continued development of the site and its free mobile app. Every donation makes a difference. Thank you.',
+      'That Covid Life is an independent, ad-free platform curating COVID news, research, product reviews, and resources for people who seek honest answers to their questions about the ongoing COVID-19 pandemic and other matters related to public health. Your support helps cover hosting costs and the continued development of the site and its free mobile app. Every donation makes a difference. Thank you.',
     embed: {
       fallback: 'If the panel does not load,',
       fallbackLink: 'open Ko-fi directly.',
@@ -233,13 +233,17 @@ export default {
     title: 'That Covid Life - Latest Publications',
     events: 'Upcoming Events',
     guidedQuestion3: 'What should I do if people around me are sick?',
-    guidedQuestionsDescription: 'Open the chatbot with a starter question, then keep going until the answer feels useful.',
-    guidedQuestionsDescriptionSignedOut: 'Sign in with a free account to open the chatbot and keep a question-focused record of what you learn.',
+    guidedQuestionsDescription:
+      'Open the chatbot with a starter question, then keep going until the answer feels useful.',
+    guidedQuestionsDescriptionSignedOut:
+      'Sign in with a free account to open the chatbot and keep a question-focused record of what you learn.',
     guidedQuestionsEyebrow: 'Practical guidance',
     guidedQuestionsTitle: 'Start with the question you actually have.',
-    guidanceCopy: 'Use the chatbot to pressure-test everyday decisions and find sources worth reading.',
+    guidanceCopy:
+      'Use the chatbot to pressure-test everyday decisions and find sources worth reading.',
     guidanceLabel: 'Practical guidance',
-    heroDescription: 'Curated reporting, scientific context, and practical guidance for people trying to understand COVID risk without noise or false reassurance.',
+    heroDescription:
+      'Curated reporting, scientific context, and practical guidance for people trying to understand COVID risk without noise or false reassurance.',
     heroEyebrow: 'COVID risk, clearly explained',
     heroPrimaryCta: 'Read what matters now',
     heroSecondaryCta: 'Ask a practical question',
@@ -248,14 +252,16 @@ export default {
     latestNews: 'Latest News',
     library: 'Scientific Library',
     phw: 'Public Health Watch',
-    researchCopy: 'Move from headlines to studies when you need evidence, not just summaries.',
+    researchCopy:
+      'Move from headlines to studies when you need evidence, not just summaries.',
     researchLabel: 'Scientific context',
     seeAllEvents: 'See all upcoming and past events',
     seeAllLibrary: 'See all scientific papers',
     seeAllNews: 'See all latest news',
     seeAllPhw: 'See all public health news',
     seeAllVideos: 'See all videos',
-    signalCopy: 'Start with the reporting and public-health changes most likely to affect your week.',
+    signalCopy:
+      'Start with the reporting and public-health changes most likely to affect your week.',
     signalCta: 'Open the news desk',
     signalEyebrow: "Today's signal",
     signalLabel: 'What matters now',

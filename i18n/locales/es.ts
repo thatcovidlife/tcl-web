@@ -147,7 +147,7 @@ export default {
   },
   donate: {
     description:
-      'That Covid Life es una plataforma independiente y sin anuncios que recopila noticias sobre COVID, investigaciones, reseñas de productos y recursos para la comunidad consciente del COVID. Tu apoyo ayuda a cubrir los costos de alojamiento y el desarrollo continuo del sitio y su aplicación móvil gratuita. Cada donación marca la diferencia. Gracias.',
+      'That Covid Life es una plataforma independiente y sin anuncios que recopila noticias sobre COVID, investigaciones, reseñas de productos y recursos para las personas que buscan respuestas honestas a sus preguntas sobre la pandemia de COVID-19 en curso y otros asuntos relacionados con la salud pública. Tu apoyo ayuda a cubrir los costos de alojamiento y el desarrollo continuo del sitio y su aplicación móvil gratuita. Cada donación marca la diferencia. Gracias.',
     embed: {
       fallback: 'Si el panel no carga,',
       fallbackLink: 'abre Ko-fi directamente.',
@@ -235,30 +235,38 @@ export default {
     pageTitle: 'Últimas Publicaciones',
     title: 'That Covid Life - Últimas Publicaciones',
     events: 'Próximos eventos',
-    guidedQuestion3: '¿Qué debo hacer si las personas a mi alrededor están enfermas?',
-    guidedQuestionsDescription: 'Abre el chatbot con una pregunta inicial y sigue hasta que la respuesta te sea útil.',
-    guidedQuestionsDescriptionSignedOut: 'Inicia sesión con una cuenta gratuita para abrir el chatbot y llevar un registro enfocado en preguntas de lo que aprendes.',
+    guidedQuestion3:
+      '¿Qué debo hacer si las personas a mi alrededor están enfermas?',
+    guidedQuestionsDescription:
+      'Abre el chatbot con una pregunta inicial y sigue hasta que la respuesta te sea útil.',
+    guidedQuestionsDescriptionSignedOut:
+      'Inicia sesión con una cuenta gratuita para abrir el chatbot y llevar un registro enfocado en preguntas de lo que aprendes.',
     guidedQuestionsEyebrow: 'Orientación práctica',
     guidedQuestionsTitle: 'Empieza con la pregunta que realmente tienes.',
-    guidanceCopy: 'Usa el chatbot para poner a prueba tus decisiones cotidianas y encontrar fuentes que valgan la pena leer.',
+    guidanceCopy:
+      'Usa el chatbot para poner a prueba tus decisiones cotidianas y encontrar fuentes que valgan la pena leer.',
     guidanceLabel: 'Orientación práctica',
-    heroDescription: 'Reportajes seleccionados, contexto científico y orientación práctica para quienes buscan entender el riesgo de COVID sin ruido ni falsas tranquilidades.',
+    heroDescription:
+      'Reportajes seleccionados, contexto científico y orientación práctica para quienes buscan entender el riesgo de COVID sin ruido ni falsas tranquilidades.',
     heroEyebrow: 'El riesgo COVID, claramente explicado',
     heroPrimaryCta: 'Lee lo que importa ahora',
     heroSecondaryCta: 'Haz una pregunta práctica',
     heroSecondaryCtaSignedOut: 'Inicia sesión para hacer una pregunta',
-    heroTitle: 'Saber lo que importa ahora. Haz la pregunta que realmente tienes.',
+    heroTitle:
+      'Saber lo que importa ahora. Haz la pregunta que realmente tienes.',
     latestNews: 'Últimas noticias',
     library: 'Biblioteca científica',
     phw: 'Atentos a la salud pública',
-    researchCopy: 'Pasa de los titulares a los estudios cuando necesitas evidencia, no solo resúmenes.',
+    researchCopy:
+      'Pasa de los titulares a los estudios cuando necesitas evidencia, no solo resúmenes.',
     researchLabel: 'Contexto científico',
     seeAllEvents: 'Ver todos los eventos próximos y pasados',
     seeAllLibrary: 'Ver todos los artículos científicos',
     seeAllNews: 'Ver todas las últimas noticias',
     seeAllPhw: 'Ver todas las noticias de salud pública',
     seeAllVideos: 'Ver todos los videos',
-    signalCopy: 'Empieza con los reportajes y cambios de salud pública más probables de afectar tu semana.',
+    signalCopy:
+      'Empieza con los reportajes y cambios de salud pública más probables de afectar tu semana.',
     signalCta: 'Abrir el periódico',
     signalEyebrow: 'La señal del día',
     signalLabel: 'Lo que importa ahora',

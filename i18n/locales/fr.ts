@@ -149,7 +149,7 @@ export default {
   },
   donate: {
     description:
-      'That Covid Life est une plateforme indépendante, sans publicité, qui sélectionne des actualités sur la COVID, des recherches, des avis sur des produits et des ressources pour la communauté attentive à la COVID. Votre soutien aide à couvrir les frais d’hébergement et le développement continu du site et de son application mobile gratuite. Chaque don fait une différence. Merci.',
+      'That Covid Life est une plateforme indépendante, sans publicité, qui sélectionne des actualités sur la COVID, des recherches, des avis sur des produits et des ressources pour les personnes qui cherchent des réponses honnêtes à leurs questions sur la pandémie de COVID-19 en cours et d’autres sujets liés à la santé publique. Votre soutien aide à couvrir les frais d’hébergement et le développement continu du site et de son application mobile gratuite. Chaque don fait une différence. Merci.',
     embed: {
       fallback: 'Si le panneau ne se charge pas,',
       fallbackLink: 'ouvrez Ko-fi directement.',
@@ -236,34 +236,44 @@ export default {
     pageTitle: 'Dernières Publications',
     title: 'That Covid Life - Dernières Publications',
     events: 'Événements à venir',
-    guidedQuestion3: 'Que dois-je faire si des personnes autour de moi sont malades ?',
-    guidedQuestionsDescription: 'Ouvrez le chatbot avec une question de départ, puis continuez jusqu\'à ce que la réponse vous soit utile.',
-    guidedQuestionsDescriptionSignedOut: 'Connectez-vous avec un compte gratuit pour ouvrir le chatbot et garder une trace orientée questions de ce que vous apprenez.',
+    guidedQuestion3:
+      'Que dois-je faire si des personnes autour de moi sont malades ?',
+    guidedQuestionsDescription:
+      "Ouvrez le chatbot avec une question de départ, puis continuez jusqu'à ce que la réponse vous soit utile.",
+    guidedQuestionsDescriptionSignedOut:
+      'Connectez-vous avec un compte gratuit pour ouvrir le chatbot et garder une trace orientée questions de ce que vous apprenez.',
     guidedQuestionsEyebrow: 'Conseils pratiques',
-    guidedQuestionsTitle: 'Commencez par la question que vous vous posez vraiment.',
-    guidanceCopy: 'Utilisez le chatbot pour éprouver vos décisions quotidiennes et trouver des sources dignes d\'intérêt.',
+    guidedQuestionsTitle:
+      'Commencez par la question que vous vous posez vraiment.',
+    guidanceCopy:
+      "Utilisez le chatbot pour éprouver vos décisions quotidiennes et trouver des sources dignes d'intérêt.",
     guidanceLabel: 'Conseils pratiques',
-    heroDescription: 'Reportages sélectionnés, contexte scientifique et conseils pratiques pour ceux qui cherchent à comprendre le risque COVID sans bruit ni fausses assurances.',
+    heroDescription:
+      'Reportages sélectionnés, contexte scientifique et conseils pratiques pour ceux qui cherchent à comprendre le risque COVID sans bruit ni fausses assurances.',
     heroEyebrow: 'Le risque COVID, clairement expliqué',
-    heroPrimaryCta: 'Lire l\'essentiel',
+    heroPrimaryCta: "Lire l'essentiel",
     heroSecondaryCta: 'Poser une question pratique',
     heroSecondaryCtaSignedOut: 'Connectez-vous pour poser une question',
-    heroTitle: 'Sachez ce qui compte maintenant. Posez la question que vous avez vraiment.',
+    heroTitle:
+      'Sachez ce qui compte maintenant. Posez la question que vous avez vraiment.',
     latestNews: 'Dernières nouvelles',
     library: 'Bibliothèque scientifique',
     phw: 'Veille sanitaire',
-    researchCopy: 'Passez des titres aux études quand vous avez besoin de preuves, pas seulement de résumés.',
+    researchCopy:
+      'Passez des titres aux études quand vous avez besoin de preuves, pas seulement de résumés.',
     researchLabel: 'Contexte scientifique',
     seeAllEvents: 'Voir tous les événements à venir et passés',
     seeAllLibrary: 'Voir tous les articles scientifiques',
     seeAllNews: 'Voir toutes les dernières nouvelles',
     seeAllPhw: 'Voir toutes les actualités de veille sanitaire',
     seeAllVideos: 'Voir toutes les vidéos',
-    signalCopy: 'Commencez par les reportages et évolutions de santé publique les plus susceptibles d\'affecter votre semaine.',
+    signalCopy:
+      "Commencez par les reportages et évolutions de santé publique les plus susceptibles d'affecter votre semaine.",
     signalCta: 'Ouvrir le journal',
     signalEyebrow: 'Le signal du jour',
     signalLabel: 'Ce qui compte maintenant',
-    signalTitle: 'Trois points de départ quand vous avez besoin de la vision la plus claire.',
+    signalTitle:
+      'Trois points de départ quand vous avez besoin de la vision la plus claire.',
     videos: 'Vidéos',
   },
   layout: {

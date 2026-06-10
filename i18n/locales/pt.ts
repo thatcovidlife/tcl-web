@@ -147,7 +147,7 @@ export default {
   },
   donate: {
     description:
-      'That Covid Life é uma plataforma independente e sem anúncios que reúne notícias sobre COVID, pesquisas, análises de produtos e recursos para a comunidade consciente da COVID. Seu apoio ajuda a cobrir custos de hospedagem e o desenvolvimento contínuo do site e do aplicativo móvel gratuito. Cada doação faz diferença. Obrigado.',
+      'That Covid Life é uma plataforma independente e sem anúncios que reúne notícias sobre COVID, pesquisas, análises de produtos e recursos para pessoas que buscam respostas honestas às suas perguntas sobre a pandemia de COVID-19 em curso e outros temas relacionados à saúde pública. Seu apoio ajuda a cobrir custos de hospedagem e o desenvolvimento contínuo do site e do aplicativo móvel gratuito. Cada doação faz diferença. Obrigado.',
     embed: {
       fallback: 'Se o painel não carregar,',
       fallbackLink: 'abra o Ko-fi diretamente.',
@@ -235,34 +235,43 @@ export default {
     pageTitle: 'Ùltimas Publicações',
     title: 'That Covid Life - Ùltimas Publicações',
     events: 'Próximos eventos',
-    guidedQuestion3: 'O que devo fazer se as pessoas ao meu redor estiverem doentes?',
-    guidedQuestionsDescription: 'Abra o chatbot com uma pergunta inicial e continue até que a resposta seja útil.',
-    guidedQuestionsDescriptionSignedOut: 'Entre com uma conta gratuita para abrir o chatbot e manter um registro focado em perguntas do que você aprende.',
+    guidedQuestion3:
+      'O que devo fazer se as pessoas ao meu redor estiverem doentes?',
+    guidedQuestionsDescription:
+      'Abra o chatbot com uma pergunta inicial e continue até que a resposta seja útil.',
+    guidedQuestionsDescriptionSignedOut:
+      'Entre com uma conta gratuita para abrir o chatbot e manter um registro focado em perguntas do que você aprende.',
     guidedQuestionsEyebrow: 'Orientação prática',
     guidedQuestionsTitle: 'Comece com a pergunta que você realmente tem.',
-    guidanceCopy: 'Use o chatbot para testar suas decisões do dia a dia e encontrar fontes que valham a pena ler.',
+    guidanceCopy:
+      'Use o chatbot para testar suas decisões do dia a dia e encontrar fontes que valham a pena ler.',
     guidanceLabel: 'Orientação prática',
-    heroDescription: 'Reportagens selecionadas, contexto científico e orientação prática para quem tenta entender o risco de COVID sem ruído ou falsas tranquilidades.',
+    heroDescription:
+      'Reportagens selecionadas, contexto científico e orientação prática para quem tenta entender o risco de COVID sem ruído ou falsas tranquilidades.',
     heroEyebrow: 'O risco COVID, claramente explicado',
     heroPrimaryCta: 'Leia o que importa agora',
     heroSecondaryCta: 'Faça uma pergunta prática',
     heroSecondaryCtaSignedOut: 'Entre para fazer uma pergunta',
-    heroTitle: 'Saiba o que importa agora. Faça a pergunta que você realmente tem.',
+    heroTitle:
+      'Saiba o que importa agora. Faça a pergunta que você realmente tem.',
     latestNews: 'Últimas notícias',
     library: 'Biblioteca científica',
     phw: 'De olho na sáude pública',
-    researchCopy: 'Vá das manchetes para os estudos quando precisar de evidências, não apenas resumos.',
+    researchCopy:
+      'Vá das manchetes para os estudos quando precisar de evidências, não apenas resumos.',
     researchLabel: 'Contexto científico',
     seeAllEvents: 'Veja todos os eventos futuros e passados',
     seeAllLibrary: 'Veja todos os artigos científicos',
     seeAllNews: 'Veja todas as últimas notícias',
     seeAllPhw: 'Veja todas as notícias de saúde pública',
     seeAllVideos: 'Veja todos os vídeos',
-    signalCopy: 'Comece com as reportagens e mudanças de saúde pública mais prováveis de afetar sua semana.',
+    signalCopy:
+      'Comece com as reportagens e mudanças de saúde pública mais prováveis de afetar sua semana.',
     signalCta: 'Abrir o jornal',
     signalEyebrow: 'O sinal de hoje',
     signalLabel: 'O que importa agora',
-    signalTitle: 'Três pontos de partida quando você precisa da visão mais clara.',
+    signalTitle:
+      'Três pontos de partida quando você precisa da visão mais clara.',
     videos: 'Vídeos',
   },
   layout: {

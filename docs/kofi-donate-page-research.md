@@ -73,7 +73,7 @@ Native campaign copy:
 ```text
 Help Keep That Covid Life Running & Growing
 
-That Covid Life is an independent, ad-free platform curating COVID news, research, product reviews, and resources for the COVID-conscious community. Your support helps cover hosting costs and the continued development of the site and its free mobile app. Every donation makes a difference. Thank you.
+That Covid Life is an independent, ad-free platform curating COVID news, research, product reviews, and resources for people who seek honest answers to their questions about the ongoing COVID-19 pandemic and other matters related to public health. Your support helps cover hosting costs and the continued development of the site and its free mobile app. Every donation makes a difference. Thank you.
 ```
 
 Recommended route:
