@@ -291,6 +291,7 @@ export default defineNuxtConfig({
           '*.gstatic.com',
           'storage.ko-fi.com',
         ],
+        'frame-src': ["'self'", 'https://ko-fi.com'],
       },
       crossOriginEmbedderPolicy: 'unsafe-none',
       permissionsPolicy: {

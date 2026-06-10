@@ -9,6 +9,7 @@ const pages = [
   '/',
   '/about',
   '/contribute',
+  '/donate',
   '/disclaimer',
   '/forum',
   '/forum-guidelines',

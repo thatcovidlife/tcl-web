@@ -28,6 +28,13 @@ export const useFooterConfig = () => {
         },
         {
           icon: null,
+          label: t('footer.tcl.donate'),
+          href: '/donate',
+          target: '_self',
+          external: false,
+        },
+        {
+          icon: null,
           label: t('footer.tcl.mobile'),
           href: '/mobile',
           target: '_self',

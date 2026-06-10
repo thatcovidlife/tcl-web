@@ -143,6 +143,60 @@ export default {
       },
     },
   },
+  donate: {
+    description:
+      'That Covid Life is an independent, ad-free platform curating COVID news, research, product reviews, and resources for the COVID-conscious community. Your support helps cover hosting costs and the continued development of the site and its free mobile app. Every donation makes a difference. Thank you.',
+    embed: {
+      fallback: 'If the panel does not load,',
+      fallbackLink: 'open Ko-fi directly.',
+      loading: 'Loading the Ko-fi donation panel...',
+      title: 'Support That Covid Life on Ko-fi',
+    },
+    eyebrow: 'Community support',
+    impact: {
+      curation: {
+        description:
+          'Support the ongoing work of finding, reviewing, and organizing COVID news, research, product reviews, and resources.',
+        title: 'Curation',
+      },
+      hosting: {
+        description:
+          'Help cover the infrastructure that keeps the website fast, stable, and available to the community.',
+        title: 'Hosting costs',
+      },
+      mobile: {
+        description:
+          'Fund continued improvements to the free mobile app and the features that make TCL easier to use on the go.',
+        title: 'Free mobile app',
+      },
+    },
+    meta: {
+      description:
+        'Support That Covid Life through Ko-fi with a one-time tip or monthly membership.',
+      title: 'That Covid Life - Donate',
+    },
+    monthly: {
+      cta: 'Support monthly',
+      description:
+        'Become a monthly supporter and help make the platform more predictable to maintain and improve.',
+      title: 'Monthly support',
+    },
+    oneTime: {
+      cta: 'Give once',
+      description:
+        'Make a one-time contribution through Ko-fi to help cover immediate hosting and development costs.',
+      title: 'One-time tip',
+    },
+    panel: {
+      ariaLabel: 'Ko-fi donation panel',
+      description:
+        'Use the embedded Ko-fi panel, or choose one of the direct support links.',
+      title: 'Donate with Ko-fi',
+    },
+    title: 'Help Keep That Covid Life Running & Growing',
+    trustNote:
+      'Ko-fi processes payments through PayPal and Stripe. That Covid Life does not store donation records in this site; the Ko-fi dashboard is the source of truth.',
+  },
   covidnet: {
     blog: {
       featured: 'Featured Post(s)',
@@ -714,6 +768,7 @@ export default {
       about: 'About',
       contact: 'Contact Us',
       contribute: 'Contribute',
+      donate: 'Donate',
       mobile: 'Mobile App',
       rss: 'RSS Feed',
       support: 'Support',
