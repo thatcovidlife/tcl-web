@@ -10,9 +10,6 @@ import { Toaster } from '@/components/ui/sonner'
     </TclBody>
     <Separator />
     <TclFooter class="bg-muted" />
-    <ClientOnly>
-      <LazyTclPrivacyPolicyUpdateModal />
-    </ClientOnly>
     <Toaster />
     <NuxtPwaManifest />
   </div>

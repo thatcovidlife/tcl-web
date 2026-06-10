@@ -313,12 +313,6 @@ export default {
     },
     news: 'News',
     privacyPolicy: 'Privacy Policy',
-    privacyPolicyUpdate: {
-      title: 'Privacy Policy Update',
-      content:
-        'We are changing our Privacy Policy, starting June 1st, 2026; to make it simpler and easier to understand.',
-      dismiss: 'Got it',
-    },
     product: 'PPE',
     'public-health': 'Public Health Watch',
     resource: 'Resources',
