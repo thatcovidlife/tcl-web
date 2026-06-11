@@ -288,7 +288,7 @@ export default {
       cta: 'Donar',
       dismiss: 'Cerrar banner de donaciones',
       message:
-        'Ayuda a mantener That Covid Life en marcha. Apoya las herramientas y reportajes sin anuncios en los que la gente confía.',
+        'Ayuda a mantener That Covid Life en marcha. Apoya la lucha por la ciencia y la salud pública.',
     },
     disclaimer: 'Descargo de responsabilidad',
     event: 'Próximos Eventos',

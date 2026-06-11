@@ -291,7 +291,7 @@ export default {
       cta: 'Faire un don',
       dismiss: 'Fermer la bannière de don',
       message:
-        'Aidez That Covid Life à continuer. Soutenez les outils et les reportages sans publicité sur lesquels les gens comptent.',
+        'Aidez That Covid Life à continuer. Soutenez la lutte pour la science et la santé publique.',
     },
     disclaimer: 'Clause de non-responsabilité',
     event: 'Évènements à Venir',

@@ -283,7 +283,7 @@ export default {
       cta: 'Donate',
       dismiss: 'Dismiss donation banner',
       message:
-        'Help keep That Covid Life running. Support the ad-free tools and reporting people rely on.',
+        'Help keep That Covid Life running. Support the fight for science and public health.',
     },
     disclaimer: 'Disclaimer',
     event: 'Upcoming Events',
