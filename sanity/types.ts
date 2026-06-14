@@ -855,6 +855,45 @@ export type Blog = {
   }
 }
 
+export type ArtsCulture = {
+  _id: string
+  _type: 'arts-culture'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title?: Array<
+    {
+      _key: string
+    } & InternationalizedArrayStringValue
+  >
+  uri?: Slug
+  description?: Array<
+    {
+      _key: string
+    } & InternationalizedArrayRichTextValue
+  >
+  language?: Language
+  tags?: Array<{
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    _key: string
+    [internalGroqTypeReferenceTo]?: 'tag'
+  }>
+  visual?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+}
+
 export type AppSettings = {
   _id: string
   _type: 'appSettings'
@@ -1094,6 +1133,7 @@ export type AllSanitySchemaTypes =
   | Brand
   | Country
   | Blog
+  | ArtsCulture
   | AppSettings
   | GeopointRadius
   | InternationalizedArrayRichTextValue
@@ -3696,6 +3736,64 @@ export type PUBLICATION_BY_TAG_QUERYResult = {
         path: string | null
         source: null
         thumbnail: string | null
+        type: 'arts-culture'
+        contentType: null
+        uri: string | null
+        countryCode: null
+        countryName: null
+        city: null
+        language: Language | unknown | null
+        tags: Array<{
+          name:
+            | Array<{
+                _type: 'localeString'
+                en?: string
+                fr?: string
+                pt?: string
+                es?: string
+              }>
+            | string
+            | ''
+          uri: string | null
+        }> | null
+        locked: false
+        limited: false
+      }
+    | {
+        title:
+          | Array<
+              {
+                _key: string
+              } & InternationalizedArrayStringValue
+            >
+          | Array<
+              {
+                _key: string
+              } & InternationalizedArrayStringValue
+            >
+          | string
+          | ''
+        name: null
+        author: null
+        date: null
+        end: null
+        published: string
+        category:
+          | Array<{
+              _type: 'localeString'
+              en?: string
+              fr?: string
+              pt?: string
+              es?: string
+            }>
+          | string
+          | null
+        categoryUri: string | null
+        shortDescription: string
+        link: null
+        path: string | null
+        source: null
+        thumbnail: string | null
         type: 'blog'
         contentType: null
         uri: string | null
@@ -4493,6 +4591,55 @@ export type PUBLICATION_BY_TYPE_QUERYResult = {
         title: Array<string> | string | null
         type: 'video'
         url: string | null
+        visual: string | null
+      }
+    | {
+        attributes: {
+          free: false
+          limited: false
+          onlineOnly: false
+          premium: false
+        }
+        date: string
+        description: string
+        end: null
+        id: string
+        language: Language | 'en'
+        link: string | null
+        metadata: {
+          aspectRatio: number | null
+          height: number | null
+          width: number | null
+        } | null
+        source: null
+        tags: Array<{
+          label:
+            | Array<{
+                _type: 'localeString'
+                en?: string
+                fr?: string
+                pt?: string
+                es?: string
+              }>
+            | string
+            | ''
+          slug: string | null
+        }> | null
+        title:
+          | Array<
+              {
+                _key: string
+              } & InternationalizedArrayStringValue
+            >
+          | Array<
+              {
+                _key: string
+              } & InternationalizedArrayStringValue
+            >
+          | string
+          | null
+        type: 'arts-culture'
+        url: null
         visual: string | null
       }
     | {
@@ -5604,6 +5751,60 @@ export type SEARCH_QUERYResult = {
         uri: null
         language: unknown | null
         tags: null
+      }
+    | {
+        id: string
+        title:
+          | Array<
+              {
+                _key: string
+              } & InternationalizedArrayStringValue
+            >
+          | Array<
+              {
+                _key: string
+              } & InternationalizedArrayStringValue
+            >
+          | string
+          | null
+        name: null
+        author: null
+        date: null
+        end: null
+        published: string
+        category:
+          | Array<{
+              _type: 'localeString'
+              en?: string
+              fr?: string
+              pt?: string
+              es?: string
+            }>
+          | string
+          | null
+        categoryUri: string | null
+        shortDescription: string
+        link: null
+        path: string | null
+        source: null
+        thumbnail: string | null
+        type: 'arts-culture'
+        contentType: null
+        uri: string | null
+        language: Language | unknown | null
+        tags: Array<{
+          name:
+            | Array<{
+                _type: 'localeString'
+                en?: string
+                fr?: string
+                pt?: string
+                es?: string
+              }>
+            | string
+            | ''
+          uri: string | null
+        }> | null
       }
     | {
         id: string
