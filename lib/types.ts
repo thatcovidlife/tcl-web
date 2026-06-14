@@ -1,6 +1,7 @@
 import type { ZodBoolean, ZodOptional, ZodString } from 'zod'
 
 export enum ARTICLE_TYPE {
+  ARTS_CULTURE = 'arts-culture',
   BLOG = 'blog',
   COVIDNET = 'covidnet',
   DIRECTORY = 'directory',

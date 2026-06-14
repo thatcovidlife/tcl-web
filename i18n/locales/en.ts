@@ -270,6 +270,7 @@ export default {
   },
   layout: {
     about: 'About',
+    'arts-culture': 'Arts & Culture',
     blog: 'Blog',
     bluesky: 'Follow us on Bluesky',
     brand: 'Brands',
@@ -784,6 +785,8 @@ export default {
   },
 
   description: {
+    'arts-culture':
+      'Curated arts and culture events and programming available to enjoy online.',
     blog: 'The latest news from the editorial team.',
     forum: 'A user forum to exchange tips, experiences and testimonies.',
     covidnet: 'A curated list of blogs and youtube channels about COVID-19.',

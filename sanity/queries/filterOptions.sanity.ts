@@ -29,7 +29,7 @@ const FILTER_OPTIONS_QUERY = groq`
 
   "types": array::compact(array::unique(*[
     defined($tag)
-    && _type in ["blog", "covidnet", "directory", "event", "public-health", "scientific-library", "news", "product", "resource", "tag", "video"]
+    && _type in ["arts-culture", "blog", "covidnet", "directory", "event", "public-health", "scientific-library", "news", "product", "resource", "tag", "video"]
     && !(_id in path('drafts.**'))
     && language == $locale
     && references(*[_type == "tag" && uri.current == $tag]._id)

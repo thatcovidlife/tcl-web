@@ -275,6 +275,7 @@ export default {
   },
   layout: {
     about: 'Sobre Nosotros',
+    'arts-culture': 'Arte y cultura',
     blog: 'Blog',
     bluesky: 'Síguenos en Bluesky',
     brand: 'Marcas',
@@ -801,6 +802,8 @@ export default {
     },
   },
   description: {
+    'arts-culture':
+      'Una selección de eventos y programación de arte y cultura para disfrutar en línea.',
     blog: 'Las últimas novedades de la redacción.',
     forum:
       'Un foro de usuarios para intercambiar consejos, experiencias y testimonios.',
