@@ -738,6 +738,11 @@ export default {
     },
     other: {
       children: {
+        artsCulture: {
+          description:
+            'Curated arts and culture events and programming available to enjoy online.',
+          title: 'Arts & Culture',
+        },
         covidnet: {
           description:
             'A curated list of blogs and youtube channels about COVID-19.',

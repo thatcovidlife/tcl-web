@@ -756,6 +756,11 @@ export default {
     },
     other: {
       children: {
+        artsCulture: {
+          description:
+            'Una selección de eventos y programación de arte y cultura para disfrutar en línea.',
+          title: 'Arte y cultura',
+        },
         covidnet: {
           description:
             'Una lista seleccionada de blogs y canales de YouTube sobre la COVID-19.',

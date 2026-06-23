@@ -56,6 +56,12 @@ export const useNavConfig = () => {
           title: t('topNav.other.title'),
           children: [
             {
+              id: 'other-arts-culture',
+              title: t('topNav.other.children.artsCulture.title'),
+              description: t('topNav.other.children.artsCulture.description'),
+              link: '/arts-culture?offset=0&limit=5',
+            },
+            {
               id: 'other-covidnet',
               title: t('topNav.other.children.covidnet.title'),
               description: t('topNav.other.children.covidnet.description'),
@@ -147,6 +153,13 @@ export const useNavConfig = () => {
           id: 'mobile-events',
           title: t('topNav.latest.children.events.title'),
           link: '/event?offset=0&limit=5',
+          premium: false,
+          enabled: true,
+        },
+        {
+          id: 'mobile-arts-culture',
+          title: t('topNav.other.children.artsCulture.title'),
+          link: '/arts-culture?offset=0&limit=5',
           premium: false,
           enabled: true,
         },
