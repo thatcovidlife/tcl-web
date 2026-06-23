@@ -147,9 +147,9 @@ export default {
   },
   donate: {
     description:
-      'That Covid Life é uma plataforma independente e sem anúncios que reúne notícias sobre COVID, pesquisas, análises de produtos e recursos para pessoas que buscam respostas honestas às suas perguntas sobre a pandemia de COVID-19 em curso e outros temas relacionados à saúde pública. Seu apoio ajuda a cobrir custos de hospedagem e o desenvolvimento contínuo do site e do aplicativo móvel gratuito. Cada doação faz diferença. Obrigado.',
+      'That Covid Life é uma plataforma independente e sem anúncios que reúne notícias, pesquisas e recursos para pessoas que buscam respostas honestas às suas perguntas sobre a pandemia de COVID-19 em curso e outros temas relacionados à saúde pública. Seu apoio ajuda a cobrir custos de hospedagem e o desenvolvimento contínuo do site e do aplicativo móvel gratuito. Cada doação faz diferença. Obrigado.',
     embed: {
-      fallback: 'Se o painel não carregar,',
+      fallback: 'Se o formulário não carregar,',
       fallbackLink: 'abra o Ko-fi diretamente.',
       loading: 'Carregando o painel de doação do Ko-fi...',
       title: 'Apoie o That Covid Life no Ko-fi',
@@ -158,7 +158,7 @@ export default {
     impact: {
       curation: {
         description:
-          'Apoie o trabalho contínuo de encontrar, revisar e organizar notícias sobre COVID, pesquisas, análises de produtos e recursos.',
+          'Apoie o trabalho contínuo de encontrar, revisar e organizar notícias, pesquisas e recursos.',
         title: 'Curadoria',
       },
       hosting: {
@@ -192,12 +192,12 @@ export default {
     panel: {
       ariaLabel: 'Painel de doação do Ko-fi',
       description:
-        'Use o painel incorporado do Ko-fi ou escolha um dos links diretos de apoio.',
-      title: 'Doe com Ko-fi',
+        'Use o formulário abaixo ou escolha um dos links diretos de apoio.',
+      title: 'Doe agora',
     },
     title: 'Ajude a manter e fazer crescer o That Covid Life',
     trustNote:
-      'O Ko-fi processa pagamentos pelo PayPal e Stripe. O That Covid Life não armazena registros de doações neste site; o painel do Ko-fi é a fonte de referência.',
+      'O Ko-fi processa pagamentos pelo PayPal e Stripe. O That Covid Life não armazena registros de doações neste site.',
   },
   covidnet: {
     blog: {
